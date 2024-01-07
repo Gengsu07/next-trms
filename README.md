@@ -1,36 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+### Prisma Setup Using existing database that generated before
 
-## Getting Started
+    npm install prisma --save-dev
 
-First, run the development server:
+    npx prisma init
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# introspection
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    npx prisma db pull
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# Baseline your database
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+    mkdir -p prisma/migrations/0_init
 
-## Learn More
+Next, generate the migration file with prisma migrate diff. Use the following arguments:
 
-To learn more about Next.js, take a look at the following resources:
+--from-empty: assumes the data model you're migrating from is empty
+--to-schema-datamodel: the current database state using the URL in the datasource block
+--script: output a SQL script
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    npx prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script > prisma/migrations/0_init/migration.sql
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+    npm install @prisma/client
