@@ -9,7 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { kpp, sektor, map, kjs } from "@/constant/initialData";
 import { Input } from "@/components/ui/input";
-
+import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
+import { Controller } from "react-hook-form";
 // import { Select, SelectItem } from "@nextui-org/react";
 import {
   Select,
@@ -36,17 +37,17 @@ import {
 import Link from "next/link";
 import { Label } from "@radix-ui/react-dropdown-menu";
 
-const FilterSchema = z.object({
+export const FilterSchema = z.object({
   tanggal_awal: z.date({ required_error: "Tanggal awal harus dipilih" }),
   tanggal_akhir: z.date({ required_error: "Tanggal awal harus dipilih" }),
   admin: z.string().optional(),
-  sektor: z.string().optional(),
+  sektor: z.array(z.string()).optional(),
   map: z.string().optional(),
   kjs: z.string().optional(),
   npwp: z.number({ required_error: "NPWP harus diisi" }).min(15).optional(),
 });
 
-type FilterType = z.infer<typeof FilterSchema>;
+export type FilterType = z.infer<typeof FilterSchema>;
 
 const FilterForm = () => {
   const form = useForm<FilterType>({
@@ -59,7 +60,7 @@ const FilterForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="flex flex-col md:flex-row flex-wrap  justify-center items-center gap-5">
+        <div className="flex flex-col md:flex-row flex-wrap  justify-center items-center gap-5 w-full">
           <FormField
             control={form.control}
             name="tanggal_awal"
@@ -161,8 +162,8 @@ const FilterForm = () => {
                   </FormControl>
                   <SelectContent>
                     {kpp.map((kpp) => (
-                      <SelectItem key={kpp.kode} value={kpp.kode}>
-                        {kpp.nama}
+                      <SelectItem key={kpp.value} value={kpp.value}>
+                        {kpp.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -173,13 +174,32 @@ const FilterForm = () => {
             )}
           />
           {/* Sektor */}
-          <FormField
+
+          <Controller
             control={form.control}
             name="sektor"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>Sektor</FormLabel>
-                <Select
+                <FormLabel>KPP</FormLabel>
+                <FormControl>
+                  <MultipleSelector
+                    onChange={(e) => field.onChange(e)}
+                    options={sektor}
+                    hidePlaceholderWhenSelected
+                    placeholder="Pilih Sektor"
+                    emptyIndicator={
+                      <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                        Pilih yg ada aja ya.
+                      </p>
+                    }
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
@@ -190,18 +210,15 @@ const FilterForm = () => {
                   </FormControl>
                   <SelectContent>
                     {sektor.map((sektor) => (
-                      <SelectItem key={sektor.kode} value={sektor.kode}>
-                        {sektor.nama}
+                      <SelectItem key={sektor.value} value={sektor.value}>
+                        {sektor.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
-                </Select>
+                </Select> */}
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           {/* MAP */}
+
           <FormField
             control={form.control}
             name="map"
@@ -219,8 +236,8 @@ const FilterForm = () => {
                   </FormControl>
                   <SelectContent>
                     {map.map((item) => (
-                      <SelectItem key={item.kode} value={item.kode}>
-                        {item.nama}
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -247,8 +264,8 @@ const FilterForm = () => {
                   </FormControl>
                   <SelectContent>
                     {kjs.map((item) => (
-                      <SelectItem key={item.kode} value={item.kode}>
-                        {item.nama}
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
                       </SelectItem>
                     ))}
                   </SelectContent>

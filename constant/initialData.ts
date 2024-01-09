@@ -1,87 +1,87 @@
 export const kpp = [
   {
-    kode: "001",
-    nama: "Matraman",
+    value: "001",
+    label: "Matraman",
   },
-  { kode: "002", nama: "Jatinegara" },
+  { value: "002", label: "Jatinegara" },
   {
-    kode: "003",
-    nama: "Pulogadung",
-  },
-  {
-    kode: "004",
-    nama: "Cakung",
+    value: "003",
+    label: "Pulogadung",
   },
   {
-    kode: "005",
-    nama: "Kramat Jati",
+    value: "004",
+    label: "Cakung",
   },
   {
-    kode: "007",
-    nama: "Madya Jakarta Timur",
+    value: "005",
+    label: "Kramat Jati",
   },
   {
-    kode: "008",
-    nama: "Duren Sawit",
+    value: "007",
+    label: "Madya Jakarta Timur",
   },
   {
-    kode: "009",
-    nama: "Pasar Rebo",
+    value: "008",
+    label: "Duren Sawit",
   },
   {
-    kode: "097",
-    nama: "Madya Dua Jakarta Timur",
+    value: "009",
+    label: "Pasar Rebo",
+  },
+  {
+    value: "097",
+    label: "Madya Dua Jakarta Timur",
   },
 ];
 
 export const sektor = [
   {
-    kode: "B",
-    nama: "Pertambangan dan Penggalian",
+    value: "B",
+    label: "Pertambangan dan Penggalian",
   },
-  { kode: "C", nama: "Industri Pengolahan" },
+  { value: "C", label: "Industri Pengolahan" },
   {
-    kode: "G",
-    nama: "Perdagangan Besar dan Eceran",
+    value: "G",
+    label: "Perdagangan Besar dan Eceran",
   },
 ];
 
 export const map = [
   {
-    kode: "411121",
-    nama: "PPh 21",
+    value: "411121",
+    label: "PPh 21",
   },
-  { kode: "411122", nama: "PPh 22" },
+  { value: "411122", label: "PPh 22" },
   {
-    kode: "411123",
-    nama: "PPh 22 Impor",
-  },
-  {
-    kode: "411125",
-    nama: "PPh 25 OP",
+    value: "411123",
+    label: "PPh 22 Impor",
   },
   {
-    kode: "411126",
-    nama: "PPh 25 Badan",
+    value: "411125",
+    label: "PPh 25 OP",
   },
   {
-    kode: "411128",
-    nama: "PPh Final 4 ayat 2",
+    value: "411126",
+    label: "PPh 25 Badan",
   },
   {
-    kode: "411211",
-    nama: "PPN DN",
+    value: "411128",
+    label: "PPh Final 4 ayat 2",
+  },
+  {
+    value: "411211",
+    label: "PPN DN",
   },
 ];
 
 export const kjs = [
   {
-    kode: "100",
-    nama: "100",
+    value: "100",
+    label: "100",
   },
-  { kode: "200", nama: "200" },
+  { value: "200", label: "200" },
   {
-    kode: "900",
-    nama: "900",
+    value: "900",
+    label: "900",
   },
 ];
