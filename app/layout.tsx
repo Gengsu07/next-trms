@@ -3,6 +3,8 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/theme-provider";
 import Header from "@/components/Header";
+import "react-date-range/dist/styles.css"; // main css file
+import "react-date-range/dist/theme/default.css"; // theme css file
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({

@@ -11,7 +11,8 @@ import { kpp, sektor, map, kjs } from "@/constant/initialData";
 import { Input } from "@/components/ui/input";
 import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
 import { Controller } from "react-hook-form";
-// import { Select, SelectItem } from "@nextui-org/react";
+import { DateRange } from "react-date-range";
+import { addDays } from "date-fns";
 import {
   Select,
   SelectContent,
@@ -36,12 +37,19 @@ import {
 } from "@/components/ui/form";
 import Link from "next/link";
 import { Label } from "@radix-ui/react-dropdown-menu";
+import { useState } from "react";
 
 export const FilterSchema = z.object({
-  tanggal_awal: z.date({ required_error: "Tanggal awal harus dipilih" }),
-  tanggal_akhir: z.date({ required_error: "Tanggal awal harus dipilih" }),
+  // tanggal_awal: z.date({ required_error: "Tanggal awal harus dipilih" }),
+  // tanggal_akhir: z.date({ required_error: "Tanggal awal harus dipilih" }),
+  tanggal: z.array(
+    z.object({ startDate: z.date(), endDate: z.date(), key: z.string() }),
+    { required_error: "Periode harus dipilih" }
+  ),
   admin: z.string().optional(),
-  sektor: z.array(z.string()).optional(),
+  sektor: z
+    .array(z.object({ value: z.string(), label: z.string() }))
+    .optional(),
   map: z.string().optional(),
   kjs: z.string().optional(),
   npwp: z.number({ required_error: "NPWP harus diisi" }).min(15).optional(),
@@ -50,6 +58,14 @@ export const FilterSchema = z.object({
 export type FilterType = z.infer<typeof FilterSchema>;
 
 const FilterForm = () => {
+  const initialDateRangeState = [
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ];
+
   const form = useForm<FilterType>({
     resolver: zodResolver(FilterSchema),
   });
@@ -58,56 +74,17 @@ const FilterForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="flex flex-col md:flex-row flex-wrap  justify-center items-center gap-5 w-full">
-          <FormField
-            control={form.control}
-            name="tanggal_awal"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                {/* TANGGAL */}
-                <FormLabel>Tanggal Awal</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
+    <div className="flex flex-col md:flex-row  justify-center items-center gap-5 w-full h-full">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-8 w-full "
+        >
+          {/* <FormField
             control={form.control}
             name="tanggal_akhir"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="flex flex-col w-full 2xl:w-1/2">
                 <FormLabel>Tanggal Akhir</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -115,7 +92,7 @@ const FilterForm = () => {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
+                          " pl-3 text-left font-normal",
                           !field.value && "text-muted-foreground"
                         )}
                       >
@@ -143,19 +120,19 @@ const FilterForm = () => {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           {/* ADMIN */}
           <FormField
             control={form.control}
             name="admin"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="flex flex-col  ">
                 <FormLabel>KPP</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
-                  <FormControl className="w-[240px]">
+                  <FormControl className="w-full xl:w-1/2">
                     <SelectTrigger>
                       <SelectValue placeholder="Pilih KPP" />
                     </SelectTrigger>
@@ -178,24 +155,21 @@ const FilterForm = () => {
           <Controller
             control={form.control}
             name="sektor"
+            defaultValue={[]}
             render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>KPP</FormLabel>
-                <FormControl>
-                  <MultipleSelector
-                    onChange={(e) => field.onChange(e)}
-                    options={sektor}
-                    hidePlaceholderWhenSelected
-                    placeholder="Pilih Sektor"
-                    emptyIndicator={
-                      <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                        Pilih yg ada aja ya.
-                      </p>
-                    }
-                  />
-                </FormControl>
-
-                <FormMessage />
+              <FormItem>
+                <FormLabel>Sektor</FormLabel>
+                <MultipleSelector
+                  options={sektor}
+                  placeholder="Pilih Sektor"
+                  hidePlaceholderWhenSelected
+                  emptyIndicator={
+                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                      Pilih yg ada aja ya.
+                    </p>
+                  }
+                  {...field}
+                />
               </FormItem>
             )}
           />
@@ -294,12 +268,13 @@ const FilterForm = () => {
               </FormItem>
             )}
           />
-        </div>
-        <Button type="submit" className="cursor-pointer w-full">
-          Analisa
-        </Button>
-      </form>
-    </Form>
+
+          <Button type="submit" className="cursor-pointer w-full">
+            Analisa
+          </Button>
+        </form>
+      </Form>
+    </div>
   );
 };
 
