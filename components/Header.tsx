@@ -3,7 +3,6 @@ import NavBar from "./NavBar";
 import Image from "next/image";
 import { ModeToggle } from "./theme-switcher";
 import MobileNav from "./MobileNavbar";
-import { Separator } from "./ui/separator";
 
 const Header = () => {
   return (
