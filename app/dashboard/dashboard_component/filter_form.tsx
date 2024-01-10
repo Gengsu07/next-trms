@@ -1,155 +1,137 @@
 "use client";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import useFilterData from "@/app/store/useFilterData";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { kpp, sektor, map, kjs } from "@/constant/initialData";
-import { Input } from "@/components/ui/input";
-import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
-import { Controller } from "react-hook-form";
-import { DateRange } from "react-date-range";
-import { addDays } from "date-fns";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import Link from "next/link";
-import { Label } from "@radix-ui/react-dropdown-menu";
-import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import MultipleSelector from "@/components/ui/multiple-selector";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { kjs, kpp, map, sektor } from "@/constant/initialData";
+import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { format } from "date-fns";
+import { on } from "events";
+import { CalendarIcon } from "lucide-react";
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
 
 export const FilterSchema = z.object({
-  // tanggal_awal: z.date({ required_error: "Tanggal awal harus dipilih" }),
-  // tanggal_akhir: z.date({ required_error: "Tanggal awal harus dipilih" }),
-  tanggal: z.array(
-    z.object({ startDate: z.date(), endDate: z.date(), key: z.string() }),
-    { required_error: "Periode harus dipilih" }
-  ),
-  admin: z.string().optional(),
+  tanggal: z.object({ from: z.date(), to: z.date() }),
+  admin: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
   sektor: z
     .array(z.object({ value: z.string(), label: z.string() }))
     .optional(),
-  map: z.string().optional(),
-  kjs: z.string().optional(),
-  npwp: z.number({ required_error: "NPWP harus diisi" }).min(15).optional(),
+  map: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
+  kjs: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
+  npwp: z
+    .string()
+    .refine((value) => /^\d+$/.test(value) && value.length === 15, {
+      message: "NPWP harus 15 digit dan berisi hanya karakter angka (0-9)",
+    })
+    .optional(),
 });
 
 export type FilterType = z.infer<typeof FilterSchema>;
 
 const FilterForm = () => {
-  const initialDateRangeState = [
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ];
-
+  const { onFilter } = useFilterData();
   const form = useForm<FilterType>({
     resolver: zodResolver(FilterSchema),
   });
   const onSubmit = (data: FilterType) => {
-    console.log(data);
+    onFilter(data);
   };
 
   return (
-    <div className="flex flex-col md:flex-row  justify-center items-center gap-5 w-full h-full">
+    <div className="flex flex-col justify-start items-start  w-full h-full ">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 w-full "
         >
-          {/* <FormField
+          <FormField
             control={form.control}
-            name="tanggal_akhir"
+            name="tanggal"
             render={({ field }) => (
-              <FormItem className="flex flex-col w-full 2xl:w-1/2">
-                <FormLabel>Tanggal Akhir</FormLabel>
+              <FormItem className="flex flex-col">
+                <FormLabel>Tanggal</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          " pl-3 text-left font-normal",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value ? (
-                          format(field.value, "PPP")
+                    <Button
+                      id="date"
+                      name="dob"
+                      variant={"outline"}
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {field.value?.from ? (
+                        field.value.to ? (
+                          <>
+                            {format(field.value.from, "LLL dd, y")} -{" "}
+                            {format(field.value.to, "LLL dd, y")}
+                          </>
                         ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
+                          format(field.value.from, "LLL dd, y")
+                        )
+                      ) : (
+                        <span>Rentang waktu</span>
+                      )}
+                    </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
-                      mode="single"
+                      initialFocus
+                      mode="range"
+                      defaultMonth={field.value?.from}
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
+                      numberOfMonths={3}
                     />
                   </PopoverContent>
                 </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
-          {/* ADMIN */}
-          <FormField
-            control={form.control}
-            name="admin"
-            render={({ field }) => (
-              <FormItem className="flex flex-col  ">
-                <FormLabel>KPP</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl className="w-full xl:w-1/2">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih KPP" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {kpp.map((kpp) => (
-                      <SelectItem key={kpp.value} value={kpp.value}>
-                        {kpp.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
 
                 <FormMessage />
               </FormItem>
             )}
           />
+
+          {/* ADMIN */}
+          <Controller
+            control={form.control}
+            name="admin"
+            defaultValue={[]}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Kantor</FormLabel>
+                <MultipleSelector
+                  options={kpp}
+                  placeholder="KPP "
+                  hidePlaceholderWhenSelected
+                  emptyIndicator={
+                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                      Pilih yg ada aja ya.
+                    </p>
+                  }
+                  {...field}
+                />
+              </FormItem>
+            )}
+          />
+
           {/* Sektor */}
 
           <Controller
@@ -173,81 +155,53 @@ const FilterForm = () => {
               </FormItem>
             )}
           />
-          {/* <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl className="w-[240px]">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih Sektor" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {sektor.map((sektor) => (
-                      <SelectItem key={sektor.value} value={sektor.value}>
-                        {sektor.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select> */}
 
           {/* MAP */}
-
-          <FormField
+          <Controller
             control={form.control}
             name="map"
+            defaultValue={[]}
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem>
                 <FormLabel>Jenis Pajak</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl className="w-[240px]">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih Sektor" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {map.map((item) => (
-                      <SelectItem key={item.value} value={item.value}>
-                        {item.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
+                <MultipleSelector
+                  options={map}
+                  placeholder="MAP"
+                  hidePlaceholderWhenSelected
+                  emptyIndicator={
+                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                      Pilih yg ada aja ya.
+                    </p>
+                  }
+                  {...field}
+                />
               </FormItem>
             )}
           />
+
           {/* KJS */}
-          <FormField
+          <Controller
             control={form.control}
             name="kjs"
+            defaultValue={[]}
             render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Jenis Setoran</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl className="w-[240px]">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Pilih KJS" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {kjs.map((item) => (
-                      <SelectItem key={item.value} value={item.value}>
-                        {item.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
+              <FormItem>
+                <FormLabel>Kode Bayar</FormLabel>
+                <MultipleSelector
+                  options={kjs}
+                  placeholder="Kode Jenis Setoran"
+                  hidePlaceholderWhenSelected
+                  emptyIndicator={
+                    <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                      Pilih yg ada aja ya.
+                    </p>
+                  }
+                  {...field}
+                />
               </FormItem>
             )}
           />
+
           {/* NPWP */}
           <FormField
             control={form.control}
@@ -258,7 +212,7 @@ const FilterForm = () => {
                 <FormControl>
                   <Input
                     placeholder="NPWP 15 Digit"
-                    type="number"
+                    type="text"
                     {...field}
                     value={field.value || ""}
                   />
