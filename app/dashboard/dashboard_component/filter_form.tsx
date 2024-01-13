@@ -21,10 +21,11 @@ import { kjs, kpp, map, sektor } from "@/constant/initialData";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { on } from "events";
 import { CalendarIcon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import Image from "next/image";
+import { FaFilter } from "react-icons/fa";
 
 export const FilterSchema = z.object({
   tanggal: z.object({ from: z.date(), to: z.date() }),
@@ -54,7 +55,9 @@ const FilterForm = () => {
   };
 
   return (
-    <div className="flex flex-col justify-start items-start  w-full h-full ">
+    <div className="flex flex-col justify-start items-start pt-24  px-3 max-w-sm h-full border-[1px] border-accent bg-accent rounded-md">
+      <FaFilter size={20} alt="filter data" className=" ml-auto" />
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
