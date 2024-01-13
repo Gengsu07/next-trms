@@ -1,43 +1,35 @@
 "use client";
-import FilterForm from "./dashboard_component/filter_form";
-import { useEffect, useState } from "react";
-import React from "react";
+import { useState } from "react";
 import useFilterData from "../store/useFilterData";
-import SideBar from "./Sidebar";
+import FilterForm from "./dashboard_component/filter_form";
+import CollapsePage from "./dashboard_component/collapsed";
 import KPI from "./dashboard_component/kpi";
 
 const Dashboard = () => {
-  const [sidebar, setSideBar] = useState(false);
-  // const { filterData, onFilter } = useFilterData();
-  // const [admin, setAdmin] = useState<String[]>([]);
-  // const [sektor, setSektor] = useState<String[]>([]);
+  const { filterData, onFilter, parseFilterData } = useFilterData();
+  const [collapsed, setIsCollapsed] = useState(true);
 
-  // useEffect(() => {
-  //   if (filterData?.admin?.length !== 0) {
-  //     setAdmin(
-  //       (prevAdmin) => filterData.admin?.map((item) => item?.value) || prevAdmin
-  //     );
-  //   }
+  const onCollapsed = () => {
+    setIsCollapsed(!collapsed);
+  };
+  const cleanFilterData = parseFilterData(filterData);
 
-  //   if (filterData?.sektor?.length !== 0) {
-  //     setSektor(
-  //       (prevAdmin) =>
-  //         filterData.sektor?.map((item) => item?.value) || prevAdmin
-  //     );
-  //   }
-  // }, [filterData]);
+  // console.log("dashboard:", cleanFilterData);
 
   return (
     <main className="w-screen h-screen mt-1">
-      <div className="flex justify-start items-center gap-5">
-        <div className="flex justify-center items-center  max-w-sm h-screen">
-          <FilterForm />
+      <div className="flex flex-col sm:flex-row justify-start items-center gap-5 w-full h-full">
+        {collapsed ? (
+          <CollapsePage setIsCollapsed={onCollapsed} />
+        ) : (
+          <FilterForm onFilterForm={onFilter} setIsCollapsed={onCollapsed} />
+        )}
+        <div>
+          <KPI />
         </div>
-        <div className="flex justify-center items-center">dashboard</div>
-        {/* <SideBar /> */}
-        {/* <KPI /> */}
       </div>
     </main>
   );
 };
+
 export default Dashboard;

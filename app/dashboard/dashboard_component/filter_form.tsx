@@ -1,5 +1,4 @@
 "use client";
-import useFilterData from "@/app/store/useFilterData";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -23,40 +22,34 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
+import { FilterSchema } from "@/app/validation/validation";
 import { z } from "zod";
-import Image from "next/image";
-import { FaFilter } from "react-icons/fa";
-
-export const FilterSchema = z.object({
-  tanggal: z.object({ from: z.date(), to: z.date() }),
-  admin: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
-  sektor: z
-    .array(z.object({ value: z.string(), label: z.string() }))
-    .optional(),
-  map: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
-  kjs: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
-  npwp: z
-    .string()
-    .refine((value) => /^\d+$/.test(value) && value.length === 15, {
-      message: "NPWP harus 15 digit dan berisi hanya karakter angka (0-9)",
-    })
-    .optional(),
-});
+import { RxDoubleArrowLeft } from "react-icons/rx";
 
 export type FilterType = z.infer<typeof FilterSchema>;
 
-const FilterForm = () => {
-  const { onFilter } = useFilterData();
+const FilterForm = ({
+  onFilterForm,
+  setIsCollapsed,
+}: {
+  onFilterForm: (data: FilterType) => void;
+  setIsCollapsed: () => void;
+}) => {
   const form = useForm<FilterType>({
     resolver: zodResolver(FilterSchema),
   });
   const onSubmit = (data: FilterType) => {
-    onFilter(data);
+    // console.log("filterform:", data);
+    onFilterForm(data);
   };
-
   return (
-    <div className="flex flex-col justify-start items-start pt-24  px-3 max-w-sm h-full border-[1px] border-accent bg-accent rounded-md">
-      <FaFilter size={20} alt="filter data" className=" ml-auto" />
+    <div className="flex flex-col justify-start items-start py-5 sm:py-14 px-3 w-full sm:w-52  md:w-56 xl:w-80 h-fit sm:h-screen border-[2px] border-accent bg-card rounded-md shadow-md ">
+      <div className="flex justify-between items-center w-full h-10 mb-5">
+        <h3 className="text-lg font-bold">Filter data</h3>
+        <Button onClick={setIsCollapsed}>
+          <RxDoubleArrowLeft />
+        </Button>
+      </div>
 
       <Form {...form}>
         <form
@@ -122,7 +115,7 @@ const FilterForm = () => {
                 <FormLabel>Kantor</FormLabel>
                 <MultipleSelector
                   options={kpp}
-                  placeholder="KPP "
+                  placeholder="KPP"
                   hidePlaceholderWhenSelected
                   emptyIndicator={
                     <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">

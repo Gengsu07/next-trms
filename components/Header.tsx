@@ -16,7 +16,7 @@ const Header = () => {
           </div>
         </div>
         <div className="hidden md:flex justify-between gap-2 items-center">
-          <h1>Hey, some user here</h1>
+          <p className="text-sm">Hey, some user here</p>
           <ModeToggle />
         </div>
         <div className="md:hidden">

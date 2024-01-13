@@ -1,22 +1,40 @@
-import FilterData from "@/components/Filter";
-import { prisma } from "@/prisma/client";
+import useFilterData from "@/app/store/useFilterData";
+import querystring from "querystring";
 
-const KPI = async () => {
-  const bruto = await prisma.mpn.aggregate({
-    _sum: {
-      nominal: true,
-    },
-    where: {
-      ket: {
-        in: ["MPN", "SPM"],
-      },
-    },
-  });
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+const KPI = () => {
+  const { filterData, parseFilterData } = useFilterData();
+
+  const cleanFilterData = parseFilterData(filterData) || {};
+
+  const queryParamsString = querystring.stringify(cleanFilterData);
+  console.log("KPI:", queryParamsString);
+
   return (
     <section className="flex flex-col justify-center items-center gap-1  w-full h-full mx-auto bg-background-primary">
-      <FilterData />
+      <Card>
+        <CardHeader>
+          <CardTitle>Card Title</CardTitle>
+          <CardDescription>Card Description</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>Card Content</p>
+        </CardContent>
+        <CardFooter>
+          <p>Card Footer</p>
+        </CardFooter>
+      </Card>
+
       <div className="flex justify-center items-center w-full h-full ">
-        <p>{bruto._sum.nominal}</p>
+        <p>sdfsd</p>
       </div>
     </section>
   );
