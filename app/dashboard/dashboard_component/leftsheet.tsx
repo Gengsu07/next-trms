@@ -9,7 +9,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import Image from "next/image";
-import FilterForm from "./dashboard_component/filter_form";
+import FilterForm from "./filter_form";
 
 const SideBar = () => {
   return (

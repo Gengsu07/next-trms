@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/theme-provider";
 import Header from "@/components/Header";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
@@ -24,14 +25,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={poppins.className}>
+      <body
+        className={cn(poppins.className, {
+          "debug-screens": process.env.NODE_ENV === "development",
+        })}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex flex-col gap-1 justify-start items-center h-screen w-full ">
+          <div className="flex flex-col justify-start items-center h-screen w-screen ">
             <Header />
             {children}
           </div>
