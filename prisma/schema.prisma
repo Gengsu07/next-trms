@@ -4,8 +4,33 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:postgres@localhost:5432/testDB?schema=public"
 }
 
-
-
+model mpn {
+  admin         String?
+  kdmap         String?
+  kdbayar       String?
+  masa          String?
+  masa2         String?
+  tahun         String?
+  tanggalbayar  Int?
+  bulanbayar    Int?
+  tahunbayar    Int?
+  datebayar     DateTime? @db.Timestamp(6)
+  nominal       Float?    @db.Real
+  ket           String?
+  seksi         String?
+  segmentasi_wp String?
+  jenis_wp      String?
+  nama_klu      String?
+  kd_kategori   String?
+  nm_kategori   String?
+  nm_golpok     String?
+  map           String?
+  npwp15        String?
+  nama_wp       String?
+  nama_ar       String?
+  ntpn          String?
+  id            Int       @id
+}
