@@ -6,25 +6,23 @@ import CollapsePage from "./dashboard_component/collapsed";
 import KPI from "./dashboard_component/kpi";
 
 const Dashboard = () => {
-  const { filterData, onFilter, parseFilterData } = useFilterData();
-  const [collapsed, setIsCollapsed] = useState(true);
+  const { onFilter } = useFilterData();
+  const [collapsed, setIsCollapsed] = useState(false);
 
   const onCollapsed = () => {
     setIsCollapsed(!collapsed);
   };
-  const cleanFilterData = parseFilterData(filterData);
-
-  // console.log("dashboard:", cleanFilterData);
 
   return (
-    <main className="w-screen h-screen mt-1">
-      <div className="flex flex-col sm:flex-row justify-start items-center gap-5 w-full h-full">
+    <main className="w-screen h-screen">
+      <div className="flex flex-col sm:flex-row justify-start items-start gap-5 w-full h-full sm:mr-5">
         {collapsed ? (
           <CollapsePage setIsCollapsed={onCollapsed} />
         ) : (
           <FilterForm onFilterForm={onFilter} setIsCollapsed={onCollapsed} />
         )}
-        <div>
+
+        <div className="flex flex-col justify-center items-center gap-5 mt-5 w-full h-full px-5">
           <KPI />
         </div>
       </div>
