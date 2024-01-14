@@ -1,3 +1,4 @@
+"use client";
 import useFilterData from "@/app/store/useFilterData";
 import querystring from "querystring";
 
@@ -9,14 +10,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useQuery } from "@tanstack/react-query";
 
 const KPI = () => {
   const { filterData, parseFilterData } = useFilterData();
-
   const cleanFilterData = parseFilterData(filterData) || {};
-
+  console.log("kpi:", cleanFilterData);
   const queryParamsString = querystring.stringify(cleanFilterData);
-  console.log("KPI:", queryParamsString);
+
+  const { data, isFetching, error } = useQuery({
+    queryKey: ["kpi"],
+    queryFn: () =>
+      fetch("http://localhost:3000/api/kpi?" + queryParamsString).then((res) =>
+        res.json()
+      ),
+  });
+  console.log("data KPI:", data);
 
   return (
     <section className="flex flex-col justify-center items-center gap-1  w-full h-full mx-auto bg-background-primary">

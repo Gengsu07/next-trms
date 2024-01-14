@@ -7,30 +7,5 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model mpn {
-  admin         String?
-  kdmap         String?
-  kdbayar       String?
-  masa          String?
-  masa2         String?
-  tahun         String?
-  tanggalbayar  Int?
-  bulanbayar    Int?
-  tahunbayar    Int?
-  datebayar     String?
-  nominal       Float?  @db.Real
-  ket           String?
-  seksi         String?
-  segmentasi_wp String?
-  jenis_wp      String?
-  nama_klu      String?
-  kd_kategori   String?
-  nm_kategori   String?
-  nm_golpok     String?
-  map           String?
-  npwp15        String?
-  nama_wp       String?
-  nama_ar       String?
-  ntpn          String?
-  id            Int     @id
-}
+
+

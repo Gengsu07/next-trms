@@ -8,10 +8,11 @@ type FilterState = {
   parseFilterData: (newFilterData: FilterType) => void | {};
 };
 
-const useFilterData = create<FilterState>((set, get) => ({
+const CurYear = new Date().getFullYear();
+const useFilterData = create<FilterState>((set) => ({
   filterData: {
     tanggal: {
-      from: new Date(),
+      from: new Date(CurYear, 0, 1),
       to: new Date(),
     },
     admin: [],
