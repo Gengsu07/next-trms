@@ -8,8 +8,10 @@ conn = psycopg2.connect("postgres://postgres:postgres@localhost/testDB")
 
 df = pd.read_sql("select * from mpn", con=engine)
 
+delete_db = """DROP TABLE "mpn" CASCADE;"""
+
 create_db = """
-CREATE TABLE "mpn" (
+CREATE TABLE IF NOT EXISTS "mpn" (
 "admin" TEXT,
   "kdmap" TEXT,
   "kdbayar" TEXT,
@@ -19,7 +21,7 @@ CREATE TABLE "mpn" (
   "tanggalbayar" INTEGER,
   "bulanbayar" INTEGER,
   "tahunbayar" INTEGER,
-  "datebayar" TEXT,
+  "datebayar" date,
   "nominal" REAL,
   "ket" TEXT,
   "seksi" TEXT,
@@ -39,6 +41,7 @@ CREATE TABLE "mpn" (
 """
 
 with conn.cursor() as cur:
+    cur.execute(delete_db)
     cur.execute(create_db)
     conn.commit()
 
