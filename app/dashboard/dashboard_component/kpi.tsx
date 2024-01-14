@@ -31,11 +31,10 @@ const KPI = () => {
     <section className="flex flex-col justify-center items-center gap-1  w-full h-full mx-auto bg-background-primary">
       <Card>
         <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card Description</CardDescription>
+          <CardTitle>Netto</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>Card Content</p>
+          <p className="text-xl">{data._sum.nominal}</p>
         </CardContent>
         <CardFooter>
           <p>Card Footer</p>

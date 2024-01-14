@@ -1,3 +1,4 @@
+import { sektor } from "@/constant/initialData";
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,7 +17,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     sektor: sektorValues.length > 0 ? { in: sektorValues } : undefined,
     admin: adminValues.length > 0 ? { in: adminValues } : undefined,
     kjs: kjsValues.length > 0 ? { in: kjsValues } : undefined,
-    npwp: npwpValues.length > 0 ? { in: kjsValues } : undefined,
+    npwp: npwpValues.length > 0 ? { in: npwpValues } : undefined,
   };
 
   //clean undefined field
@@ -25,11 +26,35 @@ export async function GET(req: NextRequest, res: NextResponse) {
   );
   console.log(cleanFilterConditions);
   //query db
-  const data = await prisma.mpn.findMany({
+  const data = await prisma.mpn.aggregate({
+    _sum: {
+      nominal: true,
+    },
     where: {
       datebayar: {
-        gte: "2023-01-01",
+        gte: new Date(cleanFilterConditions.from),
+        lte: new Date(cleanFilterConditions.to),
       },
+      ...(cleanFilterConditions.sektor && {
+        kd_kategori: {
+          in: cleanFilterConditions.sektor.in,
+        },
+      }),
+      ...(cleanFilterConditions.admin && {
+        admin: {
+          in: cleanFilterConditions.admin.in,
+        },
+      }),
+      ...(cleanFilterConditions.kjs && {
+        kdbayar: {
+          in: cleanFilterConditions.kjs.in,
+        },
+      }),
+      ...(cleanFilterConditions.npwp && {
+        npwp15: {
+          in: cleanFilterConditions.npwp.in,
+        },
+      }),
     },
   });
   return NextResponse.json(data);
