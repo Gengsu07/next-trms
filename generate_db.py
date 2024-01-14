@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS "mpn" (
   "tanggalbayar" INTEGER,
   "bulanbayar" INTEGER,
   "tahunbayar" INTEGER,
-  "datebayar" date,
+  "datebayar" timestamp,
   "nominal" REAL,
   "ket" TEXT,
   "seksi" TEXT,
@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS "mpn" (
 
 with conn.cursor() as cur:
     cur.execute(delete_db)
+    print("delete_db")
     cur.execute(create_db)
     conn.commit()
 
