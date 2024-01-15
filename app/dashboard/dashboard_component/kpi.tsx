@@ -4,15 +4,16 @@ import querystring from "querystring";
 import { TiMinus, TiPlus } from "react-icons/ti";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { TResponseData } from "@/app/api/kpi/route";
+import { TResponseData } from "@/app/types/types";
 
 const KPI = () => {
   const { filterData, parseFilterData } = useFilterData();
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
+  // console.log("http://localhost:3000/api/kpi?" + queryParamsString);
   const { data, isFetching, error } = useQuery<TResponseData[]>({
-    queryKey: [queryParamsString],
+    queryKey: ["kpi", queryParamsString],
     queryFn: () =>
       fetch("http://localhost:3000/api/kpi?" + queryParamsString, {
         cache: "no-store",
@@ -40,7 +41,7 @@ const KPI = () => {
           <CardContent>
             <div className=" flex justify-between items-center flex-nowrap gap-5">
               <p className="text-xl md:text-2xl font-bold">
-                {convertNominal(item.value.cy)}
+                {convertNominal(item?.value?.cy)}
               </p>
               <div className="flex justify-start items-center space-x-2">
                 {item?.label === "Restitusi" ? (

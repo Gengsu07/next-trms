@@ -1,12 +1,6 @@
 import { format } from "date-fns";
-import { sektor } from "@/constant/initialData";
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-
-export type TResponseData = {
-  label: string;
-  value: { cy: number; naik: number; yoy: number };
-};
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const searchParams = req.nextUrl.searchParams;
@@ -30,7 +24,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const cleanFilterConditions = Object.fromEntries(
     Object.entries(filterConditions).filter(([_, value]) => value !== undefined)
   );
-  console.log(cleanFilterConditions);
+  // console.log(cleanFilterConditions);
   //query db
   const cy_netto = await prisma.mpn.aggregate({
     _sum: {
