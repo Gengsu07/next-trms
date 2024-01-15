@@ -4,6 +4,7 @@ import useFilterData from "../store/useFilterData";
 import FilterForm from "./dashboard_component/filter_form";
 import CollapsePage from "./dashboard_component/collapsed";
 import KPI from "./dashboard_component/kpi";
+import TrendPage from "./dashboard_component/trend";
 
 const Dashboard = () => {
   const { onFilter } = useFilterData();
@@ -24,6 +25,7 @@ const Dashboard = () => {
 
         <div className="flex flex-col justify-center items-center gap-5 mt-5 w-full h-full px-5">
           <KPI />
+          <TrendPage />
         </div>
       </div>
     </main>
