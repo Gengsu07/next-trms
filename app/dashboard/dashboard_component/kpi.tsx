@@ -32,7 +32,7 @@ const KPI = () => {
   };
 
   return (
-    <section className="flex flex-col sm:flex-row justify-around items-start gap-5  w-full h-full mx-auto  bg-background-primary">
+    <section className="flex flex-col sm:flex-row justify-around items-start gap-5  w-full h-fit mx-auto  bg-background-primary">
       {data?.map((item) => (
         <Card className="w-full" key={item.label}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

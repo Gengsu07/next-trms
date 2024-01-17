@@ -6,9 +6,10 @@ engine = create_engine("sqlite:///./sample.db")
 postgres = create_engine("postgresql://postgres:postgres@localhost:5432/testDB")
 conn = psycopg2.connect("postgres://postgres:postgres@localhost/testDB")
 
-df = pd.read_sql("select * from mpn", con=engine)
+# df = pd.read_sql("select * from mpn", con=engine)
+df = pd.read_parquet("trms_dataset.parquet")
 
-delete_db = """DROP TABLE "mpn" CASCADE;"""
+delete_db = """DROP TABLE IF EXISTS "mpn" CASCADE;"""
 
 create_db = """
 CREATE TABLE IF NOT EXISTS "mpn" (
@@ -44,6 +45,7 @@ with conn.cursor() as cur:
     cur.execute(delete_db)
     print("delete_db")
     cur.execute(create_db)
+    print("create_db")
     conn.commit()
 
 df.to_sql(

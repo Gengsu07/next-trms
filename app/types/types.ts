@@ -4,6 +4,11 @@ export type TResponseData = {
 };
 
 export type TTrend = {
-  _sum: { nominal: number };
-  datebayar: Date;
+  cy: { datebayar: Date; _sum: { nominal: number } }[];
+  py: { datebayar: Date; _sum: { nominal: number } }[];
+};
+
+export type TMap = {
+  cy: { map: string; _sum: { nominal: number } }[];
+  py: { map: string; _sum: { nominal: number } }[];
 };

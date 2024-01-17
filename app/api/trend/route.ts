@@ -20,11 +20,26 @@ export async function GET(req: NextRequest, res: NextResponse) {
   };
 
   //clean undefined field
-  const cleanFilterConditions = Object.fromEntries(
+  let cleanFilterConditions = Object.fromEntries(
     Object.entries(filterConditions).filter(([_, value]) => value !== undefined)
   );
 
-  const trend = await prisma.mpn.groupBy({
+  console.log(cleanFilterConditions.from);
+
+  cleanFilterConditions.from = new Date(cleanFilterConditions.from);
+  cleanFilterConditions.to = new Date(cleanFilterConditions.to);
+
+  const prevYearFrom = new Date(cleanFilterConditions.from);
+  const prevYearTo = new Date(cleanFilterConditions.to);
+
+  prevYearFrom.setFullYear(prevYearFrom.getFullYear() - 1);
+  prevYearTo.setFullYear(prevYearTo.getFullYear() - 1);
+
+  console.log("from:", cleanFilterConditions.from);
+  console.log("to:", cleanFilterConditions.to);
+  console.log(prevYearFrom, prevYearTo);
+
+  const cy_trend = await prisma.mpn.groupBy({
     by: ["datebayar"],
     orderBy: {
       datebayar: "asc",
@@ -34,30 +49,71 @@ export async function GET(req: NextRequest, res: NextResponse) {
     },
     where: {
       datebayar: {
-        gte: new Date(cleanFilterConditions.from),
-        lte: new Date(cleanFilterConditions.to),
+        gte: cleanFilterConditions.from,
+        lte: cleanFilterConditions.to,
       },
-      ...(cleanFilterConditions.sektor && {
-        kd_kategori: {
-          in: cleanFilterConditions.sektor.in,
-        },
-      }),
-      ...(cleanFilterConditions.admin && {
-        admin: {
-          in: cleanFilterConditions.admin.in,
-        },
-      }),
-      ...(cleanFilterConditions.kjs && {
-        kdbayar: {
-          in: cleanFilterConditions.kjs.in,
-        },
-      }),
-      ...(cleanFilterConditions.npwp && {
-        npwp15: {
-          in: cleanFilterConditions.npwp.in,
-        },
-      }),
+      AND: {
+        ...(cleanFilterConditions.sektor && {
+          kd_kategori: {
+            in: cleanFilterConditions.sektor.in,
+          },
+        }),
+        ...(cleanFilterConditions.admin && {
+          admin: {
+            in: cleanFilterConditions.admin.in,
+          },
+        }),
+        ...(cleanFilterConditions.kjs && {
+          kdbayar: {
+            in: cleanFilterConditions.kjs.in,
+          },
+        }),
+        ...(cleanFilterConditions.npwp && {
+          npwp15: {
+            in: cleanFilterConditions.npwp.in,
+          },
+        }),
+      },
     },
   });
-  return NextResponse.json(trend);
+
+  const py_trend = await prisma.mpn.groupBy({
+    by: ["datebayar"],
+    orderBy: {
+      datebayar: "asc",
+    },
+    _sum: {
+      nominal: true,
+    },
+    where: {
+      datebayar: {
+        gte: prevYearFrom,
+        lte: prevYearTo,
+      },
+      AND: {
+        ...(cleanFilterConditions.sektor && {
+          kd_kategori: {
+            in: cleanFilterConditions.sektor.in,
+          },
+        }),
+        ...(cleanFilterConditions.admin && {
+          admin: {
+            in: cleanFilterConditions.admin.in,
+          },
+        }),
+        ...(cleanFilterConditions.kjs && {
+          kdbayar: {
+            in: cleanFilterConditions.kjs.in,
+          },
+        }),
+        ...(cleanFilterConditions.npwp && {
+          npwp15: {
+            in: cleanFilterConditions.npwp.in,
+          },
+        }),
+      },
+    },
+  });
+
+  return NextResponse.json({ cy: cy_trend, py: py_trend });
 }
