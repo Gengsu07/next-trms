@@ -5,6 +5,7 @@ import { TiMinus, TiPlus } from "react-icons/ti";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { TResponseData } from "@/app/types/types";
+import { convertNominal } from "./nominalConverter";
 
 const KPI = () => {
   const { filterData, parseFilterData } = useFilterData();
@@ -21,15 +22,6 @@ const KPI = () => {
   });
 
   // const { netto, bruto, restitusi } = data || {};
-
-  const convertNominal = (nominal: number) => {
-    if (nominal > 1000000000000)
-      return `${(nominal / 1000000000000).toFixed(2)} T`;
-    if (nominal / 1000000000 === 1 || -1)
-      return `${(nominal / 1000000000).toFixed(2)} M`;
-    if (nominal / 1000000 == 1 || -1)
-      return `${(nominal / 1000000).toFixed(2)} Jt`;
-  };
 
   return (
     <section className="flex flex-col sm:flex-row justify-around items-start gap-5  w-full h-fit mx-auto  bg-background-primary">

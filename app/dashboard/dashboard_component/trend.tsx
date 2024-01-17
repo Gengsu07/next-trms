@@ -3,6 +3,15 @@ import { TTrend } from "@/app/types/types";
 import { useQuery } from "@tanstack/react-query";
 import querystring from "querystring";
 import dynamic from "next/dynamic";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Car } from "lucide-react";
 
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 const TrendPage = () => {
@@ -19,7 +28,7 @@ const TrendPage = () => {
   });
 
   const areaChartOption = {
-    title: { text: "Trend Penerimaan YoY" },
+    // title: { text: "Trend Penerimaan YoY", left: "center", top: "auto" },
     xAxis: {
       type: "category",
       data: data?.cy.map((item) => item.datebayar),
@@ -53,7 +62,12 @@ const TrendPage = () => {
         return `Date: ${formattedDate}<br />Value: ${formattedValue}`;
       },
     },
-    legend: { data: ["tahun ini", "tahun lalu"], show: true },
+    legend: {
+      data: ["tahun ini", "tahun lalu"],
+      show: true,
+      orient: "vertical",
+      right: 5,
+    },
     series: [
       {
         name: "tahun ini",
@@ -77,7 +91,14 @@ const TrendPage = () => {
   };
   return (
     <div className="w-full h-fit">
-      <ReactEchart option={areaChartOption} />
+      <Card className="w-full py-3">
+        <CardHeader className="text-center font-bold text-slate-700">
+          Trend
+        </CardHeader>
+        <CardContent>
+          <ReactEchart option={areaChartOption} />
+        </CardContent>
+      </Card>
     </div>
   );
 };

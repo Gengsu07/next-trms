@@ -9,14 +9,14 @@ import MapPage from "./dashboard_component/map";
 
 const Dashboard = () => {
   const { onFilter } = useFilterData();
-  const [collapsed, setIsCollapsed] = useState(false);
+  const [collapsed, setIsCollapsed] = useState(true);
 
   const onCollapsed = () => {
     setIsCollapsed(!collapsed);
   };
 
   return (
-    <main className="w-screen h-screen">
+    <main className="w-screen h-screen  dark:bg-[#0e1012]">
       <div className="flex flex-col sm:flex-row justify-start items-start gap-5 w-full h-full sm:mr-5">
         {collapsed ? (
           <CollapsePage setIsCollapsed={onCollapsed} />
@@ -24,7 +24,7 @@ const Dashboard = () => {
           <FilterForm onFilterForm={onFilter} setIsCollapsed={onCollapsed} />
         )}
 
-        <div className="flex flex-col justify-start items-start mt-5 mr-5 w-full h-full">
+        <div className="flex flex-col justify-start items-start mt-5 mr-5 gap-5 w-full h-full">
           <KPI />
           <TrendPage />
           <MapPage />
