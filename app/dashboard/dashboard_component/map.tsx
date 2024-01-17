@@ -4,6 +4,16 @@ import { TMap } from "@/app/types/types";
 import { useQuery } from "@tanstack/react-query";
 import querystring from "querystring";
 import dynamic from "next/dynamic";
+import { convertNominal } from "./nominalConverter";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { title } from "process";
 
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 const MapPage = () => {
@@ -18,10 +28,10 @@ const MapPage = () => {
         cache: "no-store",
       }).then((res) => res.json()),
   });
-  console.log(data?.cy);
+  console.log(data);
 
   const mapChartOption = {
-    title: { text: "Per Jenis Pajak" },
+    // title: { text: "Per Jenis Pajak", left: "center", top: "auto" },
     tooltip: {
       trigger: "axis",
       axisPointer: {
@@ -29,7 +39,8 @@ const MapPage = () => {
       },
     },
     legend: {
-      data: ["tahun ini"],
+      data: ["tahun ini", "tahun lalu"],
+      bottom: 0,
     },
     grid: {
       left: "3%",
@@ -58,21 +69,45 @@ const MapPage = () => {
       {
         name: "tahun ini",
         type: "bar",
+        stack: "total",
         label: {
           show: true,
           position: "inside",
+          formatter: (params: any) => convertNominal(params.value),
         },
         emphasis: {
           focus: "series",
         },
+
         data: data?.cy.map((item) => item._sum.nominal),
+      },
+      {
+        name: "tahun lalu",
+        type: "bar",
+        stack: "total",
+        label: {
+          show: true,
+          position: "inside",
+          formatter: (params: any) => convertNominal(params.value),
+        },
+        emphasis: {
+          focus: "series",
+        },
+        data: data?.py.map((item) => item._sum.nominal),
       },
     ],
   };
 
   return (
-    <div className="w-full h-fit mt-5">
-      <ReactEchart option={mapChartOption} />
+    <div className="w-full h-full mt-5">
+      <Card className="w-full py-3">
+        <CardHeader className="text-center font-bold text-slate-700">
+          Per Jenis Pajak
+        </CardHeader>
+        <CardContent>
+          <ReactEchart option={mapChartOption} className="h-fit" />
+        </CardContent>
+      </Card>
     </div>
   );
 };

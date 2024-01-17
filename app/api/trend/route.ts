@@ -35,10 +35,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
   prevYearFrom.setFullYear(prevYearFrom.getFullYear() - 1);
   prevYearTo.setFullYear(prevYearTo.getFullYear() - 1);
 
-  console.log("from:", cleanFilterConditions.from);
-  console.log("to:", cleanFilterConditions.to);
-  console.log(prevYearFrom, prevYearTo);
-
   const cy_trend = await prisma.mpn.groupBy({
     by: ["datebayar"],
     orderBy: {
