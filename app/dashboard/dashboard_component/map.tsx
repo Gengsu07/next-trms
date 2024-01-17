@@ -1,5 +1,6 @@
+"use client";
 import useFilterData from "@/app/store/useFilterData";
-import { TMap, TTrend } from "@/app/types/types";
+import { TMap } from "@/app/types/types";
 import { useQuery } from "@tanstack/react-query";
 import querystring from "querystring";
 import dynamic from "next/dynamic";
@@ -17,6 +18,8 @@ const MapPage = () => {
         cache: "no-store",
       }).then((res) => res.json()),
   });
+  console.log(data?.cy);
+
   const mapChartOption = {
     title: { text: "Per Jenis Pajak" },
     tooltip: {
@@ -25,38 +28,50 @@ const MapPage = () => {
         type: "shadow",
       },
     },
-    legend: {},
+    legend: {
+      data: ["tahun ini"],
+    },
     grid: {
       left: "3%",
       right: "4%",
       bottom: "3%",
       containLabel: true,
+      height: "600px",
     },
-    xAxis: {
-      type: "value",
-      boundaryGap: [0, 0.01],
-    },
-    yAxis: {
-      type: "category",
-      data: data?.cy.map((item) => item.map),
-    },
+    xAxis: [
+      {
+        type: "value",
+        sort: "descending",
+        show: false,
+      },
+    ],
+    yAxis: [
+      {
+        type: "category",
+        axisTick: {
+          show: false,
+        },
+        data: data?.cy.map((item) => item.map),
+      },
+    ],
     series: [
       {
         name: "tahun ini",
         type: "bar",
-        stack: "total",
+        label: {
+          show: true,
+          position: "inside",
+        },
+        emphasis: {
+          focus: "series",
+        },
         data: data?.cy.map((item) => item._sum.nominal),
-      },
-      {
-        name: "tahun lalu",
-        type: "bar",
-        stack: "total",
-        data: data?.py.map((item) => item._sum.nominal),
       },
     ],
   };
+
   return (
-    <div className="w-full h-fit">
+    <div className="w-full h-fit mt-5">
       <ReactEchart option={mapChartOption} />
     </div>
   );

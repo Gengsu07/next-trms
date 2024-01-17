@@ -3,13 +3,16 @@ import NavBar from "./NavBar";
 import Image from "next/image";
 import { ModeToggle } from "./theme-switcher";
 import MobileNav from "./MobileNavbar";
+import Link from "next/link";
 
 const Header = () => {
   return (
     <>
       <div className="flex  justify-between items-center gap-5 w-full h-14 px-5 py-2  border-b-2 border-accent  shadow-lg ">
         <div className="flex justify-center items-center gap-3">
-          <Image src="/logo_djp.png" alt="logo" width="40" height="40" />
+          <Link href="/">
+            <Image src="/logo_djp.png" alt="logo" width="40" height="40" />
+          </Link>
           <p className="text-sm">
             Tax Revenue
             <br />
