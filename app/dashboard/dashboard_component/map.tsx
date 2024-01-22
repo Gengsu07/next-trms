@@ -5,18 +5,11 @@ import { useQuery } from "@tanstack/react-query";
 import querystring from "querystring";
 import dynamic from "next/dynamic";
 import { convertNominal } from "./nominalConverter";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { title } from "process";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
-const MapPage = () => {
+const MapPage = ({ className }: { className?: string }) => {
   const { filterData, parseFilterData } = useFilterData();
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
@@ -99,7 +92,7 @@ const MapPage = () => {
   };
 
   return (
-    <div className="w-full h-full mt-5">
+    <div className={cn("w-full h-fit", className)}>
       <Card className="w-full py-3">
         <CardHeader className="text-center font-bold text-slate-700">
           Per Jenis Pajak

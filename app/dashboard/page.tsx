@@ -1,33 +1,20 @@
-"use client";
-import { useState } from "react";
-import useFilterData from "../store/useFilterData";
-import FilterForm from "./dashboard_component/filter_form";
-import CollapsePage from "./dashboard_component/collapsed";
 import KPI from "./dashboard_component/kpi";
-import TrendPage from "./dashboard_component/trend";
 import MapPage from "./dashboard_component/map";
+import TrendPage from "./dashboard_component/trend";
+import FilterCollapse from "./filter_collapse";
 
 const Dashboard = () => {
-  const { onFilter } = useFilterData();
-  const [collapsed, setIsCollapsed] = useState(true);
-
-  const onCollapsed = () => {
-    setIsCollapsed(!collapsed);
-  };
-
   return (
     <main className="w-screen h-screen  dark:bg-[#0e1012]">
       <div className="flex flex-col sm:flex-row justify-start items-start gap-5 w-full h-full sm:mr-5">
-        {collapsed ? (
-          <CollapsePage setIsCollapsed={onCollapsed} />
-        ) : (
-          <FilterForm onFilterForm={onFilter} setIsCollapsed={onCollapsed} />
-        )}
+        <FilterCollapse />
 
-        <div className="flex flex-col justify-start items-start mt-5 mr-5 gap-5 w-full h-full">
+        <div className="flex flex-col justify-start items-start mt-5 mr-5 px-5 w-full h-full">
           <KPI />
-          <TrendPage />
-          <MapPage />
+          <div className="flex flex-col md:flex-row justify-center items-start gap-5 w-full h-full mt-5">
+            <TrendPage className="w-full md:w-7/12" />
+            <MapPage className="w-full md:w-5/12" />
+          </div>
         </div>
       </div>
     </main>
