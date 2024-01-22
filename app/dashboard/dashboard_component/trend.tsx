@@ -1,20 +1,15 @@
+"use client";
 import useFilterData from "@/app/store/useFilterData";
 import { TTrend } from "@/app/types/types";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import querystring from "querystring";
 import dynamic from "next/dynamic";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Car } from "lucide-react";
+import querystring from "querystring";
 
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
-const TrendPage = () => {
+
+const TrendPage = ({ className }: { className?: string }) => {
   const { filterData, parseFilterData } = useFilterData();
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
@@ -90,7 +85,7 @@ const TrendPage = () => {
     ],
   };
   return (
-    <div className="w-full h-fit">
+    <div className={cn("w-full h-fit", className)}>
       <Card className="w-full py-3">
         <CardHeader className="text-center font-bold text-slate-700">
           Trend

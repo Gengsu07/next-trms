@@ -31,8 +31,8 @@ const KPI = () => {
             <CardTitle className="text-sm font-medium">{item.label}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className=" flex justify-between items-center flex-nowrap gap-5">
-              <p className="text-xl md:text-2xl font-bold">
+            <div className=" flex justify-between items-center flex-nowrap gap-5 ">
+              <p className="text-md md:text-lg lg:text-xl font-bold">
                 {convertNominal(item?.value?.cy)}
               </p>
               <div className="flex justify-start items-center space-x-2">
