@@ -25,7 +25,105 @@ export async function GET(req: NextRequest, res: NextResponse) {
     Object.entries(filterConditions).filter(([_, value]) => value !== undefined)
   );
   // console.log(cleanFilterConditions);
+
+  // target
+  const target = await prisma.target.aggregate({
+    _sum: {
+      target: true,
+    },
+    where: {
+      ...(cleanFilterConditions.admin && {
+        admin: {
+          in: cleanFilterConditions.admin.in,
+        },
+      }),
+    },
+  });
+
+  const target_py = await prisma.target.aggregate({
+    _sum: {
+      target_py: true,
+    },
+    where: {
+      ...(cleanFilterConditions.admin && {
+        admin: {
+          in: cleanFilterConditions.admin.in,
+        },
+      }),
+    },
+  });
+
   //query db
+  const cy_mpn = await prisma.mpn.aggregate({
+    _sum: {
+      nominal: true,
+    },
+    where: {
+      datebayar: {
+        gte: new Date(cleanFilterConditions.from),
+        lte: new Date(cleanFilterConditions.to),
+      },
+      ket: {
+        in: ["MPN"],
+      },
+      ...(cleanFilterConditions.sektor && {
+        kd_kategori: {
+          in: cleanFilterConditions.sektor.in,
+        },
+      }),
+      ...(cleanFilterConditions.admin && {
+        admin: {
+          in: cleanFilterConditions.admin.in,
+        },
+      }),
+      ...(cleanFilterConditions.kjs && {
+        kdbayar: {
+          in: cleanFilterConditions.kjs.in,
+        },
+      }),
+      ...(cleanFilterConditions.npwp && {
+        npwp15: {
+          in: cleanFilterConditions.npwp.in,
+        },
+      }),
+    },
+  });
+
+  const cy_spm = await prisma.mpn.aggregate({
+    _sum: {
+      nominal: true,
+    },
+    where: {
+      datebayar: {
+        gte: new Date(cleanFilterConditions.from),
+        lte: new Date(cleanFilterConditions.to),
+      },
+      ket: {
+        in: ["SPM"],
+      },
+      ...(cleanFilterConditions.sektor && {
+        kd_kategori: {
+          in: cleanFilterConditions.sektor.in,
+        },
+      }),
+      ...(cleanFilterConditions.admin && {
+        admin: {
+          in: cleanFilterConditions.admin.in,
+        },
+      }),
+      ...(cleanFilterConditions.kjs && {
+        kdbayar: {
+          in: cleanFilterConditions.kjs.in,
+        },
+      }),
+      ...(cleanFilterConditions.npwp && {
+        npwp15: {
+          in: cleanFilterConditions.npwp.in,
+        },
+      }),
+    },
+  });
+
   const cy_netto = await prisma.mpn.aggregate({
     _sum: {
       nominal: true,
@@ -138,6 +236,77 @@ export async function GET(req: NextRequest, res: NextResponse) {
   );
   const PY_to = new Date(to.getFullYear() - 1, to.getMonth(), to.getDate());
 
+  // TAHUN LALU
+  const py_mpn = await prisma.mpn.aggregate({
+    _sum: {
+      nominal: true,
+    },
+    where: {
+      datebayar: {
+        gte: PY_from,
+        lte: PY_to,
+      },
+      ket: {
+        in: ["MPN"],
+      },
+      ...(cleanFilterConditions.sektor && {
+        kd_kategori: {
+          in: cleanFilterConditions.sektor.in,
+        },
+      }),
+      ...(cleanFilterConditions.admin && {
+        admin: {
+          in: cleanFilterConditions.admin.in,
+        },
+      }),
+      ...(cleanFilterConditions.kjs && {
+        kdbayar: {
+          in: cleanFilterConditions.kjs.in,
+        },
+      }),
+      ...(cleanFilterConditions.npwp && {
+        npwp15: {
+          in: cleanFilterConditions.npwp.in,
+        },
+      }),
+    },
+  });
+
+  const py_spm = await prisma.mpn.aggregate({
+    _sum: {
+      nominal: true,
+    },
+    where: {
+      datebayar: {
+        gte: PY_from,
+        lte: PY_to,
+      },
+      ket: {
+        in: ["SPM"],
+      },
+      ...(cleanFilterConditions.sektor && {
+        kd_kategori: {
+          in: cleanFilterConditions.sektor.in,
+        },
+      }),
+      ...(cleanFilterConditions.admin && {
+        admin: {
+          in: cleanFilterConditions.admin.in,
+        },
+      }),
+      ...(cleanFilterConditions.kjs && {
+        kdbayar: {
+          in: cleanFilterConditions.kjs.in,
+        },
+      }),
+      ...(cleanFilterConditions.npwp && {
+        npwp15: {
+          in: cleanFilterConditions.npwp.in,
+        },
+      }),
+    },
+  });
+
   const py_netto = await prisma.mpn.aggregate({
     _sum: {
       nominal: true,
@@ -240,6 +409,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
     },
   });
 
+  const naik_mpn = (cy_mpn?._sum?.nominal ?? 0) - (py_mpn?._sum?.nominal ?? 0);
+  const yoy_mpn = (naik_mpn / (py_mpn?._sum?.nominal ?? naik_mpn)) * 100;
+  const naik_spm = (cy_spm?._sum?.nominal ?? 0) - (py_spm?._sum?.nominal ?? 0);
+  const yoy_spm = (naik_spm / (py_spm?._sum?.nominal ?? naik_spm)) * 100;
   const naik_netto =
     (cy_netto?._sum?.nominal ?? 0) - (py_netto?._sum?.nominal ?? 0);
   const yoy_netto =
@@ -249,20 +422,41 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const yoy_bruto =
     (naik_bruto / (py_bruto?._sum?.nominal ?? naik_bruto)) * 100;
   const naik_restitusi =
-    (cy_restitusi?._sum?.nominal ?? 0) - (py_bruto?._sum?.nominal ?? 0);
+    (cy_restitusi?._sum?.nominal ?? 0) - (py_restitusi?._sum?.nominal ?? 0);
   const yoy_restitusi =
-    (naik_restitusi / (py_bruto?._sum?.nominal ?? naik_restitusi)) * 100;
+    (naik_restitusi / (py_restitusi?._sum?.nominal ?? naik_restitusi)) * 100;
 
+  const capaian =
+    BigInt(cy_netto?._sum?.nominal || 0n) / BigInt(target?._sum?.target || 0n);
+  const capaian_py =
+    BigInt(py_netto?._sum?.nominal || 0n) /
+    BigInt(target_py?._sum?.target_py || 0n);
+  const naik_capaian = capaian - capaian_py;
   const responseData = [
     {
-      label: "Netto",
+      label: "MPN",
       value: {
-        cy: cy_netto?._sum?.nominal || 0,
-        naik: naik_netto || 0,
-        yoy: yoy_netto || 0,
+        cy: cy_mpn?._sum?.nominal || 0,
+        naik: naik_mpn || 0,
+        yoy: yoy_mpn || 0,
       },
     },
-
+    {
+      label: "SPM",
+      value: {
+        cy: cy_spm?._sum?.nominal || 0,
+        naik: naik_spm || 0,
+        yoy: yoy_spm || 0,
+      },
+    },
+    {
+      label: "Restitusi",
+      value: {
+        cy: cy_restitusi?._sum?.nominal || 0,
+        naik: naik_restitusi || 0,
+        yoy: yoy_restitusi || 0,
+      },
+    },
     {
       label: "Bruto",
       value: {
@@ -271,13 +465,20 @@ export async function GET(req: NextRequest, res: NextResponse) {
         yoy: yoy_bruto || 0,
       },
     },
-
     {
-      label: "Restitusi",
+      label: "Netto",
       value: {
-        cy: cy_restitusi?._sum?.nominal || 0,
-        naik: naik_restitusi || 0,
-        yoy: yoy_restitusi || 0,
+        cy: cy_netto?._sum?.nominal || 0,
+        naik: naik_netto || 0,
+        yoy: yoy_netto || 0,
+      },
+    },
+    {
+      label: "Capaian",
+      value: {
+        cy: Number(capaian) * 100 || 0,
+        naik: Number(naik_capaian) * 100 || 0,
+        yoy: 0,
       },
     },
   ];

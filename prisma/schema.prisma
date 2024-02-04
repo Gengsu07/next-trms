@@ -8,29 +8,38 @@ datasource db {
 }
 
 model mpn {
-  admin         String?
-  kdmap         String?
-  kdbayar       String?
-  masa          String?
-  masa2         String?
-  tahun         String?
+  admin         String?   @db.VarChar(3)
+  kdmap         String?   @db.VarChar(6)
+  kdbayar       String?   @db.VarChar(6)
+  masa          String?   @db.VarChar(2)
+  masa2         String?   @db.VarChar(2)
+  tahun         String?   @db.VarChar(4)
   tanggalbayar  Int?
   bulanbayar    Int?
   tahunbayar    Int?
   datebayar     DateTime? @db.Timestamp(6)
   nominal       Float?    @db.Real
-  ket           String?
-  seksi         String?
-  segmentasi_wp String?
-  jenis_wp      String?
+  ket           String?   @db.VarChar(255)
+  seksi         String?   @db.VarChar(255)
+  segmentasi_wp String?   @db.VarChar(255)
+  jenis_wp      String?   @db.VarChar(255)
   nama_klu      String?
-  kd_kategori   String?
+  kd_kategori   String?   @db.VarChar(5)
   nm_kategori   String?
   nm_golpok     String?
-  map           String?
-  npwp15        String?
+  map           String?   @db.VarChar(255)
+  npwp15        String?   @db.VarChar(255)
   nama_wp       String?
   nama_ar       String?
-  ntpn          String?
-  id            Int       @id
+  ntpn          String?   @db.VarChar(255)
+  id            Int       @id @default(autoincrement())
+}
+
+model target {
+  id              Int     @id @default(autoincrement())
+  kd_kpp          String? @db.VarChar(255)
+  nama_kpp        String? @db.VarChar(255)
+  target          BigInt?
+  target_internal BigInt?
+  target_py       BigInt?
 }
