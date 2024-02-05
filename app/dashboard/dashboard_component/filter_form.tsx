@@ -44,10 +44,7 @@ const FilterForm = ({
     onFilterForm(data);
   };
   return (
-    <div
-      className="flex flex-col justify-start items-start py-5 sm:py-14 px-3 w-full sm:w-60   xl:w-80 h-fit sm:h-screen border-[2px] border-accent bg-card rounded-md shadow-md "
-      onMouseLeave={setIsCollapsed}
-    >
+    <div className="flex flex-col justify-start items-start py-5 sm:py-14 px-3 w-full sm:w-60   xl:w-80 h-fit sm:h-screen border-[2px] border-accent bg-card rounded-md shadow-md ">
       <div className="flex justify-between items-center w-full h-10 mb-5">
         <h3 className="text-lg font-bold">Filter data</h3>
 

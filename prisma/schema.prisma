@@ -37,7 +37,7 @@ model mpn {
 
 model target {
   id              Int     @id @default(autoincrement())
-  kd_kpp          String? @db.VarChar(255)
+  admin           String? @db.VarChar(255)
   nama_kpp        String? @db.VarChar(255)
   target          BigInt?
   target_internal BigInt?

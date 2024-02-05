@@ -20,12 +20,12 @@ const KPI = () => {
         cache: "no-store",
       }).then((res) => res.json()),
   });
-
+  const data_kpi = data?.filter((item) => item.label !== "Capaian");
   // const { netto, bruto, restitusi } = data || {};
 
   return (
     <section className="flex flex-col sm:flex-row justify-around items-start gap-5  w-full h-fit mx-auto  bg-background-primary">
-      {data?.map((item) => (
+      {data_kpi?.map((item) => (
         <Card className="w-full" key={item.label}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{item.label}</CardTitle>

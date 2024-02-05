@@ -21,7 +21,7 @@ const MapPage = ({ className }: { className?: string }) => {
         cache: "no-store",
       }).then((res) => res.json()),
   });
-  console.log(data);
+  // console.log(data);
 
   const mapChartOption = {
     // title: { text: "Per Jenis Pajak", left: "center", top: "auto" },

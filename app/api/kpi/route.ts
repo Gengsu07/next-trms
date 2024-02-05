@@ -27,31 +27,31 @@ export async function GET(req: NextRequest, res: NextResponse) {
   // console.log(cleanFilterConditions);
 
   // target
-  const target = await prisma.target.aggregate({
-    _sum: {
-      target: true,
-    },
-    where: {
-      ...(cleanFilterConditions.admin && {
-        admin: {
-          in: cleanFilterConditions.admin.in,
-        },
-      }),
-    },
-  });
+  // const target = await prisma.target.aggregate({
+  //   _sum: {
+  //     target: true,
+  //   },
+  //   where: {
+  //     ...(cleanFilterConditions.admin && {
+  //       admin: {
+  //         in: cleanFilterConditions.admin.in,
+  //       },
+  //     }),
+  //   },
+  // });
 
-  const target_py = await prisma.target.aggregate({
-    _sum: {
-      target_py: true,
-    },
-    where: {
-      ...(cleanFilterConditions.admin && {
-        admin: {
-          in: cleanFilterConditions.admin.in,
-        },
-      }),
-    },
-  });
+  // const target_py = await prisma.target.aggregate({
+  //   _sum: {
+  //     target_py: true,
+  //   },
+  //   where: {
+  //     ...(cleanFilterConditions.admin && {
+  //       admin: {
+  //         in: cleanFilterConditions.admin.in,
+  //       },
+  //     }),
+  //   },
+  // });
 
   //query db
   const cy_mpn = await prisma.mpn.aggregate({
@@ -426,12 +426,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const yoy_restitusi =
     (naik_restitusi / (py_restitusi?._sum?.nominal ?? naik_restitusi)) * 100;
 
-  const capaian =
-    BigInt(cy_netto?._sum?.nominal || 0n) / BigInt(target?._sum?.target || 0n);
-  const capaian_py =
-    BigInt(py_netto?._sum?.nominal || 0n) /
-    BigInt(target_py?._sum?.target_py || 0n);
-  const naik_capaian = capaian - capaian_py;
+  // const capaian =
+  //   BigInt(cy_netto?._sum?.nominal || 0n) / BigInt(target?._sum?.target || 0n);
+  // const capaian_py =
+  //   BigInt(py_netto?._sum?.nominal || 0n) /
+  //   BigInt(target_py?._sum?.target_py || 0n);
+  // const naik_capaian = capaian - capaian_py;
   const responseData = [
     {
       label: "MPN",
@@ -473,14 +473,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
         yoy: yoy_netto || 0,
       },
     },
-    {
-      label: "Capaian",
-      value: {
-        cy: Number(capaian) * 100 || 0,
-        naik: Number(naik_capaian) * 100 || 0,
-        yoy: 0,
-      },
-    },
+    // {
+    //   label: "Capaian",
+    //   value: {
+    //     cy: Number(capaian) * 100 || 0,
+    //     naik: Number(naik_capaian) * 100 || 0,
+    //     yoy: 0,
+    //   },
+    // },
   ];
   return NextResponse.json(responseData);
 }
