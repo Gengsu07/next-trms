@@ -17,7 +17,7 @@ const TrendPage = ({ className }: { className?: string }) => {
   const { data, isFetching, error } = useQuery<TTrend>({
     queryKey: ["trend", queryParamsString],
     queryFn: () =>
-      fetch("http://localhost:3000/api/trend?" + queryParamsString, {
+      fetch("http://127.0.0.1:3000/api/trend?" + queryParamsString, {
         cache: "no-store",
       }).then((res) => res.json()),
   });
@@ -86,12 +86,19 @@ const TrendPage = ({ className }: { className?: string }) => {
   };
   return (
     <div className={cn("w-full h-fit", className)}>
-      <Card className="w-full py-3">
-        <CardHeader className="text-center font-bold text-slate-700">
+      <Card className="w-full h-full">
+        <CardHeader className="text-center font-bold text-slate-700 mt-1 p-0 space-y-0">
           Trend
         </CardHeader>
-        <CardContent>
-          <ReactEchart option={areaChartOption} />
+        <CardContent className="p-0 flex flex-col items-center justify-center">
+          <ReactEchart
+            option={areaChartOption}
+            className="w-full h-full p-0"
+            style={{
+              padding: "0px",
+              bottom: "0px",
+            }}
+          />
         </CardContent>
       </Card>
     </div>

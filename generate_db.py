@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS "mpn" (
 create_target = """
 CREATE TABLE IF NOT EXISTS "target" (
   "id" SERIAL  PRIMARY KEY,
-  "kd_kpp" VARCHAR(255) ,
+  "admin" VARCHAR(255) ,
   "nama_kpp" VARCHAR(255),
   "target" BIGINT,
   "target_internal" BIGINT,

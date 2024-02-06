@@ -24,8 +24,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
     Object.entries(filterConditions).filter(([_, value]) => value !== undefined)
   );
 
-  console.log(cleanFilterConditions.from);
-
   cleanFilterConditions.from = new Date(cleanFilterConditions.from);
   cleanFilterConditions.to = new Date(cleanFilterConditions.to);
 
@@ -34,10 +32,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   prevYearFrom.setFullYear(prevYearFrom.getFullYear() - 1);
   prevYearTo.setFullYear(prevYearTo.getFullYear() - 1);
-
-  console.log("from:", cleanFilterConditions.from);
-  console.log("to:", cleanFilterConditions.to);
-  console.log(prevYearFrom, prevYearTo);
 
   const cy = await prisma.mpn.groupBy({
     by: ["map"],

@@ -27,7 +27,7 @@ const Capaian = ({ className }: { className?: string }) => {
   const { data, isFetching, error } = useQuery<TCapaian>({
     queryKey: ["capaian", queryParamsString],
     queryFn: () =>
-      fetch("http://localhost:3000/api/capaian?" + queryParamsString, {
+      fetch("http://127.0.0.1:3000/api/capaian?" + queryParamsString, {
         cache: "no-store",
       }).then((res) => res.json()),
   });
@@ -106,7 +106,7 @@ const Capaian = ({ className }: { className?: string }) => {
             option={gaugeChartOption}
             className="w-full h-full p-0"
             style={{
-              height: "400px",
+              height: "300px",
               width: "400px",
               padding: "0px",
               bottom: "0px",

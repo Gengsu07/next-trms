@@ -16,11 +16,12 @@ const KPI = () => {
   const { data, isFetching, error } = useQuery<TResponseData[]>({
     queryKey: ["kpi", queryParamsString],
     queryFn: () =>
-      fetch("http://localhost:3000/api/kpi?" + queryParamsString, {
+      fetch("http://127.0.0.1:3000/api/kpi?" + queryParamsString, {
         cache: "no-store",
       }).then((res) => res.json()),
   });
   const data_kpi = data?.filter((item) => item.label !== "Capaian");
+
   // const { netto, bruto, restitusi } = data || {};
 
   return (
