@@ -21,7 +21,7 @@ const KPI = () => {
       }).then((res) => res.json()),
   });
   const data_kpi = data?.filter((item) => item.label !== "Capaian");
-
+  console.log(data_kpi);
   // const { netto, bruto, restitusi } = data || {};
 
   return (
