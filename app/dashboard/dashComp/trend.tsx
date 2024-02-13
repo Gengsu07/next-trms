@@ -24,6 +24,13 @@ const TrendPage = ({ className }: { className?: string }) => {
 
   const areaChartOption = {
     // title: { text: "Trend Penerimaan YoY", left: "center", top: "auto" },
+    toolbox: {
+      show: true,
+      feature: {
+        dataView: { show: true, readOnly: false },
+        saveAsImage: { show: true },
+      },
+    },
     xAxis: {
       type: "category",
       data: data?.cy.map((item) => item.datebayar),
@@ -60,7 +67,9 @@ const TrendPage = ({ className }: { className?: string }) => {
     legend: {
       data: ["tahun ini", "tahun lalu"],
       show: true,
-      orient: "vertical",
+      orient: "horizontal",
+      top: "top",
+      left: "center",
       right: 5,
     },
     series: [
@@ -85,9 +94,9 @@ const TrendPage = ({ className }: { className?: string }) => {
     ],
   };
   return (
-    <div className={cn("w-full h-fit", className)}>
-      <Card className="w-full h-full">
-        <CardHeader className="text-center font-bold text-slate-700 mt-1 p-0 space-y-0">
+    <div className={cn("w-full h-full", className)}>
+      <Card className="w-full">
+        <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
           Trend
         </CardHeader>
         <CardContent className="p-0 flex flex-col items-center justify-center">
@@ -95,6 +104,7 @@ const TrendPage = ({ className }: { className?: string }) => {
             option={areaChartOption}
             className="w-full h-full p-0"
             style={{
+              height: "256px",
               padding: "0px",
               bottom: "0px",
             }}

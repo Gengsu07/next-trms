@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { FilterType } from "../dashboard/dashboard_component/filter_form";
+import { FilterType } from "../dashboard/dashComp/filter_form";
 import { format } from "date-fns";
 
 type FilterState = {

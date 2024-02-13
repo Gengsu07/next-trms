@@ -1,11 +1,13 @@
 "use client";
 import useFilterData from "@/app/store/useFilterData";
+import skeletonCapaian from "@/components/skeleton/capaianSkeleton";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import querystring from "querystring";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
+import { useTheme } from "next-themes";
 
 interface TCapaian {
   label: string;
@@ -20,6 +22,7 @@ interface TCapaian {
 
 const Capaian = ({ className }: { className?: string }) => {
   const { filterData, parseFilterData } = useFilterData();
+
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
@@ -39,7 +42,7 @@ const Capaian = ({ className }: { className?: string }) => {
         offsetCenter: ["-40%", "80%"],
       },
       detail: {
-        offsetCenter: ["-40%", "95%"],
+        offsetCenter: ["-40%", "110%"],
       },
     },
     {
@@ -49,7 +52,7 @@ const Capaian = ({ className }: { className?: string }) => {
         offsetCenter: ["40%", "80%"],
       },
       detail: {
-        offsetCenter: ["40%", "95%"],
+        offsetCenter: ["40%", "110%"],
       },
     },
   ];
@@ -88,7 +91,7 @@ const Capaian = ({ className }: { className?: string }) => {
           height: 14,
           fontSize: 14,
           color: "#fff",
-          backgroundColor: "inherit",
+          backgroundColor: "bg-background",
           borderRadius: 3,
           formatter: "{value}%",
         },
@@ -96,9 +99,9 @@ const Capaian = ({ className }: { className?: string }) => {
     ],
   };
   return (
-    <main className={cn("w-full", className)}>
-      <Card className="w-full h-full">
-        <CardHeader className="text-center font-bold text-slate-700 mt-1 p-0 space-y-0">
+    <main className={cn("w-full h-full", className)}>
+      <Card className="w-full">
+        <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
           Capaian
         </CardHeader>
         <CardContent className="p-0 flex flex-col items-center justify-center">
@@ -106,8 +109,7 @@ const Capaian = ({ className }: { className?: string }) => {
             option={gaugeChartOption}
             className="w-full h-full p-0"
             style={{
-              height: "300px",
-              width: "400px",
+              height: "256px",
               padding: "0px",
               bottom: "0px",
             }}

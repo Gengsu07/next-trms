@@ -8,7 +8,7 @@ import Link from "next/link";
 const Header = () => {
   return (
     <>
-      <div className="flex  justify-between items-center gap-5 w-full h-14 px-5 py-2  border-b-2 border-accent  shadow-md ">
+      <div className="flex justify-between items-center gap-5 w-full h-14 px-5 py-2  border-b-2 border-accent shadow-md bg-background">
         <div className="flex justify-center items-center gap-3">
           <Link href="/">
             <Image src="/logo_djp.png" alt="logo" width="40" height="40" />

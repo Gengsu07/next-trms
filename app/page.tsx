@@ -1,5 +1,5 @@
 import SideBar from "@/app/dashboard/Sidebar";
-import MapPage from "./dashboard/dashboard_component/map";
+import MapPage from "./dashboard/dashComp/map";
 import FilterCollapse from "./dashboard/filter_collapse";
 
 export default function Home() {

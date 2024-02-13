@@ -23,11 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning={true}>
       <body
         className={cn(poppins.className, {
           "debug-screens": process.env.NODE_ENV === "development",
         })}
+        suppressHydrationWarning={true}
       >
         <QueryProvider>
           <ThemeProvider

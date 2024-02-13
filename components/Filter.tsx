@@ -1,5 +1,5 @@
 "use client";
-import FilterForm from "@/app/dashboard/dashboard_component/filter_form";
+import FilterForm from "@/app/dashboard/dashComp/filter_form";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,

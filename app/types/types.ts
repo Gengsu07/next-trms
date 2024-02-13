@@ -12,3 +12,8 @@ export type TMap = {
   cy: { map: string; _sum: { nominal: number } }[];
   py: { map: string; _sum: { nominal: number } }[];
 };
+
+export type TKPP = {
+  _sum: { nominal: number };
+  admin: string;
+};
