@@ -12,7 +12,7 @@ const FilterCollapse = () => {
     setIsCollapsed(!collapsed);
   };
   return (
-    <main className="w-full md:w-fit h-screen">
+    <main className="w-full md:w-fit h-screen overflow-y-visible">
       {collapsed ? (
         <CollapsePage setIsCollapsed={onCollapsed} />
       ) : (

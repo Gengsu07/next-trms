@@ -21,19 +21,18 @@ const KPI = () => {
       }).then((res) => res.json()),
   });
   const data_kpi = data?.filter((item) => item.label !== "Capaian");
-  console.log(data_kpi);
   // const { netto, bruto, restitusi } = data || {};
 
   return (
-    <section className="flex flex-col sm:flex-row justify-around items-start gap-5  w-full h-fit mx-auto  bg-background-primary">
+    <section className="grid grid-cols-1 md:grid-cols-5 gap-2  w-full h-fit bg-background-primary">
       {data_kpi?.map((item) => (
-        <Card className="w-full" key={item.label}>
+        <Card className="w-full md:w-auto" key={item.label}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{item.label}</CardTitle>
+            <CardTitle className="text-sm font-medium ">{item.label}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className=" flex justify-between items-center flex-nowrap gap-5 ">
-              <p className="text-md md:text-lg lg:text-xl font-bold">
+            <div className=" flex flex-col md:flex-row justify-between items-center flex-nowrap gap-2 ">
+              <p className="text-sm md:text-md lg:text-lg font-bold">
                 {convertNominal(item?.value?.cy)}
               </p>
               <div className="flex justify-start items-center space-x-2">

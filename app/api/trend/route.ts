@@ -24,7 +24,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     Object.entries(filterConditions).filter(([_, value]) => value !== undefined)
   );
 
-  console.log(cleanFilterConditions.from);
+  // console.log(cleanFilterConditions.from);
 
   cleanFilterConditions.from = new Date(cleanFilterConditions.from);
   cleanFilterConditions.to = new Date(cleanFilterConditions.to);
