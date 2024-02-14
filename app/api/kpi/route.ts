@@ -7,6 +7,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const fromValue = searchParams.get("from");
   const toValue = searchParams.get("to");
   const sektorValues = searchParams.getAll("sektor");
+  const mapValues = searchParams.getAll("map");
   const adminValues = searchParams.getAll("admin");
   const kjsValues = searchParams.getAll("kjs");
   const npwpValues = searchParams.getAll("npwp");
@@ -15,6 +16,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     from: fromValue,
     to: toValue,
     sektor: sektorValues.length > 0 ? { in: sektorValues } : undefined,
+    map: mapValues.length > 0 ? { in: mapValues } : undefined,
     admin: adminValues.length > 0 ? { in: adminValues } : undefined,
     kjs: kjsValues.length > 0 ? { in: kjsValues } : undefined,
     npwp: npwpValues.length > 0 ? { in: npwpValues } : undefined,
@@ -71,6 +73,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
           in: cleanFilterConditions.sektor.in,
         },
       }),
+      ...(cleanFilterConditions.map && {
+        map: {
+          in: cleanFilterConditions.map.in,
+        },
+      }),
       ...(cleanFilterConditions.admin && {
         admin: {
           in: cleanFilterConditions.admin.in,
@@ -106,6 +113,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
           in: cleanFilterConditions.sektor.in,
         },
       }),
+      ...(cleanFilterConditions.map && {
+        map: {
+          in: cleanFilterConditions.map.in,
+        },
+      }),
       ...(cleanFilterConditions.admin && {
         admin: {
           in: cleanFilterConditions.admin.in,
@@ -136,6 +148,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
       ...(cleanFilterConditions.sektor && {
         kd_kategori: {
           in: cleanFilterConditions.sektor.in,
+        },
+      }),
+      ...(cleanFilterConditions.map && {
+        map: {
+          in: cleanFilterConditions.map.in,
         },
       }),
       ...(cleanFilterConditions.admin && {
@@ -173,6 +190,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
           in: cleanFilterConditions.sektor.in,
         },
       }),
+      ...(cleanFilterConditions.map && {
+        map: {
+          in: cleanFilterConditions.map.in,
+        },
+      }),
       ...(cleanFilterConditions.admin && {
         admin: {
           in: cleanFilterConditions.admin.in,
@@ -206,6 +228,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
       ...(cleanFilterConditions.sektor && {
         kd_kategori: {
           in: cleanFilterConditions.sektor.in,
+        },
+      }),
+      ...(cleanFilterConditions.map && {
+        map: {
+          in: cleanFilterConditions.map.in,
         },
       }),
       ...(cleanFilterConditions.admin && {
@@ -254,6 +281,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
           in: cleanFilterConditions.sektor.in,
         },
       }),
+      ...(cleanFilterConditions.map && {
+        map: {
+          in: cleanFilterConditions.map.in,
+        },
+      }),
       ...(cleanFilterConditions.admin && {
         admin: {
           in: cleanFilterConditions.admin.in,
@@ -289,6 +321,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
           in: cleanFilterConditions.sektor.in,
         },
       }),
+      ...(cleanFilterConditions.map && {
+        map: {
+          in: cleanFilterConditions.map.in,
+        },
+      }),
       ...(cleanFilterConditions.admin && {
         admin: {
           in: cleanFilterConditions.admin.in,
@@ -319,6 +356,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
       ...(cleanFilterConditions.sektor && {
         kd_kategori: {
           in: cleanFilterConditions.sektor.in,
+        },
+      }),
+      ...(cleanFilterConditions.map && {
+        map: {
+          in: cleanFilterConditions.map.in,
         },
       }),
       ...(cleanFilterConditions.admin && {
@@ -356,6 +398,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
           in: cleanFilterConditions.sektor.in,
         },
       }),
+      ...(cleanFilterConditions.map && {
+        map: {
+          in: cleanFilterConditions.map.in,
+        },
+      }),
       ...(cleanFilterConditions.admin && {
         admin: {
           in: cleanFilterConditions.admin.in,
@@ -391,6 +438,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
           in: cleanFilterConditions.sektor.in,
         },
       }),
+      ...(cleanFilterConditions.map && {
+        map: {
+          in: cleanFilterConditions.map.in,
+        },
+      }),
       ...(cleanFilterConditions.admin && {
         admin: {
           in: cleanFilterConditions.admin.in,
@@ -409,6 +461,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
     },
   });
 
+  console.log({
+    cy_mpn: cy_mpn?._sum?.nominal,
+    py_mpn: py_mpn?._sum?.nominal,
+  });
   const naik_mpn = (cy_mpn?._sum?.nominal ?? 0) - (py_mpn?._sum?.nominal ?? 0);
   const yoy_mpn = (naik_mpn / (py_mpn?._sum?.nominal ?? naik_mpn)) * 100;
   const naik_spm = (cy_spm?._sum?.nominal ?? 0) - (py_spm?._sum?.nominal ?? 0);
