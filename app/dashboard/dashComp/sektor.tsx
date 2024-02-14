@@ -1,39 +1,38 @@
 "use client";
 import useFilterData from "@/app/store/useFilterData";
-import { TMap } from "@/app/types/types";
+import { TSektor } from "@/app/types/types";
 import { useQuery } from "@tanstack/react-query";
 import querystring from "querystring";
 import dynamic from "next/dynamic";
 import { convertNominal } from "./nominalConverter";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { MapTopn } from "@/components/transform/topn";
+import { SektorTopn } from "@/components/transform/topn";
 import { dark } from "@/constant/colorPallette";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
-const MapPage = ({ className }: { className?: string }) => {
+const SektorPage = ({ className }: { className?: string }) => {
+  // const { theme } = useTheme();
   const { filterData, parseFilterData } = useFilterData();
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
-  const { data, isFetching, error } = useQuery<TMap>({
-    queryKey: ["map", queryParamsString],
+  const { data, isFetching, error } = useQuery<TSektor>({
+    queryKey: ["sektor", queryParamsString],
     queryFn: () =>
-      fetch("http://127.0.0.1:3000/api/map?" + queryParamsString, {
+      fetch("http://127.0.0.1:3000/api/sektor?" + queryParamsString, {
         cache: "no-store",
       }).then((res) => res.json()),
   });
+  const topcy = SektorTopn(data?.cy || [], 5);
+  const toppy = SektorTopn(data?.py || [], 5);
 
-  // console.log("http://127.0.0.1:3000/api/map?" + queryParamsString);
-  const topcy = MapTopn(data?.cy || [], 5);
-  const toppy = MapTopn(data?.py || [], 5);
-
-  let maplabel = [
-    ...(topcy?.map((item) => item.map) || []),
-    ...(toppy?.map((item) => item.map) || []),
+  let sektorlabel = [
+    ...(topcy?.map((item) => item.nm_sektor) || []),
+    ...(toppy?.map((item) => item.nm_sektor) || []),
   ];
 
-  const mapChartOption = {
+  const SektorBarChartOption = {
     tooltip: {
       trigger: "axis",
       axisPointer: {
@@ -63,7 +62,9 @@ const MapPage = ({ className }: { className?: string }) => {
     yAxis: {
       type: "category",
       axisTick: { show: false },
-      data: maplabel.filter((item, index) => maplabel.indexOf(item) === index),
+      data: sektorlabel.filter(
+        (item, index) => sektorlabel.indexOf(item) === index
+      ),
     },
     series: [
       {
@@ -82,7 +83,7 @@ const MapPage = ({ className }: { className?: string }) => {
         //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
         //   },
         // },
-        data: data?.cy?.map((item) => item._sum.nominal),
+        data: data?.cy?.map((item) => item.sum),
       },
       {
         name: "tahun lalu",
@@ -100,20 +101,19 @@ const MapPage = ({ className }: { className?: string }) => {
         //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
         //   },
         // },
-        data: data?.py?.map((item) => item._sum.nominal),
+        data: data?.py?.map((item) => item.sum),
       },
     ],
   };
-
   return (
-    <div className={cn("w-full h-full", className)}>
+    <main className={cn("w-full h-full", className)}>
       <Card className="w-full">
         <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
-          Per Jenis Pajak
+          Per Sektor
         </CardHeader>
         <CardContent className="p-0 flex flex-col items-center justify-center">
           <ReactEchart
-            option={mapChartOption}
+            option={SektorBarChartOption}
             className="w-full h-full p-0"
             style={{
               height: "500px",
@@ -123,7 +123,7 @@ const MapPage = ({ className }: { className?: string }) => {
           />
         </CardContent>
       </Card>
-    </div>
+    </main>
   );
 };
-export default MapPage;
+export default SektorPage;

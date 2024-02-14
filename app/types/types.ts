@@ -17,3 +17,14 @@ export type TKPP = {
   _sum: { nominal: number };
   admin: string;
 };
+
+export type TSektor = {
+  cy: {
+    sum: number;
+    kd_kategori: string;
+  }[];
+  py: {
+    sum: number;
+    kd_kategori: string;
+  }[];
+};

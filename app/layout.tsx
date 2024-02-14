@@ -15,6 +15,15 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Tax Revenue Monitoring System",
   description: "Self Service Monitor Penerimaan Pajak",
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/logo_djp.png",
+        href: "/logo_djp.png",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

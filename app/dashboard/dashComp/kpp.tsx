@@ -8,6 +8,7 @@ import { convertNominal } from "./nominalConverter";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 import { TKPP } from "@/app/types/types";
 import { cn } from "@/lib/utils";
+import { colors } from "@/constant/colorPallette";
 
 const Adm = ({ className }: { className?: string }) => {
   const { filterData, parseFilterData } = useFilterData();
@@ -23,6 +24,7 @@ const Adm = ({ className }: { className?: string }) => {
   });
 
   const kppChartOption = {
+    color: colors,
     tooltip: {
       trigger: "item",
     },

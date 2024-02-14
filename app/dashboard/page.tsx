@@ -2,6 +2,7 @@ import Capaian from "./dashComp/gauge";
 import KPI from "./dashComp/kpi";
 import Adm from "./dashComp/kpp";
 import MapPage from "./dashComp/map";
+import SektorPage from "./dashComp/sektor";
 import TrendPage from "./dashComp/trend";
 import FilterCollapse from "./filter_collapse";
 
@@ -19,6 +20,7 @@ const Dashboard = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full ">
             <MapPage className="col-span-12 md:col-span-5" />
+            <SektorPage className="col-span-12 md:col-span-7" />
           </div>
         </div>
       </div>

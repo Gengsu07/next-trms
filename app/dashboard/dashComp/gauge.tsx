@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import querystring from "querystring";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
-import { useTheme } from "next-themes";
+import { dark } from "@/constant/colorPallette";
 
 interface TCapaian {
   label: string;
@@ -57,6 +57,7 @@ const Capaian = ({ className }: { className?: string }) => {
     },
   ];
   const gaugeChartOption = {
+    color: dark,
     series: [
       {
         type: "gauge",
@@ -91,7 +92,7 @@ const Capaian = ({ className }: { className?: string }) => {
           height: 14,
           fontSize: 14,
           color: "#fff",
-          backgroundColor: "bg-background",
+          backgroundColor: "#005fac",
           borderRadius: 3,
           formatter: "{value}%",
         },
