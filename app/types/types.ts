@@ -28,3 +28,14 @@ export type TSektor = {
     kd_kategori: string;
   }[];
 };
+
+export type TTopWP = {
+  top: {
+    value: number;
+    name: string;
+  }[];
+  bottom: {
+    value: number;
+    name: string;
+  }[];
+};

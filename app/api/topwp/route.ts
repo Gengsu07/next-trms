@@ -33,7 +33,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   prevYearFrom.setFullYear(prevYearFrom.getFullYear() - 1);
   prevYearTo.setFullYear(prevYearTo.getFullYear() - 1);
 
-  const cy = await prisma.mpn.groupBy({
+  const top5 = await prisma.mpn.groupBy({
     by: ["npwp15", "nama_wp"],
     _sum: {
       nominal: true,
@@ -47,6 +47,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
         ...(cleanFilterConditions.sektor && {
           kd_kategori: {
             in: cleanFilterConditions.sektor.in,
+          },
+        }),
+        ...(cleanFilterConditions.map && {
+          kdmap: {
+            in: cleanFilterConditions.map.in,
           },
         }),
         ...(cleanFilterConditions.admin && {
@@ -66,14 +71,67 @@ export async function GET(req: NextRequest, res: NextResponse) {
         }),
       },
     },
+    orderBy: {
+      _sum: {
+        nominal: "desc",
+      },
+    },
+    take: 5,
   });
 
-  const cy_res = cy.map((item) => ({
-    sum: item._sum.nominal,
-    kd_kategori: item.kd_kategori,
+  const bot5 = await prisma.mpn.groupBy({
+    by: ["npwp15", "nama_wp"],
+    _sum: {
+      nominal: true,
+    },
+    where: {
+      datebayar: {
+        gte: cleanFilterConditions.from,
+        lte: cleanFilterConditions.to,
+      },
+      AND: {
+        ...(cleanFilterConditions.sektor && {
+          kd_kategori: {
+            in: cleanFilterConditions.sektor.in,
+          },
+        }),
+        ...(cleanFilterConditions.map && {
+          kdmap: {
+            in: cleanFilterConditions.map.in,
+          },
+        }),
+        ...(cleanFilterConditions.admin && {
+          admin: {
+            in: cleanFilterConditions.admin.in,
+          },
+        }),
+        ...(cleanFilterConditions.kjs && {
+          kdbayar: {
+            in: cleanFilterConditions.kjs.in,
+          },
+        }),
+        ...(cleanFilterConditions.npwp && {
+          npwp15: {
+            in: cleanFilterConditions.npwp.in,
+          },
+        }),
+      },
+    },
+    orderBy: {
+      _sum: {
+        nominal: "asc",
+      },
+    },
+    take: 5,
+  });
+
+  const top5_res = top5.map((item) => ({
+    value: item._sum.nominal,
+    name: item.nama_wp,
   }));
-  const py_res = py.map((item) => ({
-    sum: item._sum.nominal,
-    kd_kategori: item.kd_kategori,
+  const bot5_res = bot5.map((item) => ({
+    value: item._sum.nominal,
+    name: item.nama_wp,
   }));
+  return NextResponse.json({ top: top5_res, bottom: bot5_res });
 }

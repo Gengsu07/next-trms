@@ -74,7 +74,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       }),
       ...(cleanFilterConditions.map && {
-        map: {
+        kdmap: {
           in: cleanFilterConditions.map.in,
         },
       }),
@@ -114,7 +114,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       }),
       ...(cleanFilterConditions.map && {
-        map: {
+        kdmap: {
           in: cleanFilterConditions.map.in,
         },
       }),
@@ -151,7 +151,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       }),
       ...(cleanFilterConditions.map && {
-        map: {
+        kdmap: {
           in: cleanFilterConditions.map.in,
         },
       }),
@@ -191,7 +191,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       }),
       ...(cleanFilterConditions.map && {
-        map: {
+        kdmap: {
           in: cleanFilterConditions.map.in,
         },
       }),
@@ -231,7 +231,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       }),
       ...(cleanFilterConditions.map && {
-        map: {
+        kdmap: {
           in: cleanFilterConditions.map.in,
         },
       }),
@@ -282,7 +282,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       }),
       ...(cleanFilterConditions.map && {
-        map: {
+        kdmap: {
           in: cleanFilterConditions.map.in,
         },
       }),
@@ -322,7 +322,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       }),
       ...(cleanFilterConditions.map && {
-        map: {
+        kdmap: {
           in: cleanFilterConditions.map.in,
         },
       }),
@@ -359,7 +359,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       }),
       ...(cleanFilterConditions.map && {
-        map: {
+        kdmap: {
           in: cleanFilterConditions.map.in,
         },
       }),
@@ -399,7 +399,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       }),
       ...(cleanFilterConditions.map && {
-        map: {
+        kdmap: {
           in: cleanFilterConditions.map.in,
         },
       }),
@@ -439,7 +439,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       }),
       ...(cleanFilterConditions.map && {
-        map: {
+        kdmap: {
           in: cleanFilterConditions.map.in,
         },
       }),
@@ -461,10 +461,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     },
   });
 
-  console.log({
-    cy_mpn: cy_mpn?._sum?.nominal,
-    py_mpn: py_mpn?._sum?.nominal,
-  });
+
   const naik_mpn = (cy_mpn?._sum?.nominal ?? 0) - (py_mpn?._sum?.nominal ?? 0);
   const yoy_mpn = (naik_mpn / (py_mpn?._sum?.nominal ?? naik_mpn)) * 100;
   const naik_spm = (cy_spm?._sum?.nominal ?? 0) - (py_spm?._sum?.nominal ?? 0);

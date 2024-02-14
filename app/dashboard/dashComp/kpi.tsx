@@ -12,7 +12,8 @@ const KPI = () => {
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
-  console.log("http://localhost:3000/api/kpi?" + queryParamsString);
+  // console.log("http://localhost:3000/api/kpi?" + queryParamsString);
+
   const { data, isFetching, error } = useQuery<TResponseData[]>({
     queryKey: ["kpi", queryParamsString],
     queryFn: () =>

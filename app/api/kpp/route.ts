@@ -40,6 +40,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
           in: cleanFilterConditions.sektor.in,
         },
       }),
+      ...(cleanFilterConditions.map && {
+        kdmap: {
+          in: cleanFilterConditions.map.in,
+        },
+      }),
       ...(cleanFilterConditions.admin && {
         admin: {
           in: cleanFilterConditions.admin.in,

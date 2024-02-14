@@ -49,6 +49,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
             in: cleanFilterConditions.sektor.in,
           },
         }),
+        ...(cleanFilterConditions.map && {
+          kdmap: {
+            in: cleanFilterConditions.map.in,
+          },
+        }),
         ...(cleanFilterConditions.admin && {
           admin: {
             in: cleanFilterConditions.admin.in,
@@ -82,6 +87,11 @@ export async function GET(req: NextRequest, res: NextResponse) {
         ...(cleanFilterConditions.sektor && {
           kd_kategori: {
             in: cleanFilterConditions.sektor.in,
+          },
+        }),
+        ...(cleanFilterConditions.map && {
+          kdmap: {
+            in: cleanFilterConditions.map.in,
           },
         }),
         ...(cleanFilterConditions.admin && {
