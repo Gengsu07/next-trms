@@ -1,6 +1,6 @@
 "use client";
 import useFilterData from "@/app/store/useFilterData";
-import { TSektor, TTopWP } from "@/app/types/types";
+import { TTopWP } from "@/app/types/types";
 import { useQuery } from "@tanstack/react-query";
 import querystring from "querystring";
 import dynamic from "next/dynamic";
@@ -50,6 +50,8 @@ const Topwp = ({ className }: { className?: string }) => {
         label: {
           show: true,
           position: "inside",
+          formatter: (params: any) =>
+            `${params.name}: ${convertNominal(params.value)}`,
         },
         labelLine: {
           length: 10,
@@ -67,7 +69,7 @@ const Topwp = ({ className }: { className?: string }) => {
             fontSize: 20,
           },
         },
-        data: data?.top,
+        data: data?.top || [],
       },
       {
         name: "bottom",
@@ -78,9 +80,12 @@ const Topwp = ({ className }: { className?: string }) => {
         top: "50%",
         sort: "ascending",
         label: {
+          show: true,
           position: "inside",
+          formatter: (params: any) =>
+            `${params.name}: ${convertNominal(params.value)}`,
         },
-        data: data?.bottom,
+        data: data?.bottom || [],
       },
     ],
   };

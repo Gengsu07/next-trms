@@ -25,13 +25,11 @@ const MapPage = ({ className }: { className?: string }) => {
   });
 
   // console.log("http://127.0.0.1:3000/api/map?" + queryParamsString);
-  const topcy = MapTopn(data?.cy || [], 5);
-  const toppy = MapTopn(data?.py || [], 5);
+  const data_map = MapTopn(data?.cy || [], data?.py || [], 5);
 
-  let maplabel = [
-    ...(topcy?.map((item) => item.map) || []),
-    ...(toppy?.map((item) => item.map) || []),
-  ];
+  let maplabel = data_map?.cy
+    ?.sort((a, b) => a.sum - b.sum)
+    .map((item) => item.map);
 
   const mapChartOption = {
     tooltip: {
@@ -63,13 +61,14 @@ const MapPage = ({ className }: { className?: string }) => {
     yAxis: {
       type: "category",
       axisTick: { show: false },
-      data: maplabel.filter((item, index) => maplabel.indexOf(item) === index),
+      data: maplabel,
+      // .filter((item, index) => maplabel.indexOf(item) === index),
     },
     series: [
       {
         name: "tahun ini",
         type: "bar",
-        barMinWidth: 18,
+        barMinWidth: 23,
         label: {
           show: true,
           fontSize: 11,
@@ -82,12 +81,12 @@ const MapPage = ({ className }: { className?: string }) => {
         //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
         //   },
         // },
-        data: data?.cy?.map((item) => item._sum.nominal),
+        data: data_map?.cy?.map((item) => item.sum),
       },
       {
         name: "tahun lalu",
         type: "bar",
-        barMinWidth: 18,
+        barMinWidth: 23,
         label: {
           show: true,
           fontSize: 11,
@@ -100,7 +99,7 @@ const MapPage = ({ className }: { className?: string }) => {
         //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
         //   },
         // },
-        data: data?.py?.map((item) => item._sum.nominal),
+        data: data_map?.py?.map((item) => item.sum),
       },
     ],
   };
@@ -116,7 +115,7 @@ const MapPage = ({ className }: { className?: string }) => {
             option={mapChartOption}
             className="w-full h-full p-0"
             style={{
-              height: "500px",
+              height: "450px",
               padding: "0px",
               bottom: "0px",
             }}

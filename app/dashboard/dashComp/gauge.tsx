@@ -100,7 +100,7 @@ const Capaian = ({ className }: { className?: string }) => {
     ],
   };
   return (
-    <main className={cn("w-full h-full", className)}>
+    <main className={cn("w-full", className)}>
       <Card className="w-full">
         <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
           Capaian
@@ -108,9 +108,9 @@ const Capaian = ({ className }: { className?: string }) => {
         <CardContent className="p-0 flex flex-col items-center justify-center">
           <ReactEchart
             option={gaugeChartOption}
-            className="w-full h-full p-0"
+            className="w-full h-full p-0 "
             style={{
-              height: "256px",
+              height: "300px",
               padding: "0px",
               bottom: "0px",
             }}

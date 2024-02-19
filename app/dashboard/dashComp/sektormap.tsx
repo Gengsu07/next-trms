@@ -1,32 +1,39 @@
 "use client";
 import useFilterData from "@/app/store/useFilterData";
+import { TSektorMap } from "@/app/types/types";
 import { useQuery } from "@tanstack/react-query";
 import querystring from "querystring";
 import dynamic from "next/dynamic";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { convertNominal } from "./nominalConverter";
-const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
-import { TKPP } from "@/app/types/types";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { colors } from "@/constant/colorPallette";
+import { SektorTopn } from "@/components/transform/topn";
+import { dark } from "@/constant/colorPallette";
+import { ArrowRightSquareIcon } from "lucide-react";
+const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
-const Adm = ({ className }: { className?: string }) => {
+const SektorMap = ({ className }: { className?: string }) => {
+  // const { theme } = useTheme();
   const { filterData, parseFilterData } = useFilterData();
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
-  const { data, isFetching, error } = useQuery<TKPP>({
-    queryKey: ["kpp", queryParamsString],
+  const { data, isFetching, error } = useQuery<TSektorMap>({
+    queryKey: ["sektormap", queryParamsString],
     queryFn: () =>
-      fetch("http://127.0.0.1:3000/api/kpp?" + queryParamsString, {
+      fetch("http://127.0.0.1:3000/api/sektormap?" + queryParamsString, {
         cache: "no-store",
       }).then((res) => res.json()),
   });
+  // console.log("http://127.0.0.1:3000/api/sektormap?" + queryParamsString);
 
-  const kppChartOption = {
-    color: colors,
+  const sektormapoption = {
+    // title: {
+    //   text: "Node Align Left",
+    // },
     tooltip: {
       trigger: "item",
+      triggerOn: "mousemove",
     },
     toolbox: {
       show: true,
@@ -35,38 +42,20 @@ const Adm = ({ className }: { className?: string }) => {
         saveAsImage: { show: true },
       },
     },
-    legend: {
-      show: false,
-      top: "5%",
-      left: "center",
-    },
+    animation: false,
     series: [
       {
-        name: "KPP",
-        type: "pie",
-        radius: ["40%", "70%"],
-        avoidLabelOverlap: false,
-        // itemStyle: {
-        //   borderRadius: 10,
-        //   borderColor: "#fff",
-        //   borderWidth: 2,
-        // },
-        label: {
-          show: true,
-          position: "inside",
-          formatter: `{b}`,
-        },
+        type: "sankey",
         emphasis: {
-          label: {
-            show: true,
-            fontSize: 40,
-            fontWeight: "bold",
-          },
+          focus: "adjacency",
         },
-        labelLine: {
-          show: false,
+        nodeAlign: "right",
+        data: data?.nodes || [],
+        links: data?.links || [],
+        lineStyle: {
+          color: "source",
+          curveness: 0.5,
         },
-        data: data,
       },
     ],
   };
@@ -74,14 +63,14 @@ const Adm = ({ className }: { className?: string }) => {
     <main className={cn("w-full h-full", className)}>
       <Card className="w-full">
         <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
-          Per KPP
+          Sebaran Sektor ke Jenis Pajak
         </CardHeader>
         <CardContent className="p-0 flex flex-col items-center justify-center">
           <ReactEchart
-            option={kppChartOption}
+            option={sektormapoption}
             className="w-full h-full p-0"
             style={{
-              height: "300px",
+              height: "500px",
               padding: "0px",
               bottom: "0px",
             }}
@@ -91,4 +80,4 @@ const Adm = ({ className }: { className?: string }) => {
     </main>
   );
 };
-export default Adm;
+export default SektorMap;

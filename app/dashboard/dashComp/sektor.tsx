@@ -24,13 +24,11 @@ const SektorPage = ({ className }: { className?: string }) => {
         cache: "no-store",
       }).then((res) => res.json()),
   });
-  const topcy = SektorTopn(data?.cy || [], 5);
-  const toppy = SektorTopn(data?.py || [], 5);
 
-  let sektorlabel = [
-    ...(topcy?.map((item) => item.nm_sektor) || []),
-    ...(toppy?.map((item) => item.nm_sektor) || []),
-  ];
+  const data_sektor = SektorTopn(data?.cy || [], data?.py || [], 5);
+  let sektorlabel = data_sektor?.cy
+    ?.sort((a, b) => a.sum - b.sum)
+    .map((item) => item.nm_sektor);
 
   const SektorBarChartOption = {
     tooltip: {
@@ -62,33 +60,28 @@ const SektorPage = ({ className }: { className?: string }) => {
     yAxis: {
       type: "category",
       axisTick: { show: false },
-      data: sektorlabel.filter(
-        (item, index) => sektorlabel.indexOf(item) === index
-      ),
+      data: sektorlabel,
+      //   filter(
+      //   (item, index) => sektorlabel.indexOf(item) === index
+      // ),
     },
     series: [
       {
         name: "tahun ini",
         type: "bar",
-        barMinWidth: 18,
+        barMinWidth: 23,
         label: {
           show: true,
           fontSize: 11,
           formatter: (params: any) => `${convertNominal(params.value)}`,
           align: "right",
         },
-        // itemStyle: {
-        //   // Moved itemStyle here
-        //   color: function (params) {
-        //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
-        //   },
-        // },
-        data: data?.cy?.map((item) => item.sum),
+        data: data_sektor.cy?.map((item) => item.sum),
       },
       {
         name: "tahun lalu",
         type: "bar",
-        barMinWidth: 18,
+        barMinWidth: 23,
         label: {
           show: true,
           fontSize: 11,
@@ -101,10 +94,11 @@ const SektorPage = ({ className }: { className?: string }) => {
         //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
         //   },
         // },
-        data: data?.py?.map((item) => item.sum),
+        data: data_sektor.py?.map((item) => item.sum),
       },
     ],
   };
+
   return (
     <main className={cn("w-full h-full", className)}>
       <Card className="w-full">
@@ -116,7 +110,7 @@ const SektorPage = ({ className }: { className?: string }) => {
             option={SektorBarChartOption}
             className="w-full h-full p-0"
             style={{
-              height: "500px",
+              height: "450px",
               padding: "0px",
               bottom: "0px",
             }}

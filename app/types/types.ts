@@ -9,8 +9,14 @@ export type TTrend = {
 };
 
 export type TMap = {
-  cy: { map: string; _sum: { nominal: number } }[];
-  py: { map: string; _sum: { nominal: number } }[];
+  cy: {
+    sum: number;
+    map: string;
+  }[];
+  py: {
+    sum: number;
+    map: string;
+  }[];
 };
 
 export type TKPP = {
@@ -38,4 +44,9 @@ export type TTopWP = {
     value: number;
     name: string;
   }[];
+};
+
+export type TSektorMap = {
+  nodes: { name: string }[];
+  links: { source: string; target: string; value: number }[];
 };

@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS "mpn" (
     "tanggalbayar" INTEGER,
     "bulanbayar" INTEGER,
     "tahunbayar" INTEGER,
-    "datebayar" timestamp,
+    "datebayar" DATE,
     "nominal" REAL,
     "ket" VARCHAR(255),
     "seksi" VARCHAR(255),

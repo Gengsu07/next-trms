@@ -104,7 +104,7 @@ const TrendPage = ({ className }: { className?: string }) => {
             option={areaChartOption}
             className="w-full h-full p-0"
             style={{
-              height: "256px",
+              height: "300px",
               padding: "0px",
               bottom: "0px",
             }}

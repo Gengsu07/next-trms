@@ -4,7 +4,7 @@ import { AiFillFilter } from "react-icons/ai";
 
 const CollapsePage = ({ setIsCollapsed }: { setIsCollapsed: () => void }) => {
   return (
-    <div className="flex flex-col justify-start items-center py-2 sm:py-14 w-full md:w-16 h-14 md:h-screen  sticky">
+    <div className="flex flex-col justify-start items-center py-2 sm:py-14 w-full md:w-10 h-14 md:sticky top-0">
       <div
         onClick={setIsCollapsed}
         className="flex justify-end items-center gap-0 mx-1 w-full h-8 cursor-pointer border-[1px]-slate-100 border-foreground hover:bg-transparent hover:opacity-10 rounded-md"

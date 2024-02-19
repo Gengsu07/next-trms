@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:5432/testDB?schema=public"
+  url      = "postgresql://postgres:postgres@localhost:5432/testDB?schema=production"
 }
 
 model mpn {
@@ -17,7 +17,7 @@ model mpn {
   tanggalbayar  Int?
   bulanbayar    Int?
   tahunbayar    Int?
-  datebayar     DateTime? @db.Timestamp(6)
+  datebayar     DateTime? @db.Date
   nominal       Float?    @db.Real
   ket           String?   @db.VarChar(255)
   seksi         String?   @db.VarChar(255)

@@ -1,5 +1,18 @@
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import { SektorSingkat } from "@/components/transform/topn";
+import { sektor } from "@/constant/initialData";
+
+interface resData {
+  _sum: {
+    nominal: number | null;
+  };
+  kd_kategori: string | null;
+  map: string | null;
+}
+function filterTopN(data: resData[], n: number): resData[] {
+  return data.sort((a, b) => b._sum.nominal! - a._sum.nominal!).slice(0, n);
+}
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const searchParams = req.nextUrl.searchParams;
@@ -34,7 +47,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   prevYearTo.setFullYear(prevYearTo.getFullYear() - 1);
 
   const cy = await prisma.mpn.groupBy({
-    by: ["kd_kategori"],
+    by: ["kd_kategori", "map"],
     _sum: {
       nominal: true,
     },
@@ -73,52 +86,29 @@ export async function GET(req: NextRequest, res: NextResponse) {
     },
   });
 
-  const py = await prisma.mpn.groupBy({
-    by: ["kd_kategori"],
-    _sum: {
-      nominal: true,
-    },
-    where: {
-      datebayar: {
-        gte: prevYearFrom,
-        lte: prevYearTo,
-      },
-      AND: {
-        ...(cleanFilterConditions.sektor && {
-          kd_kategori: {
-            in: cleanFilterConditions.sektor.in,
-          },
-        }),
-        ...(cleanFilterConditions.map && {
-          kdmap: {
-            in: cleanFilterConditions.map.in,
-          },
-        }),
-        ...(cleanFilterConditions.admin && {
-          admin: {
-            in: cleanFilterConditions.admin.in,
-          },
-        }),
-        ...(cleanFilterConditions.kjs && {
-          kdbayar: {
-            in: cleanFilterConditions.kjs.in,
-          },
-        }),
-        ...(cleanFilterConditions.npwp && {
-          npwp15: {
-            in: cleanFilterConditions.npwp.in,
-          },
-        }),
-      },
-    },
-  });
-  const cy_res = cy.map((item) => ({
-    sum: item._sum.nominal,
+  const topn = filterTopN(cy, 20);
+  const name_res = topn.map((item) => ({
     kd_kategori: item.kd_kategori,
   }));
-  const py_res = py.map((item) => ({
-    sum: item._sum.nominal,
-    kd_kategori: item.kd_kategori,
+
+  const mergedSektor = SektorSingkat(name_res);
+
+  const sektor_res = mergedSektor.map((item) => ({
+    name: item.nm_sektor,
   }));
-  return NextResponse.json({ cy: cy_res, py: py_res });
+  const map_res = topn.map((item) => ({ name: item.map }));
+  const nodes = [...sektor_res, ...map_res].filter(
+    (value, index, self) =>
+      self.findIndex((t) => t.name === value.name) === index
+  );
+  const links = topn.map((item) => ({
+    source:
+      sektor.find((label) => label.value === item.kd_kategori)?.label ||
+      "Lainnya",
+    target: item.map,
+    value: item._sum.nominal,
+  }));
+
+  // return NextResponse.json(map_res);
+  return NextResponse.json({ nodes, links });
 }

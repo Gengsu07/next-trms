@@ -113,5 +113,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
     },
   });
 
-  return NextResponse.json({ cy: cy, py: py });
+  const cy_res = cy.map((item) => ({
+    sum: item._sum.nominal,
+    map: item.map,
+  }));
+  const py_res = py.map((item) => ({
+    sum: item._sum.nominal,
+    map: item.map,
+  }));
+  return NextResponse.json({ cy: cy_res, py: py_res });
 }
