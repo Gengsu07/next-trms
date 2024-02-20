@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/theme-provider";
 import Header from "@/components/Header";
 import QueryProvider from "./QueryProvider";
 import { cn } from "@/lib/utils";
+import { fontSans } from "@/lib/fonts";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
@@ -34,9 +35,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={cn(poppins.className, {
-          "debug-screens": process.env.NODE_ENV === "development",
-        })}
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          poppins.className,
+          {
+            "debug-screens": process.env.NODE_ENV === "development",
+          }
+        )}
         suppressHydrationWarning={true}
       >
         <QueryProvider>
