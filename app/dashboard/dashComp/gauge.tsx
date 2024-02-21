@@ -57,7 +57,7 @@ const Capaian = ({ className }: { className?: string }) => {
     },
   ];
   const gaugeChartOption = {
-    color: dark,
+    color: dark[0],
     series: [
       {
         type: "gauge",
@@ -92,7 +92,7 @@ const Capaian = ({ className }: { className?: string }) => {
           height: 14,
           fontSize: 14,
           color: "#fff",
-          backgroundColor: "#005fac",
+          backgroundColor: "#2563eb",
           borderRadius: 3,
           formatter: "{value}%",
         },
