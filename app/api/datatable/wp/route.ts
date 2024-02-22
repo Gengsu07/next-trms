@@ -3,9 +3,6 @@ import { format } from "date-fns";
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
-import { buildWhereClause } from "@/lib/utils";
-import { DataFrame } from "data-forge";
-import dataforgefs from "data-forge-fs";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const searchParams = req.nextUrl.searchParams;
@@ -311,5 +308,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   // // Extract the merged data as an array
   // const mergedData = merged_df.toArray();
+
   return NextResponse.json(perwp);
 }

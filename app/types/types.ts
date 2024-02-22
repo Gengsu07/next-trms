@@ -50,3 +50,12 @@ export type TSektorMap = {
   nodes: { name: string }[];
   links: { source: string; target: string; value: number }[];
 };
+
+export type TPerWP = {
+  npwp15: string;
+  nama_wp: "string";
+  netto_cy: number;
+  bruto_cy: number;
+  netto_py: number;
+  bruto_py: number;
+};

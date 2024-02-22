@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://gengsu07:Gengsu!sh3r3@10.20.254.226:5432/ppmpkm?schema=trms"
 }
 
 model target {
