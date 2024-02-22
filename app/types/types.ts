@@ -58,4 +58,8 @@ export type TPerWP = {
   bruto_cy: number;
   netto_py: number;
   bruto_py: number;
+  naik_netto: number;
+  naik_netto_pct: number;
+  naik_bruto: number;
+  naik_bruto_pct: number;
 };

@@ -2,6 +2,7 @@ import Capaian from "./dashComp/gauge";
 import KPI from "./dashComp/kpi";
 import Adm from "./dashComp/kpp";
 import MapPage from "./dashComp/map";
+import PerWPTablePage from "./dashComp/perwp/page";
 import SektorPage from "./dashComp/sektor";
 import SektorMap from "./dashComp/sektormap";
 import Topwp from "./dashComp/topwp";
@@ -27,6 +28,9 @@ const Dashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full ">
             <SektorMap className="col-span-12 md:col-span-6" />
             <Topwp className="col-span-12 md:col-span-6" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full ">
+            <PerWPTablePage className="col-span-12" />
           </div>
         </div>
       </div>

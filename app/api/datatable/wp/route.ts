@@ -1,3 +1,4 @@
+import { TPerWP } from "./../../../types/types";
 import { sektor } from "./../../../../constant/initialData";
 import { format } from "date-fns";
 import { prisma } from "@/prisma/client";
@@ -80,8 +81,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
     from.getDate()
   );
   const PY_to = new Date(to.getFullYear() - 1, to.getMonth(), to.getDate());
-  const perwp = await prisma.$queryRaw(
-    Prisma.sql`SELECT
+  const perwp: TPerWP[] = await prisma.$queryRaw(
+    Prisma.sql`WITH df as (SELECT
     m.npwp15,
     m.nama_wp,
     sum(CASE WHEN m.datebayar >= ${new Date(
@@ -105,7 +106,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
       cleanFilterConditions.to
     )}  THEN m.nominal END) DESC NULLS LAST
     LIMIT ${perPage}
-    OFFSET ${offset};
+    OFFSET ${offset}
+        )
+    select df.*, 
+    df.netto_cy - df.netto_py as naik_netto	 ,
+    (df.netto_cy - df.netto_py) /df.netto_cy as naik_netto_pct,
+    df.bruto_cy - df.bruto_py as naik_bruto	,
+    (df.bruto_cy - df.bruto_py) /df.bruto_cy as naik_bruto_pct
+    from df
+    order by df.netto_cy desc	nulls last
+
    `
   );
 
