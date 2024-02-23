@@ -38,3 +38,11 @@ export function buildWhereClause(filters: Filter): [string, any[]] {
   const whereClause = conditions.length > 0 ? conditions.join(" AND ") : "1=1"; // Default to true if no conditions
   return [whereClause, values];
 }
+
+export function capitalizeWord_fromUpper(str: string) {
+  const formattedWord = str
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+  return formattedWord;
+}

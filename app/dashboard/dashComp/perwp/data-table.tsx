@@ -65,7 +65,7 @@ const PerWPTableData = <TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length}>
-                Data tidak tersedia
+                data belum tersedia...
               </TableCell>
             </TableRow>
           )}

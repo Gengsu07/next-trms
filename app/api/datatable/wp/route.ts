@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
+import { number } from "zod";
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const searchParams = req.nextUrl.searchParams;
@@ -14,6 +15,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const adminValues = searchParams.getAll("admin");
   const kjsValues = searchParams.getAll("kjs");
   const npwpValues = searchParams.getAll("npwp");
+  const currentPage = parseInt(searchParams.get("page") ?? "", 10) || 1;
 
   const filterConditions: Record<string, any> = {
     from: fromValue,
@@ -30,7 +32,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
     Object.entries(filterConditions).filter(([_, value]) => value !== undefined)
   );
 
-  const currentPage = 1; // Or the desired page number
   const perPage = 10; // Or the desired number of items per page
   const offset = (currentPage - 1) * perPage;
 

@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:postgres@localhost:5432/testDB?schema=production"
+  url      = "postgresql://gengsu07:Gengsu!sh3r3@10.20.254.226:5432/ppmpkm?schema=trms"
 }
 
 model target {
@@ -29,9 +29,8 @@ model mpn {
   datebayar     DateTime? @db.Date
   nominal       Float?    @db.Real
   ket           String?   @db.VarChar(255)
-  seksi         String?   @db.VarChar(255)
   segmentasi_wp String?   @db.VarChar(255)
-  jenis_wp      String?   @db.VarChar(255)
+  jenis_wp      String?
   nama_klu      String?
   kd_kategori   String?   @db.VarChar(5)
   nm_kategori   String?
@@ -42,4 +41,14 @@ model mpn {
   nama_ar       String?
   ntpn          String?   @db.VarChar(255)
   id            Int       @id @default(autoincrement())
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model users {
+  username String? @db.VarChar(255)
+  name     String? @db.VarChar(255)
+  password String? @db.VarChar(255)
+  adm      String? @db.VarChar(255)
+
+  @@ignore
 }
