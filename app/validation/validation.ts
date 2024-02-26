@@ -15,3 +15,8 @@ export const FilterSchema = z.object({
     })
     .optional(),
 });
+
+export const loginForm = z.object({
+  username: z.string().min(9, { message: "masukkan nip pendek 9 digit" }),
+  password: z.string().min(5, { message: "masukkan password" }),
+});

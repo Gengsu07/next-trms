@@ -46,7 +46,6 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <div className="flex flex-col justify-start items-center h-screen w-screen ">
-              <Header />
               {children}
             </div>
           </ThemeProvider>
