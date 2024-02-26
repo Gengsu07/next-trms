@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { RxExclamationTriangle } from "react-icons/rx";
 
 const LoginPage = () => {
   const form = useForm<z.infer<typeof loginForm>>({
@@ -64,7 +65,7 @@ const LoginPage = () => {
                         className="outline-none"
                       />
                     </FormControl>
-                    <FormMessage className="text-sm font-mono" />
+                    <FormMessage className="font-mono rounded-md bg-destructive/15 text-sm text-destructive py-1 px-1" />
                   </FormItem>
                 )}
               />
@@ -82,7 +83,7 @@ const LoginPage = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className="text-sm font-mono" />
+                    <FormMessage className="font-mono rounded-md bg-destructive/15 text-sm text-destructive py-1 px-1" />
                   </FormItem>
                 )}
               />
@@ -93,6 +94,7 @@ const LoginPage = () => {
               >
                 Login
               </Button>
+
               <Button
                 variant="link"
                 className="text-sm font-mono text-foreground"
