@@ -35,13 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          poppins.className,
-          {
-            "debug-screens": process.env.NODE_ENV === "development",
-          }
-        )}
+        className={cn("min-h-screen w-full bg-background ", poppins.className)}
         suppressHydrationWarning={true}
       >
         <QueryProvider>

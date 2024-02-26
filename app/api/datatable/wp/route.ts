@@ -82,6 +82,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     from.getDate()
   );
   const PY_to = new Date(to.getFullYear() - 1, to.getMonth(), to.getDate());
+
   const perwp: TPerWP[] = await prisma.$queryRaw(
     Prisma.sql`WITH df as (SELECT
     m.npwp15,
@@ -109,14 +110,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
     LIMIT ${perPage}
     OFFSET ${offset}
         )
-    select df.*, 
-    df.netto_cy - df.netto_py as naik_netto	 ,
-    (df.netto_cy - df.netto_py) /df.netto_cy as naik_netto_pct,
-    df.bruto_cy - df.bruto_py as naik_bruto	,
-    (df.bruto_cy - df.bruto_py) /df.bruto_cy as naik_bruto_pct
-    from df
-    order by df.netto_cy desc	nulls last
-
+        SELECT 
+        df.*,
+        df.netto_cy - df.netto_py AS naik_netto,
+        COALESCE((df.netto_cy - df.netto_py) / NULLIF(df.netto_cy, 0), 0) AS naik_netto_pct,
+        df.bruto_cy - df.bruto_py AS naik_bruto,
+        COALESCE((df.bruto_cy - df.bruto_py) / NULLIF(df.bruto_cy, 0), 0) AS naik_bruto_pct
+    FROM df
+    ORDER BY df.netto_cy DESC NULLS LAST;
    `
   );
 

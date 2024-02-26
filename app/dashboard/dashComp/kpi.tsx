@@ -4,7 +4,7 @@ import querystring from "querystring";
 import { TiMinus, TiPlus } from "react-icons/ti";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { TResponseData } from "@/app/types/types";
+import { TKPI, TResponseData } from "@/app/types/types";
 import { convertNominal } from "./nominalConverter";
 
 const KPI = () => {
@@ -14,14 +14,18 @@ const KPI = () => {
 
   // console.log("http://localhost:3000/api/kpi?" + queryParamsString);
 
-  const { data, isFetching, error } = useQuery<TResponseData[]>({
+  const {
+    data: data_kpi,
+    isFetching,
+    error,
+  } = useQuery<TResponseData[]>({
     queryKey: ["kpi", queryParamsString],
     queryFn: () =>
-      fetch("http://127.0.0.1:3000/api/kpi?" + queryParamsString, {
+      fetch("http://127.0.0.1:3000/api/test?" + queryParamsString, {
         cache: "no-store",
       }).then((res) => res.json()),
   });
-  const data_kpi = data?.filter((item) => item.label !== "Capaian");
+
   // const { netto, bruto, restitusi } = data || {};
 
   return (
@@ -38,18 +42,18 @@ const KPI = () => {
               </p>
               <div className="flex justify-start items-center space-x-2">
                 {item?.label === "Restitusi" ? (
-                  item.value.yoy > 0 ? (
+                  item?.value?.yoy > 0 ? (
                     <TiPlus color="red" />
                   ) : (
                     <TiMinus color="green" />
                   )
-                ) : item.value.yoy > 0 ? (
+                ) : item?.value?.yoy > 0 ? (
                   <TiPlus color="green" />
                 ) : (
                   <TiMinus color="red" />
                 )}
 
-                <p>{`${item.value.yoy.toFixed(2)}%`}</p>
+                <p>{`${item?.value?.yoy?.toFixed(2)}%`}</p>
               </div>
             </div>
           </CardContent>

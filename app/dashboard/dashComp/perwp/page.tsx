@@ -11,6 +11,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { TbReload } from "react-icons/tb";
 import classNames from "classnames";
+import { DropdownMenu } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import { downloadToExcel } from "@/lib/xlsx";
 
 const PerWPTablePage = ({ className }: { className?: string }) => {
   const [page, setPage] = useState(1);
@@ -28,29 +34,45 @@ const PerWPTablePage = ({ className }: { className?: string }) => {
     placeholderData: keepPreviousData,
   });
   return (
-    <main className={cn("w-full h-full", className)}>
-      <Card className="w-full px-5 border-2 border-foreground">
+    <main
+      className={cn(
+        "w-full h-full border-[1px] border-foreground-10 rounded-md shadow-md",
+        className
+      )}
+    >
+      <div className="text-center text-background  p-0 space-y-0 bg-accent-foreground py-3 rounded-t-md">
+        <p className="font-bold ">Detail per Wajib Pajak YoY</p>
+        <p className="font-mono text-sm">
+          10 Wajib Pajak Besar berdasarkan penerimaan netto
+        </p>
+      </div>
+      {/* <Card className="w-full px-5 ">
         <CardHeader className="text-center font-bold text-background  p-0 space-y-0 bg-foreground py-3 rounded-md mt-1">
           Detail per Wajib Pajak YoY
         </CardHeader>
-        <CardContent className="p-0 flex flex-col items-center justify-center w-full h-full">
-          <PerWPTableData columns={columns} data={data || []} />
-          <div className="flex justify-center items-center gap-2 py-4 w-full px-5 bg-foreground rounded-md">
-            <Button variant="outline" className="font-medium font-mono ">
-              <TbReload
-                className={classNames({
-                  "mr-2 h-4 w-4": true,
-                  "animate-spin": isFetching,
-                })}
-              />
-              Halaman: {page}
-            </Button>
-            <Button onClick={() => setPage(page - 1)}>Previous</Button>
+        <CardContent className="p-0 flex flex-col items-center justify-center max-w-full h-full"> */}
 
-            <Button onClick={() => setPage(page + 1)}>Next</Button>
-          </div>
-        </CardContent>
-      </Card>
+      <PerWPTableData columns={columns} data={data || []} />
+      <div className="flex justify-start items-center gap-2 px-2 rounded-md mt-2 bg-accent-foreground py-5">
+        <Button onClick={() => setPage(page - 1)}>Previous</Button>
+        <Button onClick={() => setPage(page + 1)}>Next</Button>
+        <Button variant="default" onClick={() => downloadToExcel(data || [])}>
+          Download Excel
+        </Button>
+
+        <Button variant="outline" className="font-medium font-mono ">
+          <TbReload
+            className={classNames({
+              "mr-2 h-4 w-4": true,
+              "animate-spin": isFetching,
+            })}
+          />
+          Halaman: {page}
+        </Button>
+      </div>
+
+      {/* </CardContent>
+      </Card> */}
     </main>
   );
 };
