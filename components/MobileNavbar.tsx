@@ -11,6 +11,8 @@ import { Separator } from "@/components/ui/separator";
 import NavBar from "./NavBar";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { ModeToggle } from "./theme-switcher";
+import IsolateToChild from "./isolateClient";
+import AuthToggleNav from "./AuthToggleNav";
 
 const MobileNav = () => {
   return (
@@ -23,7 +25,9 @@ const MobileNav = () => {
           <Image src="/placeholder.png" alt="Logo" width={128} height={38} />
           <Separator className="border-gray-50" />
           <NavBar />
-          <ModeToggle />
+          <IsolateToChild>
+            <AuthToggleNav />
+          </IsolateToChild>
         </SheetContent>
       </Sheet>
     </nav>

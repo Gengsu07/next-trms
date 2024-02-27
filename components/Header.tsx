@@ -6,8 +6,10 @@ import MobileNav from "./MobileNavbar";
 import Link from "next/link";
 import IsolateToChild from "./isolateClient";
 import AuthToggleNav from "./AuthToggleNav";
+import { useSession } from "next-auth/react";
 
 const Header = () => {
+  const { data: session } = useSession();
   return (
     <>
       <div className="flex justify-between items-center gap-5 w-full h-14 px-5 py-2  border-b-2 border-accent shadow-md bg-background">

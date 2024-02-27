@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import QueryProvider from "./QueryProvider";
 import { cn } from "@/lib/utils";
 import { fontSans } from "@/lib/fonts";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
@@ -35,7 +36,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={cn("min-h-screen w-full bg-background ", poppins.className)}
+        className={cn(
+          "flex flex-col justify-start items-center min-h-screen min-w-screen  ",
+          poppins.className
+        )}
         suppressHydrationWarning={true}
       >
         <QueryProvider>
@@ -45,9 +49,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <div className="flex flex-col justify-start items-center h-screen w-screen ">
-              {children}
-            </div>
+            {children}
+            <Toaster />
           </ThemeProvider>
         </QueryProvider>
       </body>

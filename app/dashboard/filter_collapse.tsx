@@ -12,7 +12,7 @@ const FilterCollapse = () => {
     setIsCollapsed(!collapsed);
   };
   return (
-    <main className="w-full md:w-fit min-h-screen border-[2px] border-accent bg-card rounded-md shadow-md">
+    <main className="w-full md:w-fit min-h-screen  bg-card rounded-md shadow-md border-[2px] border-accent">
       {collapsed ? (
         <CollapsePage setIsCollapsed={onCollapsed} />
       ) : (

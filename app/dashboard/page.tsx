@@ -13,7 +13,9 @@ const Dashboard = () => {
   return (
     <main className="flex flex-col md:flex-row md:mr-1 justify-start items-start gap-5 w-full  h-screen">
       <div className="flex flex-col md:flex-row justify-start items-start mx-5 md:mx-0 gap-5 md:gap-2 mt-2 w-full h-screen ">
-        <FilterCollapse />
+        <div className="min-h-screen ">
+          <FilterCollapse />
+        </div>
         <div className="flex flex-col justify-start items-start gap-2 w-full h-full">
           <KPI />
           <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full">

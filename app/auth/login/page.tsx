@@ -2,7 +2,8 @@
 
 import { loginForm } from "@/app/validation/validation";
 import { Button } from "@/components/ui/button";
-import { Controller, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -17,9 +18,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useTransition } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof loginForm>>({
     resolver: zodResolver(loginForm),
     defaultValues: {
@@ -28,9 +35,22 @@ const LoginPage = () => {
     },
   });
   const { errors } = form.formState;
-  const OnSubmit = (values: z.infer<typeof loginForm>) => {
-    console.log(errors);
-    console.log(values);
+
+  const OnSubmit: SubmitHandler<z.infer<typeof loginForm>> = async (values) => {
+    startTransition(async () => {
+      const result = await signIn("credentials", {
+        redirect: false,
+        username: values.username,
+        password: values.password,
+      });
+      if (!result?.ok) {
+        toast({ variant: "destructive", description: result?.error });
+      }
+      if (result?.ok) {
+        toast({ description: "login berhasil" });
+        router.push("/dashboard");
+      }
+    });
   };
   return (
     <div className="w-full h-screen flex justify-center items-center bg-accent-foreground">
@@ -90,6 +110,7 @@ const LoginPage = () => {
               <Button
                 variant="default"
                 type="submit"
+                disabled={isPending}
                 className="cursor-pointer w-full"
               >
                 Login
