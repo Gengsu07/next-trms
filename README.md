@@ -4,6 +4,6 @@
 
 ![alt text](image.png)
 
-To Read:
+Useful Resources to make this app:
 
-- https://codevoweb.com/setup-and-use-nextauth-in-nextjs-14-app-directory/
+- https://www.youtube.com/watch?v=Xa73Xr8PM2k&t=6698s
