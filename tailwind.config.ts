@@ -76,6 +76,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-debug-screens")],
+  plugins: [],
 };
 export default config;

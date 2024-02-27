@@ -36,7 +36,7 @@ const Capaian = ({ className }: { className?: string }) => {
   });
   const gaugeData = [
     {
-      value: data?.value?.cy.toFixed(2),
+      value: data?.value?.cy?.toFixed(2),
       name: "APBN",
       title: {
         offsetCenter: ["-40%", "80%"],
@@ -46,7 +46,7 @@ const Capaian = ({ className }: { className?: string }) => {
       },
     },
     {
-      value: data?.value?.cy_internal.toFixed(2),
+      value: data?.value?.cy_internal?.toFixed(2),
       name: "Internal",
       title: {
         offsetCenter: ["40%", "80%"],
