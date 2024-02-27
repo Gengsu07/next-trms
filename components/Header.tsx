@@ -4,6 +4,8 @@ import Image from "next/image";
 import { ModeToggle } from "./theme-switcher";
 import MobileNav from "./MobileNavbar";
 import Link from "next/link";
+import IsolateToChild from "./isolateClient";
+import AuthToggleNav from "./AuthToggleNav";
 
 const Header = () => {
   return (
@@ -23,8 +25,9 @@ const Header = () => {
           </div>
         </div>
         <div className="hidden md:flex justify-between gap-2 items-center">
-          <p className="text-sm">Hey, some user here</p>
-          <ModeToggle />
+          <IsolateToChild>
+            <AuthToggleNav />
+          </IsolateToChild>
         </div>
         <div className="md:hidden">
           <MobileNav />
