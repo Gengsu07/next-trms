@@ -1,6 +1,6 @@
 "use client";
 import { ModeToggle } from "./theme-switcher";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import {
@@ -52,8 +52,12 @@ const AuthToggleNav = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <Button variant="ghost" className="text-sm font-normal text-black ">
-          <Link href="/api/auth/signin">Sign In</Link>
+        <Button
+          variant="ghost"
+          className="text-sm font-normal text-black"
+          onClick={() => signIn()}
+        >
+          Sign In
         </Button>
       )}
 
