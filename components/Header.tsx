@@ -1,11 +1,21 @@
-"use client";
 import NavBar from "./NavBar";
 import Image from "next/image";
 import { ModeToggle } from "./theme-switcher";
 import MobileNav from "./MobileNavbar";
 import Link from "next/link";
+import IsolateToChild from "./IsolateToChild";
+import { auth, signIn, signOut } from "@/auth";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 
-const Header = () => {
+const Header = async () => {
+  const session = await auth();
+  const user = session?.user;
+
+  const logoutAction = async () => {
+    "use server";
+    await signOut();
+  };
   return (
     <>
       <div className="flex justify-between items-center gap-5 w-full h-14 px-5 py-2  border-b-2 border-accent shadow-md bg-background">
@@ -23,8 +33,22 @@ const Header = () => {
           </div>
         </div>
         <div className="hidden md:flex justify-between gap-2 items-center">
-          <p className="text-sm">Hey, some user here</p>
-          <ModeToggle />
+          {user && (
+            <form action={logoutAction} className="flex">
+              <Button variant="link">Logout</Button>
+            </form>
+          )}
+          {!user && (
+            <Button
+              className="text-sm text-foreground font-normal px-2 py-2"
+              variant="outline"
+            >
+              <Link href="/auth/login">Sign in</Link>
+            </Button>
+          )}
+          <IsolateToChild>
+            <ModeToggle />
+          </IsolateToChild>
         </div>
         <div className="md:hidden">
           <MobileNav />

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/prisma-adapter": "^1.4.0",
     "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "^5.10.2",
     "@radix-ui/react-dialog": "^1.0.5",
@@ -18,9 +19,11 @@
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
+    "@radix-ui/react-toast": "^1.1.5",
     "@tanstack/react-query": "^5.17.10",
     "@tanstack/react-query-devtools": "^5.17.10",
     "@tanstack/react-table": "^8.12.0",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "clsx": "^2.1.0",
@@ -33,9 +36,9 @@
     "lucide": "^0.309.0",
     "lucide-react": "^0.306.0",
     "next": "14.0.4",
+    "next-auth": "^5.0.0-beta.13",
     "next-themes": "^0.2.1",
     "react": "^18",
-    "react-apexcharts": "^1.4.1",
     "react-date-range": "^2.0.0-alpha.4",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",
@@ -47,6 +50,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -56,7 +60,6 @@
     "postcss": "^8",
     "prisma": "^5.10.2",
     "tailwindcss": "^3.3.0",
-    "tailwindcss-debug-screens": "^2.2.1",
     "typescript": "^5"
   }
 }

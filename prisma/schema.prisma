@@ -4,8 +4,8 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // url      = "postgresql://gengsu07:Gengsu!sh3r3@10.20.254.226:5432/ppmpkm?schema=trms"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://gengsu07:Gengsu!sh3r3@10.20.254.226:5432/ppmpkm?schema=trms"
+  // url      = env("DATABASE_URL")
 }
 
 model target {
@@ -44,12 +44,62 @@ model mpn {
   id            Int       @id @default(autoincrement())
 }
 
-/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
-model users {
-  username String? @db.VarChar(255)
-  name     String? @db.VarChar(255)
-  password String? @db.VarChar(255)
-  adm      String? @db.VarChar(255)
+model User {
+  id            String    @id @default(uuid())
+  name          String
+  nip           String  @unique
+  email         String?   @unique
+  password      String?
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
 
-  @@ignore
+  @@map("users")
+}
+
+model Account {
+  id                String   @id @default(cuid())
+  userId            String   @map("user_id")
+  type              String?
+  provider          String
+  providerAccountId String   @map("provider_account_id")
+  token_type        String?
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  scope             String?
+  id_token          String?  @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String?  @map("user_id")
+  sessionToken String   @unique @map("session_token") @db.Text
+  accessToken  String?  @map("access_token") @db.Text
+  expires      DateTime
+  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("sessions")
+}
+
+model VerificationRequest {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
 }
