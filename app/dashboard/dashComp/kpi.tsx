@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
 import { TKPI, TResponseData } from "@/app/types/types";
 import { convertNominal } from "./nominalConverter";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const KPI = () => {
   const { filterData, parseFilterData } = useFilterData();
@@ -16,7 +17,7 @@ const KPI = () => {
 
   const {
     data: data_kpi,
-    isFetching,
+    isLoading,
     error,
   } = useQuery<TResponseData[]>({
     queryKey: ["kpi", queryParamsString],
@@ -36,6 +37,7 @@ const KPI = () => {
             <CardTitle className="text-sm font-medium ">{item.label}</CardTitle>
           </CardHeader>
           <CardContent>
+            {(!item || isLoading) && <Skeleton className="w-full h-24" />}
             <div className=" flex flex-col md:flex-row justify-between items-center flex-nowrap gap-2 ">
               <p className="text-sm md:text-md lg:text-lg font-bold">
                 {convertNominal(item?.value?.cy)}
