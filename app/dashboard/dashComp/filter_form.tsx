@@ -26,6 +26,7 @@ import { FilterSchema } from "@/app/validation/validation";
 import { z } from "zod";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 import { TbFilterOff } from "react-icons/tb";
+import { SheetClose } from "@/components/ui/sheet";
 
 export type FilterType = z.infer<typeof FilterSchema>;
 
@@ -34,7 +35,7 @@ const FilterForm = ({
   setIsCollapsed,
 }: {
   onFilterForm: (data: FilterType) => void;
-  setIsCollapsed: () => void;
+  setIsCollapsed?: () => void;
 }) => {
   const form = useForm<FilterType>({
     resolver: zodResolver(FilterSchema),
@@ -44,19 +45,19 @@ const FilterForm = ({
     onFilterForm(data);
   };
   return (
-    <div className="flex flex-col justify-start items-start py-5 sm:py-14 px-3 w-full sm:w-60   xl:w-80 h-fit sm:h-screen border-[2px] border-accent bg-card rounded-md shadow-md ">
-      <div className="flex justify-between items-center w-full h-10 mb-5">
+    <div className="flex flex-col justify-start items-start min-w-full sm:w-60 xl:w-80 h-fit sm:h-screen border-[2px] border-accent bg-card rounded-md shadow-md py-2">
+      {/* <div className="flex justify-between items-center w-full h-10 mb-5">
         <h3 className="text-lg font-bold">Filter data</h3>
 
         <Button onClick={setIsCollapsed}>
           <RxDoubleArrowLeft />
         </Button>
-      </div>
+      </div> */}
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 w-full "
+          className="space-y-4 w-full px-2 "
         >
           <FormField
             control={form.control}
@@ -222,9 +223,11 @@ const FilterForm = ({
           />
 
           <div className="flex justify-between items-center gap-5">
-            <Button type="submit" className="cursor-pointer w-full">
-              Analisa
-            </Button>
+            <SheetClose asChild>
+              <Button type="submit" className="cursor-pointer w-full">
+                Analisa
+              </Button>
+            </SheetClose>
             <Button onClick={() => form.reset()} className="cursor-pointer">
               <TbFilterOff />
             </Button>
