@@ -28,11 +28,11 @@ const KPI = () => {
       }).then((res) => res.json()),
   });
   const skeletonkpi = [1, 2, 3, 4, 5];
-
   // const { netto, bruto, restitusi } = data || {};
+  console.log(data_kpi);
   return (
     <section className="grid grid-cols-1 md:grid-cols-5 gap-2  w-full h-fit bg-background-primary">
-      {isLoading &&
+      {isLoading ? (
         skeletonkpi.map((item) => (
           <Card className="w-full md:w-auto" key={item}>
             <CardHeader>
@@ -42,36 +42,42 @@ const KPI = () => {
               <Skeleton className="w-full h-7 p-0 m-0" />
             </CardContent>
           </Card>
-        ))}
-      {data_kpi?.map((item) => (
-        <Card className="w-full md:w-auto" key={item.label}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium ">{item.label}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className=" flex flex-col md:flex-row justify-between items-center flex-nowrap gap-2 ">
-              <p className="text-sm md:text-md lg:text-lg font-bold">
-                {convertNominal(item?.value?.cy)}
-              </p>
-              <div className="flex justify-start items-center space-x-2">
-                {item?.label === "Restitusi" ? (
-                  item?.value?.yoy > 0 ? (
-                    <TiPlus color="red" />
-                  ) : (
-                    <TiMinus color="green" />
-                  )
-                ) : item?.value?.yoy > 0 ? (
-                  <TiPlus color="green" />
-                ) : (
-                  <TiMinus color="red" />
-                )}
+        ))
+      ) : (
+        <>
+          {data_kpi?.map((item) => (
+            <Card className="w-full md:w-auto" key={item.label}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium ">
+                  {item.label}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className=" flex flex-col md:flex-row justify-between items-center flex-nowrap gap-2 ">
+                  <p className="text-sm md:text-md lg:text-lg font-bold">
+                    {convertNominal(item?.value?.cy)}
+                  </p>
+                  <div className="flex justify-start items-center space-x-2">
+                    {item?.label === "Restitusi" ? (
+                      item?.value?.yoy > 0 ? (
+                        <TiPlus color="red" />
+                      ) : (
+                        <TiMinus color="green" />
+                      )
+                    ) : item?.value?.yoy > 0 ? (
+                      <TiPlus color="green" />
+                    ) : (
+                      <TiMinus color="red" />
+                    )}
 
-                <p>{`${item?.value?.yoy?.toFixed(2)}%`}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+                    <p>{`${item?.value?.yoy?.toFixed(2)}%`}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </>
+      )}
     </section>
   );
 };

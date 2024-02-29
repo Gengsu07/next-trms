@@ -102,7 +102,7 @@ const SektorPage = ({ className }: { className?: string }) => {
 
   return (
     <main className={cn("w-full h-full", className)}>
-      {isLoading ? (
+      {isLoading || data?.cy?.length === 0 ? (
         <GenericSkeleton />
       ) : (
         <Card className="w-full">

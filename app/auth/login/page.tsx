@@ -21,6 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useTransition } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ModeToggle } from "@/components/theme-switcher";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -53,8 +54,8 @@ const LoginPage = () => {
     });
   };
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-muted">
-      <div className="w-full max-w-md h-fit py-7 flex flex-col justify-start items-center bg-accent-foreground rounded-md">
+    <div className="w-full h-screen flex justify-center items-center bg-border">
+      <div className="w-full max-w-md h-fit py-7 flex flex-col justify-start items-center bg-card rounded-md">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(OnSubmit)}
@@ -64,7 +65,7 @@ const LoginPage = () => {
               <Link href="/">
                 <Image src="/logo_djp.png" alt="logo" width="40" height="40" />
               </Link>
-              <p className="text-sm text-background">
+              <p className="text-sm text-accent-foreground">
                 Tax Revenue
                 <br />
                 Monitoring System
@@ -77,12 +78,14 @@ const LoginPage = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem className="w-full ">
-                    <FormLabel className="text-background">Username</FormLabel>
+                    <FormLabel className="text-accent-foreground">
+                      Username
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="NIP Pendek"
                         {...field}
-                        className="outline-none border-none bg-border text-background"
+                        className="outline-none border-none bg-background text-background"
                       />
                     </FormControl>
                     <FormMessage className="font-mono rounded-md bg-destructive/15 text-sm text-destructive py-1 px-1" />
@@ -94,7 +97,9 @@ const LoginPage = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-background">password</FormLabel>
+                    <FormLabel className="text-accent-foreground">
+                      password
+                    </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="******"
@@ -111,17 +116,20 @@ const LoginPage = () => {
                 variant="default"
                 type="submit"
                 disabled={isPending}
-                className="cursor-pointer w-full text-background"
+                className="cursor-pointer w-full text-muted"
               >
                 Login
               </Button>
 
-              <Button
-                variant="link"
-                className="text-sm font-mono text-background"
-              >
-                Belum punya akun? kontak admin 😉
-              </Button>
+              <div className="flex justify-start items-center w-full gap-0">
+                <ModeToggle className="bg-muted" />
+                <Button
+                  variant="link"
+                  className="text-sm font-mono text-accent-foreground"
+                >
+                  Belum punya akun? kontak admin 😉
+                </Button>
+              </div>
             </div>
           </form>
         </Form>

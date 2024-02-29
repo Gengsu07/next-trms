@@ -42,7 +42,7 @@ export type TMap = {
 
 export type TKPP = {
   _sum: { nominal: number };
-  admin: string;
+  name: string;
 };
 
 export type TSektor = {

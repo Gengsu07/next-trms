@@ -100,14 +100,12 @@ const Capaian = ({ className }: { className?: string }) => {
       },
     ],
   };
+
   return (
     <main className={cn("w-full", className)}>
-      {isLoading ? (
+      {isLoading || data?.value === undefined ? (
         <>
-          <Card className="flex flex-col justify-center items-center gap-5 py-5">
-            <Skeleton className="w-4/5 h-10 " />
-            <Skeleton className="w-4/5 h-52" />
-          </Card>
+          <GenericSkeleton />
         </>
       ) : (
         <Card className="w-full">

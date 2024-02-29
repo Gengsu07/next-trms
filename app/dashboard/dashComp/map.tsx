@@ -107,7 +107,7 @@ const MapPage = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn("w-full h-full", className)}>
-      {isLoading ? (
+      {isLoading || data?.cy?.length === 0 ? (
         <GenericSkeleton />
       ) : (
         <Card className="w-full">

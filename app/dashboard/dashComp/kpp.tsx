@@ -16,7 +16,7 @@ const Adm = ({ className }: { className?: string }) => {
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
-  const { data, isLoading, error } = useQuery<TKPP>({
+  const { data, isLoading, error } = useQuery<TKPP[]>({
     queryKey: ["kpp", queryParamsString],
     queryFn: () =>
       fetch("http://127.0.0.1:3000/api/kpp?" + queryParamsString, {
@@ -73,7 +73,7 @@ const Adm = ({ className }: { className?: string }) => {
   };
   return (
     <main className={cn("w-full h-full", className)}>
-      {isLoading ? (
+      {isLoading || data?.length === 0 ? (
         <GenericSkeleton />
       ) : (
         <Card className="w-full">

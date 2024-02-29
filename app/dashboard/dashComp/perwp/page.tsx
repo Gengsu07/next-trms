@@ -41,7 +41,7 @@ const PerWPTablePage = ({ className }: { className?: string }) => {
         className
       )}
     >
-      {isLoading ? (
+      {isLoading || data?.length === 0 ? (
         <GenericSkeleton />
       ) : (
         <>

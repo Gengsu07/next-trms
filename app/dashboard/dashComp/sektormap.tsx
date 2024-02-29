@@ -62,7 +62,7 @@ const SektorMap = ({ className }: { className?: string }) => {
   };
   return (
     <main className={cn("w-full h-full", className)}>
-      {isLoading ? (
+      {isLoading || data?.nodes.length === 0 ? (
         <GenericSkeleton />
       ) : (
         <Card className="w-full">
