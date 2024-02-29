@@ -45,7 +45,7 @@ const FilterForm = ({
     onFilterForm(data);
   };
   return (
-    <div className="flex flex-col justify-start items-start min-w-full sm:w-60 xl:w-80 h-fit sm:h-screen border-[2px] border-accent bg-card rounded-md shadow-md py-2">
+    <div className="flex flex-col justify-start items-start min-w-full sm:w-60 xl:w-80 h-fit sm:h-screen  border-background bg-accent border-0 rounded-md shadow-md py-2 px-2">
       {/* <div className="flex justify-between items-center w-full h-10 mb-5">
         <h3 className="text-lg font-bold">Filter data</h3>
 
@@ -117,6 +117,7 @@ const FilterForm = ({
               <FormItem>
                 <FormLabel>Kantor</FormLabel>
                 <MultipleSelector
+                  className="bg-background border-0 outline-none"
                   options={kpp}
                   placeholder="KPP"
                   hidePlaceholderWhenSelected
@@ -141,6 +142,7 @@ const FilterForm = ({
               <FormItem>
                 <FormLabel>Sektor</FormLabel>
                 <MultipleSelector
+                  className="bg-background border-0 outline-none"
                   options={sektor}
                   placeholder="Pilih Sektor"
                   hidePlaceholderWhenSelected
@@ -164,6 +166,7 @@ const FilterForm = ({
               <FormItem>
                 <FormLabel>Jenis Pajak</FormLabel>
                 <MultipleSelector
+                  className="bg-background border-0 outline-none"
                   options={map}
                   placeholder="MAP"
                   hidePlaceholderWhenSelected
@@ -187,6 +190,7 @@ const FilterForm = ({
               <FormItem>
                 <FormLabel>Kode Bayar</FormLabel>
                 <MultipleSelector
+                  className="bg-background border-0 outline-none"
                   options={kjs}
                   placeholder="Kode Jenis Setoran"
                   hidePlaceholderWhenSelected
@@ -214,6 +218,7 @@ const FilterForm = ({
                     type="text"
                     {...field}
                     value={field.value || ""}
+                    className="bg-background border-0 outline-none"
                   />
                 </FormControl>
 

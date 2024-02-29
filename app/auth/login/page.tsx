@@ -53,8 +53,8 @@ const LoginPage = () => {
     });
   };
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-accent-foreground">
-      <div className="w-full max-w-md h-fit py-7 flex flex-col justify-start items-center bg-background rounded-md">
+    <div className="w-full h-screen flex justify-center items-center bg-muted">
+      <div className="w-full max-w-md h-fit py-7 flex flex-col justify-start items-center bg-accent-foreground rounded-md">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(OnSubmit)}
@@ -64,7 +64,7 @@ const LoginPage = () => {
               <Link href="/">
                 <Image src="/logo_djp.png" alt="logo" width="40" height="40" />
               </Link>
-              <p className="text-sm">
+              <p className="text-sm text-background">
                 Tax Revenue
                 <br />
                 Monitoring System
@@ -77,12 +77,12 @@ const LoginPage = () => {
                 name="username"
                 render={({ field }) => (
                   <FormItem className="w-full ">
-                    <FormLabel className="text-slate-800">Username</FormLabel>
+                    <FormLabel className="text-background">Username</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="NIP Pendek"
                         {...field}
-                        className="outline-none"
+                        className="outline-none border-none bg-border text-background"
                       />
                     </FormControl>
                     <FormMessage className="font-mono rounded-md bg-destructive/15 text-sm text-destructive py-1 px-1" />
@@ -94,12 +94,12 @@ const LoginPage = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="w-full">
-                    <FormLabel className="text-slate-800">password</FormLabel>
+                    <FormLabel className="text-background">password</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="******"
                         type="password"
-                        className="outline-none"
+                        className="outline-none border-none bg-border text-background"
                         {...field}
                       />
                     </FormControl>
@@ -111,14 +111,14 @@ const LoginPage = () => {
                 variant="default"
                 type="submit"
                 disabled={isPending}
-                className="cursor-pointer w-full"
+                className="cursor-pointer w-full text-background"
               >
                 Login
               </Button>
 
               <Button
                 variant="link"
-                className="text-sm font-mono text-foreground"
+                className="text-sm font-mono text-background"
               >
                 Belum punya akun? kontak admin 😉
               </Button>

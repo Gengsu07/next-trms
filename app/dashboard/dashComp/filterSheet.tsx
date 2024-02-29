@@ -22,7 +22,7 @@ const FilterSheet = () => {
         <SheetTrigger asChild>
           <Button
             variant="outline"
-            className="fixed bottom-24 right-4 bg-accent-foreground  hover:bg-primary  text-white px-4 w-auto h-12  flex justify-center items-center gap-1 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none rounded-full"
+            className="fixed bottom-24 right-4 dark:bg-accent bg-accent-foreground  hover:bg-primary  text-white px-4 w-auto h-12  flex justify-center items-center gap-1 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none rounded-full"
           >
             <LucideBrainCircuit />
             <span className="text-sm font-mono">Filter Data</span>
@@ -30,15 +30,15 @@ const FilterSheet = () => {
         </SheetTrigger>
         <SheetContent
           side="right"
-          className="flex flex-col justify-start items-center px-0 w-full"
+          className="flex flex-col justify-start items-center px-0 w-full bg-accent"
         >
-          <SheetHeader className="flex flex-row justify-start items-center w-full gap-2 px-2">
+          <SheetHeader className="flex flex-col md:flex-row justify-start items-center w-full gap-2 px-5">
             <Link href="/">
               <Image src="/logo_djp.png" alt="logo" width="40" height="40" />
             </Link>
             <h3 className="text-lg font-bold ">Filter Data</h3>
           </SheetHeader>
-          <Separator className="" />
+          <Separator className="bg-background border-0 outline-none" />
           <div className="overflow-y-scroll p-0 m-0 w-full mt-1">
             <FilterForm onFilterForm={onFilter} />
           </div>

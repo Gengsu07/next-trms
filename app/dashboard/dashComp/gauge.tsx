@@ -1,6 +1,6 @@
 "use client";
 import useFilterData from "@/app/store/useFilterData";
-import skeletonCapaian from "@/components/skeleton/capaianSkeleton";
+import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import querystring from "querystring";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 import { dark } from "@/constant/colorPallette";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface TCapaian {
   label: string;
@@ -27,7 +28,7 @@ const Capaian = ({ className }: { className?: string }) => {
   const queryParamsString = querystring.stringify(cleanFilterData);
 
   //   console.log("http://localhost:3000/api/capaian?" + queryParamsString);
-  const { data, isFetching, error } = useQuery<TCapaian>({
+  const { data, isLoading, error } = useQuery<TCapaian>({
     queryKey: ["capaian", queryParamsString],
     queryFn: () =>
       fetch("http://127.0.0.1:3000/api/capaian?" + queryParamsString, {
@@ -101,22 +102,31 @@ const Capaian = ({ className }: { className?: string }) => {
   };
   return (
     <main className={cn("w-full", className)}>
-      <Card className="w-full">
-        <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
-          Capaian
-        </CardHeader>
-        <CardContent className="p-0 flex flex-col items-center justify-center">
-          <ReactEchart
-            option={gaugeChartOption}
-            className="w-full h-full p-0 "
-            style={{
-              height: "300px",
-              padding: "0px",
-              bottom: "0px",
-            }}
-          />
-        </CardContent>
-      </Card>
+      {isLoading ? (
+        <>
+          <Card className="flex flex-col justify-center items-center gap-5 py-5">
+            <Skeleton className="w-4/5 h-10 " />
+            <Skeleton className="w-4/5 h-52" />
+          </Card>
+        </>
+      ) : (
+        <Card className="w-full">
+          <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
+            Capaian
+          </CardHeader>
+          <CardContent className="p-0 flex flex-col items-center justify-center">
+            <ReactEchart
+              option={gaugeChartOption}
+              className="w-full h-full p-0 "
+              style={{
+                height: "300px",
+                padding: "0px",
+                bottom: "0px",
+              }}
+            />
+          </CardContent>
+        </Card>
+      )}
     </main>
   );
 };

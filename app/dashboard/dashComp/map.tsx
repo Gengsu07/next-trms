@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { MapTopn } from "@/components/transform/topn";
 import { dark } from "@/constant/colorPallette";
+import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const MapPage = ({ className }: { className?: string }) => {
@@ -16,7 +17,7 @@ const MapPage = ({ className }: { className?: string }) => {
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
-  const { data, isFetching, error } = useQuery<TMap>({
+  const { data, isLoading, error } = useQuery<TMap>({
     queryKey: ["map", queryParamsString],
     queryFn: () =>
       fetch("http://127.0.0.1:3000/api/map?" + queryParamsString, {
@@ -106,22 +107,26 @@ const MapPage = ({ className }: { className?: string }) => {
 
   return (
     <div className={cn("w-full h-full", className)}>
-      <Card className="w-full">
-        <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
-          Per Jenis Pajak
-        </CardHeader>
-        <CardContent className="p-0 flex flex-col items-center justify-center">
-          <ReactEchart
-            option={mapChartOption}
-            className="w-full h-full p-0"
-            style={{
-              height: "450px",
-              padding: "0px",
-              bottom: "0px",
-            }}
-          />
-        </CardContent>
-      </Card>
+      {isLoading ? (
+        <GenericSkeleton />
+      ) : (
+        <Card className="w-full">
+          <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
+            Per Jenis Pajak
+          </CardHeader>
+          <CardContent className="p-0 flex flex-col items-center justify-center">
+            <ReactEchart
+              option={mapChartOption}
+              className="w-full h-full p-0"
+              style={{
+                height: "450px",
+                padding: "0px",
+                bottom: "0px",
+              }}
+            />
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };

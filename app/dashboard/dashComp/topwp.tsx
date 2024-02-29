@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { SektorTopn } from "@/components/transform/topn";
 import { dark } from "@/constant/colorPallette";
+import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const Topwp = ({ className }: { className?: string }) => {
@@ -16,7 +17,7 @@ const Topwp = ({ className }: { className?: string }) => {
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
-  const { data, isFetching, error } = useQuery<TTopWP>({
+  const { data, isLoading, error } = useQuery<TTopWP>({
     queryKey: ["topwp", queryParamsString],
     queryFn: () =>
       fetch("http://127.0.0.1:3000/api/topwp?" + queryParamsString, {
@@ -91,22 +92,26 @@ const Topwp = ({ className }: { className?: string }) => {
   };
   return (
     <main className={cn("w-full h-full", className)}>
-      <Card className="w-full">
-        <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
-          Top & Bottom 5 WP
-        </CardHeader>
-        <CardContent className="p-0 flex flex-col items-center justify-center">
-          <ReactEchart
-            option={topwp_option}
-            className="w-full h-full p-0"
-            style={{
-              height: "500px",
-              padding: "0px",
-              bottom: "0px",
-            }}
-          />
-        </CardContent>
-      </Card>
+      {isLoading ? (
+        <GenericSkeleton />
+      ) : (
+        <Card className="w-full">
+          <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
+            Top & Bottom 5 WP
+          </CardHeader>
+          <CardContent className="p-0 flex flex-col items-center justify-center">
+            <ReactEchart
+              option={topwp_option}
+              className="w-full h-full p-0"
+              style={{
+                height: "500px",
+                padding: "0px",
+                bottom: "0px",
+              }}
+            />
+          </CardContent>
+        </Card>
+      )}
     </main>
   );
 };
