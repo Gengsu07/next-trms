@@ -24,7 +24,7 @@ const AuthToggleNav = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="text-sm font-normal text-black w-full"
+              className="text-sm font-normal text-foreground w-full"
             >
               <Link href={session && session.user ? "" : "/api/auth/signin"}>
                 {session && session.user ? session.user.name : "Sign In"}
