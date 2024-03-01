@@ -78,7 +78,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const PY_to = new Date(to.getFullYear() - 1, to.getMonth(), to.getDate());
   //query db
   const kpi = await getQueryData(from, to, PY_from, PY_to, whereClause);
-  console.log(kpi);
   const responseData = [
     {
       label: "MPN",

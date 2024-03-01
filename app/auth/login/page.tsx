@@ -55,7 +55,7 @@ const LoginPage = () => {
   };
   return (
     <div className="w-full h-screen flex justify-center items-center bg-border">
-      <div className="w-full max-w-md h-fit py-7 flex flex-col justify-start items-center bg-card rounded-md">
+      <div className="w-full max-w-md h-fit py-10 flex flex-col justify-start items-center bg-card rounded-md">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(OnSubmit)}
@@ -116,7 +116,7 @@ const LoginPage = () => {
                 variant="default"
                 type="submit"
                 disabled={isPending}
-                className="cursor-pointer w-full text-muted"
+                className="cursor-pointer w-full text-white"
               >
                 Login
               </Button>
