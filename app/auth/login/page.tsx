@@ -85,7 +85,7 @@ const LoginPage = () => {
                       <Input
                         placeholder="NIP Pendek"
                         {...field}
-                        className="outline-none border-none bg-background text-background"
+                        className="outline-none border-none bg-border text-accent-foreground"
                       />
                     </FormControl>
                     <FormMessage className="font-mono rounded-md bg-destructive/15 text-sm text-destructive py-1 px-1" />
@@ -104,7 +104,7 @@ const LoginPage = () => {
                       <Input
                         placeholder="******"
                         type="password"
-                        className="outline-none border-none bg-border text-background"
+                        className="outline-none border-none bg-border text-accent-foreground"
                         {...field}
                       />
                     </FormControl>

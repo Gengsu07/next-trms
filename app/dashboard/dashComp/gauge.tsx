@@ -112,7 +112,7 @@ const Capaian = ({ className }: { className?: string }) => {
           <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
             Capaian
           </CardHeader>
-          <CardContent className="p-0 flex flex-col items-center justify-center">
+          <CardContent className="p-0 flex flex-col items-center justify-center ">
             <ReactEchart
               option={gaugeChartOption}
               className="w-full h-full p-0 "

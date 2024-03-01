@@ -17,3 +17,5 @@ export const colors = [
   "#2D9596",
   "#B4B4B8",
 ];
+
+// #0d0e21','#f5f8fc','#99beff','#262a38','#2e3245','#ade0ff','#c5302c','#5e97ff
