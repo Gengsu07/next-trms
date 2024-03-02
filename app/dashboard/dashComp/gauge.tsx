@@ -7,8 +7,9 @@ import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import querystring from "querystring";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
-import { dark } from "@/constant/colorPallette";
+import { dark, light } from "@/constant/colorPallette";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTheme } from "next-themes";
 
 interface TCapaian {
   label: string;
@@ -23,7 +24,7 @@ interface TCapaian {
 
 const Capaian = ({ className }: { className?: string }) => {
   const { filterData, parseFilterData } = useFilterData();
-
+  const { theme } = useTheme();
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
@@ -57,8 +58,9 @@ const Capaian = ({ className }: { className?: string }) => {
       },
     },
   ];
+  const color = theme === "dark" ? dark : light;
   const gaugeChartOption = {
-    color: dark[0],
+    color: color[0],
     series: [
       {
         type: "gauge",
@@ -67,13 +69,13 @@ const Capaian = ({ className }: { className?: string }) => {
           showAbove: true,
           size: 18,
           itemStyle: {
-            color: "#FAC858",
+            color: color[0],
           },
         },
         pointer: {
           icon: "path://M2.9,0.7L2.9,0.7c1.4,0,2.6,1.2,2.6,2.6v115c0,1.4-1.2,2.6-2.6,2.6l0,0c-1.4,0-2.6-1.2-2.6-2.6V3.3C0.3,1.9,1.4,0.7,2.9,0.7z",
           width: 8,
-          length: "80%",
+          length: "70%",
           offsetCenter: [0, "8%"],
         },
         progress: {
@@ -92,8 +94,8 @@ const Capaian = ({ className }: { className?: string }) => {
           width: 40,
           height: 14,
           fontSize: 14,
-          color: "#fff",
-          backgroundColor: "#2563eb",
+          color: color[2],
+          backgroundColor: color[0],
           borderRadius: 3,
           formatter: "{value}%",
         },

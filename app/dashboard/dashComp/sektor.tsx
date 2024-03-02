@@ -8,12 +8,13 @@ import { convertNominal } from "./nominalConverter";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { SektorTopn } from "@/components/transform/topn";
-import { dark } from "@/constant/colorPallette";
+import { dark, light } from "@/constant/colorPallette";
 import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
+import { useTheme } from "next-themes";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const SektorPage = ({ className }: { className?: string }) => {
-  // const { theme } = useTheme();
+  const { theme } = useTheme();
   const { filterData, parseFilterData } = useFilterData();
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
@@ -45,7 +46,7 @@ const SektorPage = ({ className }: { className?: string }) => {
         saveAsImage: { show: true },
       },
     },
-    color: dark,
+    color: theme === "dark" ? dark : light,
     legend: {},
     grid: {
       left: "3%",

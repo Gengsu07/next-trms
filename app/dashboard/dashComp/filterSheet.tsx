@@ -22,7 +22,7 @@ const FilterSheet = () => {
         <SheetTrigger asChild>
           <Button
             variant="outline"
-            className="fixed bottom-10 right-4 dark:bg-accent bg-accent-foreground  hover:bg-primary  text-white px-4 w-auto h-12  flex justify-center items-center gap-1 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none rounded-full"
+            className="fixed bottom-10 right-4 dark:bg-accent bg-accent-foreground  hover:bg-primary  text-white px-4 py-5 w-auto h-12  flex justify-center items-center gap-1 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none rounded-full"
           >
             <LucideBrainCircuit />
             <span className="text-sm font-mono">Filter Data</span>
