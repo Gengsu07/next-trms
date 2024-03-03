@@ -29,7 +29,7 @@ const KPI = () => {
   });
   const skeletonkpi = [1, 2, 3, 4, 5];
   // const { netto, bruto, restitusi } = data || {};
-  console.log(data_kpi);
+  // console.log(data_kpi);
   return (
     <section className="grid grid-cols-1 md:grid-cols-5 gap-2  w-full h-fit bg-background-primary">
       {isLoading ? (
