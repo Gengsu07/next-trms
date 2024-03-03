@@ -12,17 +12,19 @@ import {
 import { LucideBrainCircuit } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import FilterForm from "./filter_form";
 
 const FilterSheet = () => {
   const { onFilter } = useFilterData();
+  const [open, setOpen] = useState(false);
   return (
     <section className="w-full md:w-fit min-h-screen  bg-card rounded-md shadow-md border-[2px] border-accent z-10">
-      <Sheet>
+      <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button
             variant="outline"
-            className="fixed bottom-10 right-4 dark:bg-accent bg-accent-foreground  hover:bg-primary  text-white px-4 w-auto h-12  flex justify-center items-center gap-1 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none rounded-full"
+            className="fixed bottom-10 right-4 dark:bg-foreground  bg-accent-foreground text-white dark:text-accent px-4 w-auto h-12  border-0 outline-none flex justify-center items-center gap-1 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none rounded-full hover:bg-primary cursor-pointer"
           >
             <LucideBrainCircuit />
             <span className="text-sm font-mono">Filter Data</span>
@@ -30,16 +32,20 @@ const FilterSheet = () => {
         </SheetTrigger>
         <SheetContent
           side="right"
-          className="flex flex-col justify-start items-center px-0 w-full bg-accent"
+          className="flex flex-col justify-start items-center px-0 w-full bg-card rounded-md"
         >
-          <SheetHeader className="flex flex-col md:flex-row justify-start items-center w-full gap-2 px-5">
+          <SheetHeader className="flex flex-col md:flex-row justify-center items-center w-full gap-2 space-y-0 py-5">
             <Link href="/">
               <Image src="/logo_djp.png" alt="logo" width="40" height="40" />
             </Link>
-            <h3 className="text-lg font-bold ">Filter Data</h3>
+            <p className="text-sm mt-0">
+              Tax Revenue
+              <br />
+              Monitoring System
+            </p>
           </SheetHeader>
-          <Separator className="bg-background border-0 outline-none" />
-          <div className="overflow-y-scroll p-0 m-0 w-full mt-1">
+          <Separator className="bg-foreground border-0 outline-none" />
+          <div className=" p-0 m-0 w-full mt-1 h-full overflow-y-scroll">
             <FilterForm onFilterForm={onFilter} />
           </div>
         </SheetContent>
@@ -49,3 +55,4 @@ const FilterSheet = () => {
 };
 
 export default FilterSheet;
+// overflow-y-scroll

@@ -27,6 +27,7 @@ import { z } from "zod";
 import { RxDoubleArrowLeft } from "react-icons/rx";
 import { TbFilterOff } from "react-icons/tb";
 import { SheetClose } from "@/components/ui/sheet";
+import { DialogClose } from "@/components/ui/dialog";
 
 export type FilterType = z.infer<typeof FilterSchema>;
 
@@ -45,7 +46,7 @@ const FilterForm = ({
     onFilterForm(data);
   };
   return (
-    <div className="flex flex-col justify-start items-start min-w-full sm:w-60 xl:w-80 h-fit sm:h-screen  border-background bg-accent border-0 rounded-md shadow-md py-2 px-2">
+    <div className="flex flex-col justify-start items-start min-w-full sm:w-60 xl:w-80 h-fit sm:h-screen  border-background bg-card border-0 rounded-md shadow-md py-2 px-2">
       {/* <div className="flex justify-between items-center w-full h-10 mb-5">
         <h3 className="text-lg font-bold">Filter data</h3>
 
@@ -63,7 +64,7 @@ const FilterForm = ({
             control={form.control}
             name="tanggal"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="flex flex-col ">
                 <FormLabel>Tanggal</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -73,6 +74,7 @@ const FilterForm = ({
                       variant={"outline"}
                       className={cn(
                         "w-full justify-start text-left font-normal",
+                        "bg-accent border-[1px] outline-none",
                         !field.value && "text-muted-foreground"
                       )}
                     >
@@ -117,7 +119,7 @@ const FilterForm = ({
               <FormItem>
                 <FormLabel>Kantor</FormLabel>
                 <MultipleSelector
-                  className="bg-background border-0 outline-none"
+                  className="bg-accent border-[1px] outline-none"
                   options={kpp}
                   placeholder="KPP"
                   hidePlaceholderWhenSelected
@@ -142,7 +144,7 @@ const FilterForm = ({
               <FormItem>
                 <FormLabel>Sektor</FormLabel>
                 <MultipleSelector
-                  className="bg-background border-0 outline-none"
+                  className="bg-accent border-[1px] outline-none "
                   options={sektor}
                   placeholder="Pilih Sektor"
                   hidePlaceholderWhenSelected
@@ -166,7 +168,7 @@ const FilterForm = ({
               <FormItem>
                 <FormLabel>Jenis Pajak</FormLabel>
                 <MultipleSelector
-                  className="bg-background border-0 outline-none"
+                  className="bg-accent border-[1px] outline-none"
                   options={map}
                   placeholder="MAP"
                   hidePlaceholderWhenSelected
@@ -190,7 +192,7 @@ const FilterForm = ({
               <FormItem>
                 <FormLabel>Kode Bayar</FormLabel>
                 <MultipleSelector
-                  className="bg-background border-0 outline-none"
+                  className="bg-accent border-[1px] outline-none"
                   options={kjs}
                   placeholder="Kode Jenis Setoran"
                   hidePlaceholderWhenSelected
@@ -218,7 +220,7 @@ const FilterForm = ({
                     type="text"
                     {...field}
                     value={field.value || ""}
-                    className="bg-background border-0 outline-none"
+                    className="bg-accent border-[1px] outline-none"
                   />
                 </FormControl>
 
@@ -228,11 +230,9 @@ const FilterForm = ({
           />
 
           <div className="flex justify-between items-center gap-5">
-            <SheetClose asChild>
-              <Button type="submit" className="cursor-pointer w-full">
-                Analisa
-              </Button>
-            </SheetClose>
+            <Button type="submit" className="cursor-pointer w-full">
+              Analisa
+            </Button>
             <Button onClick={() => form.reset()} className="cursor-pointer">
               <TbFilterOff />
             </Button>
