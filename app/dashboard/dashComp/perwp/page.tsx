@@ -37,7 +37,7 @@ const PerWPTablePage = ({ className }: { className?: string }) => {
   return (
     <main
       className={cn(
-        "w-full h-full border-[1px] border-foreground-10 rounded-md shadow-md",
+        "w-full h-full border-[1px] border-foreground-10 rounded-md shadow-md bg-background",
         className
       )}
     >
@@ -45,22 +45,35 @@ const PerWPTablePage = ({ className }: { className?: string }) => {
         <GenericSkeleton />
       ) : (
         <>
-          <div className="text-center text-background  p-0 space-y-0 bg-accent-foreground py-3 rounded-t-md">
-            <p className="font-bold ">Detail per Wajib Pajak YoY</p>
-            <p className="font-mono text-sm">
+          <div className="text-center text-background  p-0 space-y-0 py-3 rounded-t-md bg-accent-foreground">
+            <p className="font-bold text-background ">
+              Detail per Wajib Pajak YoY
+            </p>
+            <p className="font-mono text-sm text-backgroundd">
               10 Wajib Pajak Besar berdasarkan penerimaan netto
             </p>
           </div>
 
           <PerWPTableData columns={columns} data={data || []} />
           <div className="flex justify-start items-center gap-2 px-2 rounded-md mt-2 bg-accent-foreground py-5">
-            <Button onClick={() => setPage(page - 1)}>Previous</Button>
-            <Button onClick={() => setPage(page + 1)}>Next</Button>
+            <Button
+              onClick={() => setPage(page - 1)}
+              className="bg-primary-foreground text-accent-foreground"
+            >
+              Previous
+            </Button>
+            <Button
+              onClick={() => setPage(page + 1)}
+              className="bg-primary-foreground text-accent-foreground"
+            >
+              Next
+            </Button>
             <Button
               variant="default"
               onClick={() => downloadToExcel(data || [])}
+              className="bg-primary-foreground text-accent-foreground"
             >
-              Download Excel
+              Export Excel
             </Button>
 
             <Button variant="outline" className="font-medium font-mono ">

@@ -8,8 +8,9 @@ import { convertNominal } from "./nominalConverter";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { SektorTopn } from "@/components/transform/topn";
-import { dark } from "@/constant/colorPallette";
+import { dark, light_colorscale } from "@/constant/colorPallette";
 import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
+import { color } from "echarts";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const Topwp = ({ className }: { className?: string }) => {
@@ -38,6 +39,7 @@ const Topwp = ({ className }: { className?: string }) => {
         saveAsImage: {},
       },
     },
+    color: light_colorscale,
     series: [
       {
         name: "top",
@@ -80,6 +82,7 @@ const Topwp = ({ className }: { className?: string }) => {
         left: "5%",
         top: "50%",
         sort: "ascending",
+        colorBy: data?.bottom,
         label: {
           show: true,
           position: "inside",

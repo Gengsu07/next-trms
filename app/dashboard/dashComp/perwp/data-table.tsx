@@ -80,7 +80,7 @@ const PerWPTableData = <TData, TValue>({
         </DropdownMenuContent>
       </DropdownMenu> */}
       <Table>
-        <TableHeader className="bg-accent-foreground">
+        <TableHeader className="bg-background">
           {table.getHeaderGroups().map((headergroup) => {
             return (
               <TableRow key={headergroup.id}>
@@ -100,7 +100,7 @@ const PerWPTableData = <TData, TValue>({
                             ? 2
                             : 1
                         }
-                        className="text-center font-bold text-accent"
+                        className="text-center font-bold text-foreground"
                       >
                         {flexRender(
                           header.column.columnDef.header,
@@ -165,12 +165,12 @@ const PerWPTableData = <TData, TValue>({
             </TableHead>
           </TableRow> */}
         </TableHeader>
-        <TableBody>
+        <TableBody className="bg-background">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="text-foreground">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

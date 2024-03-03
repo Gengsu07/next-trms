@@ -8,10 +8,12 @@ import { convertNominal } from "./nominalConverter";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 import { TKPP } from "@/app/types/types";
 import { cn } from "@/lib/utils";
-import { colors } from "@/constant/colorPallette";
+import { light, dark } from "@/constant/colorPallette";
 import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
+import { useTheme } from "next-themes";
 
 const Adm = ({ className }: { className?: string }) => {
+  const { theme } = useTheme();
   const { filterData, parseFilterData } = useFilterData();
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
@@ -25,9 +27,10 @@ const Adm = ({ className }: { className?: string }) => {
   });
 
   const kppChartOption = {
-    color: colors,
+    color: theme == "dark" ? dark : light,
     tooltip: {
       trigger: "item",
+      formatter: `{b}: {d}%`,
     },
     toolbox: {
       show: true,
