@@ -35,7 +35,7 @@ const TrendPage = ({ className }: { className?: string }) => {
     },
     xAxis: {
       type: "category",
-      data: data?.cy.map((item) => item.datebayar),
+      data: data?.cy.map((item) => item.DATEBAYAR),
       axisLabel: {
         show: true,
         formatter: function (value: Date) {
@@ -77,7 +77,7 @@ const TrendPage = ({ className }: { className?: string }) => {
     series: [
       {
         name: "tahun ini",
-        data: data?.cy.map((item) => item._sum.nominal),
+        data: data?.cy.map((item) => item.CY_CUMSUM),
         type: "line",
         areaStyle: { color: "rgba(255,202,25,1)" },
         itemStyle: {
@@ -87,7 +87,7 @@ const TrendPage = ({ className }: { className?: string }) => {
       },
       {
         name: "tahun lalu",
-        data: data?.py.map((item) => item._sum.nominal),
+        data: data?.py.map((item) => item.PY_CUMSUM),
         type: "line",
         areaStyle: { color: "rgb(0,95,173)" },
         itemStyle: { color: "rgb(0,95,173)" },
