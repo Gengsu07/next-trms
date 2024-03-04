@@ -25,8 +25,8 @@ export type TKPI = {
   yoy_restitusi: number;
 };
 export type TTrend = {
-  cy: { DATEBAYAR: Date; CY_CUMSUM: number }[];
-  py: { DATEBAYAR: Date; PY_CUMSUM: number }[];
+  cy: { datebayar: Date; CY_CUMSUM: number }[];
+  py: { datebayar: Date; PY_CUMSUM: number }[];
 };
 
 export type TMap = {

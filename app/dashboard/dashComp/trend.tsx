@@ -23,7 +23,6 @@ const TrendPage = ({ className }: { className?: string }) => {
         cache: "no-store",
       }).then((res) => res.json()),
   });
-
   const areaChartOption = {
     // title: { text: "Trend Penerimaan YoY", left: "center", top: "auto" },
     toolbox: {
@@ -35,7 +34,7 @@ const TrendPage = ({ className }: { className?: string }) => {
     },
     xAxis: {
       type: "category",
-      data: data?.cy.map((item) => item.DATEBAYAR),
+      data: data?.cy.map((item) => item.datebayar),
       axisLabel: {
         show: true,
         formatter: function (value: Date) {
@@ -89,8 +88,8 @@ const TrendPage = ({ className }: { className?: string }) => {
         name: "tahun lalu",
         data: data?.py.map((item) => item.PY_CUMSUM),
         type: "line",
-        areaStyle: { color: "rgb(0,95,173)" },
-        itemStyle: { color: "rgb(0,95,173)" },
+        areaStyle: { color: "rgba(0,95,173,0.7)" },
+        itemStyle: { color: "rgba(0,95,173,0.7)" },
         smooth: true,
       },
     ],

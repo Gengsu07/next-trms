@@ -59,20 +59,20 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   const fromDate = new Date(cleanFilterConditions.from);
   const toDate = new Date(cleanFilterConditions.to);
-  let PY_from = new Date(
-    fromDate.getFullYear() - 1,
-    fromDate.getMonth(),
-    fromDate.getDate()
-  );
-  let PY_from_str = PY_from.toISOString().split("T")[0];
+  // let PY_from = new Date(
+  //   fromDate.getFullYear() - 1,
+  //   fromDate.getMonth(),
+  //   fromDate.getDate()
+  // );
+  let PY_from_str = fromDate.toISOString().split("T")[0];
 
-  const PY_to = new Date(
-    toDate.getFullYear() - 1,
-    toDate.getMonth(),
-    toDate.getDate()
-  );
+  // const PY_to = new Date(
+  //   toDate.getFullYear() - 1,
+  //   toDate.getMonth(),
+  //   toDate.getDate()
+  // );
 
-  const PY_to_str = PY_to.toISOString().split("T")[0];
+  const PY_to_str = toDate.toISOString().split("T")[0];
 
   const filterDate_py = `"datebayar" >= make_date(date_part('year','${PY_from_str}'::date)::int-1,1,1) and "datebayar" <= make_date(date_part('year','${PY_to_str}'::date)::int-1,
   date_part('month','${PY_to_str}'::date)::int,date_part('day','${PY_to_str}'::date)::int)`;
@@ -118,7 +118,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
   // df."datebayar",
   // SUM(CASE WHEN ${filterDate_cy} then df."sum") OVER (ORDER BY df."datebayar" ASC ) AS "CY_CUMSUM"
   // GROUP BY df."datebayar",df."sum"
-  console.log(whereClause_py);
   const py_trend = await prisma.$queryRaw(
     Prisma.sql`
     WITH df AS (
