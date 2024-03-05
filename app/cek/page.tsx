@@ -1,6 +1,7 @@
-import FilterSheet from "../dashboard/dashComp/filterSheet";
+"use client";
+import TsParticles from "@/components/animatedBackground";
 
 const CekComponent = () => {
-  return <FilterSheet />;
+  return <TsParticles />;
 };
 export default CekComponent;

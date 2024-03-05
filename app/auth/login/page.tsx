@@ -22,6 +22,7 @@ import { useTransition } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { ModeToggle } from "@/components/theme-switcher";
+import TsParticles from "@/components/animatedBackground";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -55,11 +56,12 @@ const LoginPage = () => {
   };
   return (
     <div className="w-full h-screen flex justify-center items-center bg-border">
-      <div className="w-full max-w-md h-fit py-10 flex flex-col justify-start items-center bg-card rounded-md">
+      <TsParticles />
+      <div className="w-full max-w-md h-fit py-10 flex flex-col justify-start items-center bg-card rounded-lg shadow-lg shadow-white/10  bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(OnSubmit)}
-            className="flex flex-col justify-center items-center w-4/5 h-full"
+            className="flex flex-col justify-center items-center w-full px-5 h-full"
           >
             <div className="flex justify-center items-center w-full gap-2">
               <Link href="/">

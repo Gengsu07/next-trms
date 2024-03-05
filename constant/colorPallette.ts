@@ -54,6 +54,7 @@ export const light_colorscale = [
   "#94c1f3",
   "#b2d5f9",
 ];
+export const loginBackground = ["#e2e8f0", "#1e293b"];
 
 // "#2563eb",
 //   "#fab715",

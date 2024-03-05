@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import querystring from "querystring";
+import { symbol } from "zod";
 
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
@@ -81,16 +82,20 @@ const TrendPage = ({ className }: { className?: string }) => {
         areaStyle: { color: "rgba(255,202,25,1)" },
         itemStyle: {
           color: "rgba(255,202,25,1)",
+          symbol: " ",
         },
         smooth: true,
+        showSymbol: false,
       },
       {
         name: "tahun lalu",
         data: data?.py.map((item) => item.PY_CUMSUM),
         type: "line",
         areaStyle: { color: "rgba(0,95,173,0.7)" },
-        itemStyle: { color: "rgba(0,95,173,0.7)" },
+        itemStyle: { color: "rgba(0,95,173,0.7)", symbol: " " },
+        lineStyle: { type: "dotted" },
         smooth: true,
+        showSymbol: false,
       },
     ],
   };
