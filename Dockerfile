@@ -8,9 +8,11 @@ WORKDIR /app
 COPY package.json ./
 
 RUN npm install
+# Rebuild bcrypt from source in the builder stage
+# RUN npm rebuild bcrypt --build-from-source
 
 # Ensure compatible Node.js version in builder stage (check version during build)
-RUN node -v
+# RUN node -v
 
 COPY . .
 
@@ -20,7 +22,7 @@ FROM node:18-alpine AS runner
 
 WORKDIR /app
 
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app ./
 COPY --from=builder /app/out ./out
 
 EXPOSE 3000
