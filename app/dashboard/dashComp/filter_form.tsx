@@ -28,6 +28,8 @@ import { RxDoubleArrowLeft } from "react-icons/rx";
 import { TbFilterOff } from "react-icons/tb";
 import { SheetClose } from "@/components/ui/sheet";
 import { DialogClose } from "@/components/ui/dialog";
+import { DateRange } from "react-day-picker";
+import { useState } from "react";
 
 export type FilterType = z.infer<typeof FilterSchema>;
 
@@ -41,6 +43,12 @@ const FilterForm = ({
   const form = useForm<FilterType>({
     resolver: zodResolver(FilterSchema),
   });
+
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(new Date().getFullYear(), 0, 1),
+    to: new Date(),
+  });
+
   const onSubmit = (data: FilterType) => {
     // console.log("filterform:", data);
     onFilterForm(data);
@@ -79,14 +87,14 @@ const FilterForm = ({
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {field.value?.from ? (
-                        field.value.to ? (
+                      {date?.from ? (
+                        date?.to ? (
                           <>
-                            {format(field.value.from, "LLL dd, y")} -{" "}
-                            {format(field.value.to, "LLL dd, y")}
+                            {format(date?.from, "LLL dd, y")} -{" "}
+                            {format(date?.to, "LLL dd, y")}
                           </>
                         ) : (
-                          format(field.value.from, "LLL dd, y")
+                          format(date?.from, "LLL dd, y")
                         )
                       ) : (
                         <span>Rentang waktu</span>
@@ -97,9 +105,9 @@ const FilterForm = ({
                     <Calendar
                       initialFocus
                       mode="range"
-                      defaultMonth={field.value?.from}
-                      selected={field.value}
-                      onSelect={field.onChange}
+                      defaultMonth={date?.from}
+                      selected={date}
+                      onSelect={setDate}
                       numberOfMonths={3}
                     />
                   </PopoverContent>

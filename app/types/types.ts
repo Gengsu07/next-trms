@@ -24,6 +24,16 @@ export type TKPI = {
   naik_restitusi: number;
   yoy_restitusi: number;
 };
+
+export type parsedData = {
+  npwp?: string | undefined;
+  kjs?: string[] | undefined;
+  map?: string[] | undefined;
+  sektor?: string[] | undefined;
+  admin?: string[] | undefined;
+  from?: string | undefined;
+  to?: string | undefined;
+};
 export type TTrend = {
   cy: { datebayar: Date; CY_CUMSUM: number }[];
   py: { datebayar: Date; PY_CUMSUM: number }[];

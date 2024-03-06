@@ -26,8 +26,15 @@ const useFilterData = create<FilterState>((set) => ({
     set({ filterData: newFilterData });
   },
   parseFilterData: (filteredData) => {
-    const { tanggal, admin, sektor, map, kjs, npwp } = filteredData;
-    const formatDate = (dateString: Date) => {
+    const {
+      tanggal = { from: new Date(CurYear, 0, 1), to: new Date() },
+      admin,
+      sektor,
+      map,
+      kjs,
+      npwp,
+    } = filteredData;
+    const formatDate = (dateString?: Date) => {
       return dateString
         ? format(new Date(dateString), "yyyy-MM-dd")
         : undefined;

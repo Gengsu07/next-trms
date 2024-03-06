@@ -8,6 +8,7 @@ import SektorPage from "./dashComp/sektor";
 import SektorMap from "./dashComp/sektormap";
 import Topwp from "./dashComp/topwp";
 import TrendPage from "./dashComp/trend";
+import DashboardInfo from "./dashboardState";
 import FilterCollapse from "./filter_collapse";
 
 const Dashboard = () => {
@@ -17,8 +18,8 @@ const Dashboard = () => {
         {/* <div className="min-h-screen ">
           <FilterCollapse />
         </div> */}
-        <FilterSheet />
         <div className="flex flex-col justify-start items-start gap-2 w-full h-full">
+          <DashboardInfo />
           <KPI />
           <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full">
             <Capaian className="col-span-12 md:col-span-3" />
@@ -38,6 +39,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <FilterSheet />
     </main>
   );
 };

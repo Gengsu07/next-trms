@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const FilterSchema = z.object({
-  tanggal: z.object({ from: z.date(), to: z.date() }),
+  tanggal: z.object({ from: z.date(), to: z.date() }).optional(),
   admin: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
   sektor: z
     .array(z.object({ value: z.string(), label: z.string() }))
