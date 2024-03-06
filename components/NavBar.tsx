@@ -20,14 +20,14 @@ const NavBar = () => {
           <p>Dashboard</p>
         </Link>
         <Link
-          href="/report"
+          href="/sektoral"
           className={classNames({
             "font-semibold  border-b-2 border-accent-foreground":
-              PathName === "report",
+              PathName === "sektoral",
             "cursor-pointer hover:font-semibold text-sm": true,
           })}
         >
-          <p>Report</p>
+          <p>Sektoral</p>
         </Link>
       </div>
     </main>

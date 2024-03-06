@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/theme-provider";
-import Header from "@/components/Header";
 import QueryProvider from "./QueryProvider";
 import { cn } from "@/lib/utils";
 import { fontSans } from "@/lib/fonts";
 import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Poppins({
@@ -17,15 +17,6 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Tax Revenue Monitoring System",
   description: "Self Service Monitor Penerimaan Pajak",
-  icons: {
-    icon: [
-      {
-        media: "(prefers-color-scheme: light)",
-        url: "/logo_djp.png",
-        href: "/logo_djp.png",
-      },
-    ],
-  },
 };
 
 export default function RootLayout({
@@ -49,6 +40,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <Header />
             {children}
             <Toaster />
           </ThemeProvider>

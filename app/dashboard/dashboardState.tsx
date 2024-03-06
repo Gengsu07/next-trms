@@ -5,10 +5,8 @@ import { parsedData } from "../types/types";
 import { kpp, sektor, map } from "@/constant/initialData";
 import { cn } from "@/lib/utils";
 import classNames from "classnames";
-import { usePathname } from "next/navigation";
 
 const DashboardInfo = () => {
-  const PathName = usePathname().replace("/", "");
   const { filterData, parseFilterData } = useFilterData();
   const cleanFilterData: parsedData = parseFilterData(filterData) || {
     from: "" || undefined,
@@ -31,7 +29,6 @@ const DashboardInfo = () => {
   const nm_map = map.filter((item) =>
     cleanFilterData.map?.some((map) => map === item.value)
   );
-  console.log(typeof PathName);
   return (
     <Card
       className={classNames({
