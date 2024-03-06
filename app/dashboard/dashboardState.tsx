@@ -5,8 +5,10 @@ import { parsedData } from "../types/types";
 import { kpp, sektor, map } from "@/constant/initialData";
 import { cn } from "@/lib/utils";
 import classNames from "classnames";
+import { usePathname } from "next/navigation";
 
 const DashboardInfo = () => {
+  const PathName = usePathname().replace("/", "");
   const { filterData, parseFilterData } = useFilterData();
   const cleanFilterData: parsedData = parseFilterData(filterData) || {
     from: "" || undefined,
@@ -29,12 +31,13 @@ const DashboardInfo = () => {
   const nm_map = map.filter((item) =>
     cleanFilterData.map?.some((map) => map === item.value)
   );
+  console.log(typeof PathName);
   return (
     <Card
       className={classNames({
-        "h-20": totalCount > 10,
+        "min-h-24 px-2 py-5": totalCount > 10,
         "h-full sm:h-10": totalCount <= 10,
-        "flex justify-center items-center gap-0 w-full  py-1 px-1": true,
+        "flex justify-center items-center gap-0 w-full  py-1 px-2 h-full": true,
       })}
     >
       <CardContent className="w-full h-full flex flex-col sm:flex-row justify-center items-center space-y-1 sm:space-y-0 space-x-1 p-0">

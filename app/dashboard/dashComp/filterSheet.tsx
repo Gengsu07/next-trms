@@ -14,12 +14,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import FilterForm from "./filter_form";
+import { cn } from "@/lib/utils";
 
-const FilterSheet = () => {
+const FilterSheet = ({ className }: { className?: string }) => {
   const { onFilter } = useFilterData();
   const [open, setOpen] = useState(false);
   return (
-    <section className="w-full md:w-fit min-h-screen  bg-card rounded-md shadow-md border-[2px] border-accent z-10">
+    <section
+      className={cn(
+        "w-full md:w-fit min-h-screen  bg-card rounded-md shadow-md border-[2px] border-accent z-10",
+        className
+      )}
+    >
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
           <Button
