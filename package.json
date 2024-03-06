@@ -36,6 +36,7 @@
     "classnames": "^2.5.1",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.0",
+    "csv-parser": "^3.0.0",
     "date-fns": "^3.2.0",
     "echarts": "^5.4.3",
     "echarts-for-react": "^3.0.2",
