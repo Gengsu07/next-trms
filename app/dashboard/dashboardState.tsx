@@ -29,7 +29,6 @@ const DashboardInfo = () => {
   const nm_map = map.filter((item) =>
     cleanFilterData.map?.some((map) => map === item.value)
   );
-  console.log(totalCount);
   return (
     <Card
       className={classNames({

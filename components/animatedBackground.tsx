@@ -94,7 +94,7 @@ const App = () => {
       },
       detectRetina: true,
     }),
-    []
+    [theme]
   );
 
   if (init) {
