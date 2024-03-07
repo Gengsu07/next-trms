@@ -1,16 +1,17 @@
 "use client";
 import useFilterData from "@/app/store/useFilterData";
-import { TSektor } from "@/app/types/types";
+import { TSektorRes } from "@/app/types/types";
 import { useQuery } from "@tanstack/react-query";
 import querystring from "querystring";
 import dynamic from "next/dynamic";
 import { convertNominal } from "./nominalConverter";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { SektorTopn } from "@/components/transform/topn";
 import { dark, light } from "@/constant/colorPallette";
 import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
 import { useTheme } from "next-themes";
+import { DownloadCloud } from "lucide-react";
+import { perSektor } from "@/lib/xlsx";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const SektorPage = ({ className }: { className?: string }) => {
@@ -19,7 +20,7 @@ const SektorPage = ({ className }: { className?: string }) => {
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
-  const { data, isLoading, error } = useQuery<TSektor>({
+  const { data, isLoading, error } = useQuery<TSektorRes>({
     queryKey: ["sektor", queryParamsString],
     queryFn: () =>
       fetch("http://127.0.0.1:3000/api/sektor?" + queryParamsString, {
@@ -27,10 +28,10 @@ const SektorPage = ({ className }: { className?: string }) => {
       }).then((res) => res.json()),
   });
 
-  const data_sektor = SektorTopn(data?.cy || [], data?.py || [], 5);
-  let sektorlabel = data_sektor?.cy
-    ?.sort((a, b) => a.sum - b.sum)
-    .map((item) => item.nm_sektor);
+  // const data_sektor = SektorTopn(data?.cy || [], data?.py || [], 5);
+  let sektorlabel = data
+    ?.sort((a, b) => a.CY - b.CY)
+    .map((item) => item.nm_kategori);
 
   const SektorBarChartOption = {
     tooltip: {
@@ -40,9 +41,9 @@ const SektorPage = ({ className }: { className?: string }) => {
       },
     },
     toolbox: {
-      show: true,
+      show: false,
       feature: {
-        dataView: { show: true, readOnly: false },
+        // dataView: { show: true, readOnly: false },
         saveAsImage: { show: true },
       },
     },
@@ -71,19 +72,19 @@ const SektorPage = ({ className }: { className?: string }) => {
       {
         name: "tahun ini",
         type: "bar",
-        barMinWidth: 23,
+        barMinWidth: 20,
         label: {
           show: true,
           fontSize: 11,
           formatter: (params: any) => `${convertNominal(params.value)}`,
           align: "right",
         },
-        data: data_sektor.cy?.map((item) => item.sum),
+        data: data?.map((item) => item.CY),
       },
       {
         name: "tahun lalu",
         type: "bar",
-        barMinWidth: 23,
+        barMinWidth: 20,
         label: {
           show: true,
           fontSize: 11,
@@ -96,29 +97,35 @@ const SektorPage = ({ className }: { className?: string }) => {
         //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
         //   },
         // },
-        data: data_sektor.py?.map((item) => item.sum),
+        data: data?.map((item) => item.PY),
       },
     ],
   };
 
   return (
     <main className={cn("w-full h-full", className)}>
-      {isLoading || data?.cy?.length === 0 ? (
+      {isLoading || data?.length === 0 ? (
         <GenericSkeleton />
       ) : (
         <Card className="w-full">
           <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
             Per Sektor
           </CardHeader>
-          <CardContent className="p-0 flex flex-col items-center justify-center">
+          <CardContent className="p-0 flex flex-col items-center justify-center relative">
             <ReactEchart
               option={SektorBarChartOption}
               className="w-full h-full p-0"
               style={{
-                height: "450px",
+                height: "500px",
                 padding: "0px",
                 bottom: "0px",
               }}
+            />
+            <DownloadCloud
+              className="absolute top-0 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
+              size={25}
+              onClick={() => perSektor(data || [])}
+              fill=""
             />
           </CardContent>
         </Card>

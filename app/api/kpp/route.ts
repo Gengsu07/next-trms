@@ -63,8 +63,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
     },
   });
   const perkpp_res = perkpp.map((item) => ({
-    value: item._sum.nominal,
     name: item.admin,
+    value: item._sum.nominal,
   }));
 
   return NextResponse.json(perkpp_res);

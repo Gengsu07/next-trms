@@ -11,6 +11,8 @@ import { MapTopn } from "@/components/transform/topn";
 import { dark, light } from "@/constant/colorPallette";
 import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
 import { useTheme } from "next-themes";
+import { perMap } from "@/lib/xlsx";
+import { DownloadCloud } from "lucide-react";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const MapPage = ({ className }: { className?: string }) => {
@@ -28,11 +30,9 @@ const MapPage = ({ className }: { className?: string }) => {
   });
 
   // console.log("http://127.0.0.1:3000/api/map?" + queryParamsString);
-  const data_map = MapTopn(data?.cy || [], data?.py || [], 5);
+  // const data_map = MapTopn(data?.cy || [], data?.py || [], 5);
 
-  let maplabel = data_map?.cy
-    ?.sort((a, b) => a.sum - b.sum)
-    .map((item) => item.map);
+  const maplabel = data?.sort((a, b) => a.CY - b.CY).map((item) => item.map);
 
   const mapChartOption = {
     tooltip: {
@@ -42,7 +42,7 @@ const MapPage = ({ className }: { className?: string }) => {
       },
     },
     toolbox: {
-      show: true,
+      show: false,
       feature: {
         dataView: { show: true, readOnly: false },
         saveAsImage: { show: true },
@@ -71,7 +71,7 @@ const MapPage = ({ className }: { className?: string }) => {
       {
         name: "tahun ini",
         type: "bar",
-        barMinWidth: 23,
+        barMinWidth: 20,
         label: {
           show: true,
           fontSize: 11,
@@ -84,12 +84,12 @@ const MapPage = ({ className }: { className?: string }) => {
         //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
         //   },
         // },
-        data: data_map?.cy?.map((item) => item.sum),
+        data: data?.map((item) => item.CY),
       },
       {
         name: "tahun lalu",
         type: "bar",
-        barMinWidth: 23,
+        barMinWidth: 20,
         label: {
           show: true,
           fontSize: 11,
@@ -102,29 +102,34 @@ const MapPage = ({ className }: { className?: string }) => {
         //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
         //   },
         // },
-        data: data_map?.py?.map((item) => item.sum),
+        data: data?.map((item) => item.PY),
       },
     ],
   };
 
   return (
     <div className={cn("w-full h-full", className)}>
-      {isLoading || data?.cy?.length === 0 ? (
+      {isLoading || data?.length === 0 ? (
         <GenericSkeleton />
       ) : (
         <Card className="w-full">
           <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
             Per Jenis Pajak
           </CardHeader>
-          <CardContent className="p-0 flex flex-col items-center justify-center">
+          <CardContent className="p-0 flex flex-col items-center justify-center relative">
             <ReactEchart
               option={mapChartOption}
               className="w-full h-full p-0"
               style={{
-                height: "450px",
+                height: "500px",
                 padding: "0px",
                 bottom: "0px",
               }}
+            />
+            <DownloadCloud
+              className="absolute top-0 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
+              size={25}
+              onClick={() => perMap(data || [])}
             />
           </CardContent>
         </Card>

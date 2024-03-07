@@ -40,31 +40,22 @@ export type TTrend = {
 };
 
 export type TMap = {
-  cy: {
-    sum: number;
-    map: string;
-  }[];
-  py: {
-    sum: number;
-    map: string;
-  }[];
-};
+  map: string;
+  CY: number;
+  PY: number;
+}[];
 
 export type TKPP = {
-  _sum: { nominal: number };
+  value: number;
   name: string;
-};
+}[];
 
-export type TSektor = {
-  cy: {
-    sum: number;
-    kd_kategori: string;
-  }[];
-  py: {
-    sum: number;
-    kd_kategori: string;
-  }[];
-};
+export type TSektorRes = {
+  nm_kategori: string;
+  kd_kategori: string;
+  CY: number;
+  PY: number;
+}[];
 
 export type TTopWP = {
   top: {

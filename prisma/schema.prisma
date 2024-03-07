@@ -5,9 +5,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // url      = "postgresql://gengsu07:Gengsu!sh3r3@10.20.254.226:5432/ppmpkm?schema=trms"
+  url      = "postgresql://gengsu07:Gengsu!sh3r3@10.20.254.226:5432/ppmpkm?schema=trms"
   // url      = "postgresql://postgres:postgres@localhost:5432/testDB?schema=production"
-  url      = env("DATABASE_URL")
+  // url      = env("DATABASE_URL")
 }
 
 model target {

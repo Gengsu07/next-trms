@@ -15,6 +15,7 @@ RUN npm install
 # RUN node -v
 
 COPY . .
+RUN npx prisma generate
 
 RUN npm run build
 
@@ -23,7 +24,7 @@ FROM node:18-alpine AS runner
 WORKDIR /app
 
 COPY --from=builder /app ./
-COPY --from=builder /app/out ./out
+# COPY --from=builder /app/out ./out
 
 EXPOSE 3000
 

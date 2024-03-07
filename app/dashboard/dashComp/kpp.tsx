@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import { light, dark } from "@/constant/colorPallette";
 import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
 import { useTheme } from "next-themes";
+import { perUnit } from "@/lib/xlsx";
+import { DownloadCloud } from "lucide-react";
 
 const Adm = ({ className }: { className?: string }) => {
   const { theme } = useTheme();
@@ -18,7 +20,7 @@ const Adm = ({ className }: { className?: string }) => {
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
-  const { data, isLoading, error } = useQuery<TKPP[]>({
+  const { data, isLoading, error } = useQuery<TKPP>({
     queryKey: ["kpp", queryParamsString],
     queryFn: () =>
       fetch("http://127.0.0.1:3000/api/kpp?" + queryParamsString, {
@@ -33,7 +35,7 @@ const Adm = ({ className }: { className?: string }) => {
       formatter: `{b}: {d}%`,
     },
     toolbox: {
-      show: true,
+      show: false,
       feature: {
         dataView: { show: true, readOnly: false },
         saveAsImage: { show: true },
@@ -83,7 +85,7 @@ const Adm = ({ className }: { className?: string }) => {
           <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
             Per KPP
           </CardHeader>
-          <CardContent className="p-0 flex flex-col items-center justify-center">
+          <CardContent className="p-0 flex flex-col items-center justify-center relative">
             <ReactEchart
               option={kppChartOption}
               className="w-full h-full p-0"
@@ -92,6 +94,12 @@ const Adm = ({ className }: { className?: string }) => {
                 padding: "0px",
                 bottom: "0px",
               }}
+            />
+            <DownloadCloud
+              className="absolute top-0 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
+              size={25}
+              onClick={() => perUnit(data || [])}
+              fill=""
             />
           </CardContent>
         </Card>
