@@ -6,6 +6,7 @@ import NextAuth from "next-auth/next";
 import { User } from "@prisma/client";
 
 const authOption: AuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET as string,
   pages: {
     signIn: "/auth/login",
   },
