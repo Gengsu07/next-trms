@@ -1,19 +1,19 @@
 version: "3.9"
 services:
-  trms:
-    image: next-trms-trms
-    restart: always
-    ports:
-      - 3000:3000
-    environment:
-      - .env=.
-  # trms:
-  #   build: .
+  # apps:
+  #   image: next-trms-trms
   #   restart: always
   #   ports:
   #     - 3000:3000
   #   environment:
   #     - .env=.
+  trms:
+    build: .
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - .env=.
 
   # db:
   #   image: postgres
