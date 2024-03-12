@@ -5,7 +5,7 @@ export default async function Home() {
   const session = await getServerSession();
   return (
     <main className="w-screen h-screen">
-      {session?.user && redirect("/dashboard")}
+      {session?.user ? redirect("/dashboard") : redirect("/auth/login")}
     </main>
   );
 }

@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:5432
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - next-trms
+
+  dbgate:
+    image: dbgate/dbgate
+    restart: always
+    ports:
+      - 7777:3000
+    volumes:
+      - dbgate-data:/root/.dbgate
+    environment:
+      CONNECTIONS: con1
+      LOGINS: gengsu
+      LOGIN_PASSWORD_oc: p@ssw0rd
+      TOKEN_LIFETIME: 30m
+
+      LABEL_con1: Postgres
+      SERVER_con1: db
+      USER_con1: ${DB_USER}
+      PASSWORD_con1: ${DB_PASSWORD}
+      PASSWORD_MODE_con1: askPassword
+      PORT_con1: 5432
+      ENGINE_con1: postgres@dbgate-plugin-postgres
+    networks:
+      - next-trms
+
+networks:
+  next-trms:
+    driver: bridge
+
+volumes:
+  dbgate-data:

@@ -1,34 +1,33 @@
-FROM node:21-alpine AS builder
-
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+FROM node:21 AS builder
 
 WORKDIR /app
-
-COPY package.json ./
-
+COPY package*.json ./
 RUN npm install
-# Rebuild bcrypt from source in the builder stage
-# RUN npm rebuild bcrypt --build-from-source
 
-# Ensure compatible Node.js version in builder stage (check version during build)
-# RUN node -v
-
+# FROM node:21 AS runner
+# WORKDIR /app
+# COPY --from=builder /app/node_modules ./node_modules
 COPY . .
+
 RUN npx prisma generate
 
-RUN npm run build
+ENV NODE_ENV production
+COPY docker-bootstrap-app.sh .
+RUN chmod +x docker-bootstrap-app.sh
 
-FROM node:18-alpine AS runner
+# FROM node:21 as deploy
+# WORKDIR /app
 
-WORKDIR /app
-
-COPY --from=builder /app ./
-# COPY --from=builder /app/out ./out
+# COPY --from=runner /app/public ./public
+# COPY --from=runner /app/package.json ./package.json
+# COPY --from=runner /app/.next/standalone ./
+# COPY --from=runner /app/.next/static ./.next/static
+# COPY --from=runner /app/node_modules ./node_modules
+# COPY --from=runner /app/prisma ./prisma
+# COPY --from=runner /app/docker-bootstrap-app.sh .
 
 EXPOSE 3000
-
 ENV PORT 3000
 ENV HOSTNAME 0.0.0.0
 
-CMD ["npm", "start", "--prod"]
+CMD ["./docker-bootstrap-app.sh"]

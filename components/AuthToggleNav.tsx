@@ -24,7 +24,7 @@ const AuthToggleNav = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="text-sm font-normal text-foreground w-full"
+              className="text-sm font-normal text-foreground w-full bg-accent px-2"
             >
               <Link href={session && session.user ? "" : "/api/auth/signin"}>
                 {session && session.user ? session.user.name : "Sign In"}
@@ -75,7 +75,7 @@ const AuthToggleNav = () => {
           <Link href="/api/auth/signin">Sign In</Link>
         </Button>
       )} */}
-      <ModeToggle />
+      <ModeToggle className="bg-accent p-2" />
     </div>
   );
 };

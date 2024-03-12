@@ -1,3 +1,4 @@
+import { authOption } from "../api/auth/[...nextauth]/route";
 import FilterSheet from "./dashComp/filterSheet";
 import Capaian from "./dashComp/gauge";
 import KPI from "./dashComp/kpi";
@@ -9,9 +10,12 @@ import SektorMap from "./dashComp/sektormap";
 import Topwp from "./dashComp/topwp";
 import TrendPage from "./dashComp/trend";
 import DashboardInfo from "./dashboardState";
-import FilterCollapse from "./filter_collapse";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-const Dashboard = () => {
+const Dashboard = async () => {
+  const session = await getServerSession(authOption);
+  if (!session?.user) redirect("/auth/login");
   return (
     <main className="flex flex-col md:flex-row justify-start items-start gap-5 w-screen h-screen">
       <div className="flex flex-col md:flex-row justify-start items-start  gap-5 md:gap-2 mt-2 w-full h-screen px-5">

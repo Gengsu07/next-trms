@@ -125,7 +125,6 @@ const SektorPage = ({ className }: { className?: string }) => {
               className="absolute top-0 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
               size={25}
               onClick={() => perSektor(data || [])}
-              fill=""
             />
           </CardContent>
         </Card>

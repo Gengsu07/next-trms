@@ -1,35 +1,42 @@
 version: "3.9"
 services:
-  # apps:
-  #   image: next-trms-trms
-  #   restart: always
-  #   ports:
-  #     - 3000:3000
-  #   environment:
-  #     - .env=.
+  db:
+    image: postgres
+    hostname: trms-db
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: testDB
+      POSTGRES_USER: postgres
+
   trms:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
     restart: always
     ports:
       - 3000:3000
     environment:
-      - .env=.
+      - DATABASE_URL=postgresql://postgres:postgres@trms-db:5432/testDB
+      - NEXTAUTH_SECRET=5yWsAPjWYclbl1WurfGOqt9HEoWc5uxfmpPJvEw+1Mk=
+      - NEXTAUTH_URL=http://localhost:3000
+# networks:
+#   next-trms:
+#     driver: bridge
 
-  # db:
-  #   image: postgres
-  #   restart: always
-  #   volumes:
-  #     - ./data/db:/var/lib/postgresql/data
-  #   ports:
-  #     - 5432:5432
-
-  #   environment:
-  #     - POSTGRES_DB=testDB
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-
-  # adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
+# microservice:
+#   build:
+#     context: ./microservice
+#   depends_on:
+#     - trms
+#   command: ["python", "/generate_db.py"] # Replace with your script path
+#   environment:
+#     DATABASE_URL: postgres://postgres:postgres@db:5432/testDB
+# networks:
+#   next-trms:
+#     external: true

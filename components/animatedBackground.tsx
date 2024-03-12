@@ -35,7 +35,7 @@ const App = () => {
         },
       },
       autoplay: true,
-      fpsLimit: 120,
+      fpsLimit: 60,
       interactivity: {
         events: {
           onClick: {
@@ -80,7 +80,7 @@ const App = () => {
           density: {
             enable: true,
           },
-          value: 200,
+          value: 100,
         },
         opacity: {
           value: 0.5,

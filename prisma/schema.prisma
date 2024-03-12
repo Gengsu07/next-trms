@@ -1,11 +1,13 @@
+
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  binaryTargets = ["native", "linux-musl"]
 }
 
 datasource db {
-  provider="postgresql"
-  url=env("DATABASE_URL")
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+
   // url      = "postgresql://gengsu07:Gengsu!sh3r3@10.20.254.226:5432/ppmpkm?schema=trms"
   // url      = "postgresql://postgres:postgres@localhost:5432/testDB?schema=production"
 }
