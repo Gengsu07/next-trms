@@ -5,8 +5,8 @@ import * as bcrypt from "bcrypt";
 import NextAuth from "next-auth/next";
 import { User } from "@prisma/client";
 
-export const authOption: AuthOptions = {
-  secret: process.env.NEXTAUTH_URL as string,
+const authOption: AuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET as string,
   pages: {
     signIn: "/auth/login",
   },

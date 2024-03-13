@@ -1,12 +1,13 @@
 er-bootstrap-app.sh
 #!/bin/sh
-
+npx next telemetry disable
 npx prisma migrate dev --name init
 
 echo "WAIT 5 Seconds for DB to available after init"
 sleep 5
 npx prisma db seed
 echo "default user and password created"
+
 npm run build
 npm run start
 # Run migrations

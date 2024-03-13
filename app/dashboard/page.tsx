@@ -1,4 +1,3 @@
-import { authOption } from "../api/auth/[...nextauth]/route";
 import FilterSheet from "./dashComp/filterSheet";
 import Capaian from "./dashComp/gauge";
 import KPI from "./dashComp/kpi";
@@ -14,7 +13,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 const Dashboard = async () => {
-  const session = await getServerSession(authOption);
+  const session = await getServerSession();
   if (!session?.user) redirect("/auth/login");
   return (
     <main className="flex flex-col md:flex-row justify-start items-start gap-5 w-screen h-screen">
