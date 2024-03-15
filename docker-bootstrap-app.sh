@@ -1,7 +1,7 @@
-er-bootstrap-app.sh
+#docker-bootstrap-app.sh
 #!/bin/sh
 npx next telemetry disable
-npx prisma migrate dev --name init
+# npx prisma migrate dev --name init
 
 echo "WAIT 5 Seconds for DB to available after init"
 sleep 5

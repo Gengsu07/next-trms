@@ -39,20 +39,20 @@ const LoginPage = () => {
   const { errors } = form.formState;
 
   const OnSubmit: SubmitHandler<z.infer<typeof loginForm>> = async (values) => {
-    startTransition(async () => {
-      const result = await signIn("credentials", {
-        redirect: false,
-        username: values.username,
-        password: values.password,
-      });
-      if (!result?.ok) {
-        toast({ variant: "destructive", description: result?.error });
-      }
-      if (result?.ok) {
-        toast({ description: "login berhasil" });
-        router.push("/dashboard");
-      }
+    const result = await signIn("credentials", {
+      redirect: false,
+      username: values.username,
+      password: values.password,
     });
+    if (!result?.ok) {
+      toast({ variant: "destructive", description: result?.error });
+    }
+    if (result?.ok) {
+      startTransition(async () => {
+        router.push("/dashboard");
+        toast({ description: "login berhasil" });
+      });
+    }
   };
   return (
     <div className="w-full h-screen flex justify-center items-center bg-border">

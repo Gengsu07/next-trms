@@ -1,8 +1,13 @@
 FROM node:21 AS builder
 
+# RUN apt update && apt-get install -y curl sudo
+# RUN curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash - &&\
+#     sudo apt-get install -y nodejs
+    
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+
 
 # FROM node:21 AS runner
 # WORKDIR /app
@@ -10,6 +15,8 @@ RUN npm install
 COPY . .
 
 RUN npx prisma generate
+
+RUN npm config set ignore-scripts false
 
 ENV NODE_ENV production
 COPY docker-bootstrap-app.sh .

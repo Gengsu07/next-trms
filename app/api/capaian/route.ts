@@ -33,11 +33,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
       target: true,
     },
     where: {
-      ...(cleanFilterConditions.admin && {
-        admin: {
-          in: cleanFilterConditions.admin.in ?? ["110"],
+      OR: [
+        {
+          ...(cleanFilterConditions.admin && {
+            admin: {
+              in: cleanFilterConditions.admin.in,
+            },
+          }),
         },
-      }),
+        { admin: "110" },
+      ],
     },
   });
 
@@ -46,11 +51,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
       target_internal: true,
     },
     where: {
-      ...(cleanFilterConditions.admin && {
-        admin: {
-          in: cleanFilterConditions.admin.in ?? ["110"],
+      OR: [
+        {
+          ...(cleanFilterConditions.admin && {
+            admin: {
+              in: cleanFilterConditions.admin.in,
+            },
+          }),
         },
-      }),
+        { admin: "110" },
+      ],
     },
   });
 
@@ -59,11 +69,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
       target_py: true,
     },
     where: {
-      ...(cleanFilterConditions.admin && {
-        admin: {
-          in: cleanFilterConditions.admin.in ?? ["110"],
+      OR: [
+        {
+          ...(cleanFilterConditions.admin && {
+            admin: {
+              in: cleanFilterConditions.admin.in,
+            },
+          }),
         },
-      }),
+        { admin: "110" },
+      ],
     },
   });
 

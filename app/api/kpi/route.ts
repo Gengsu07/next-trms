@@ -648,7 +648,7 @@ async function getQueryData(
         SELECT
         df.*,
         df.cy_mpn - df.py_mpn AS naik_mpn,
-        coalesce((df.cy_mpn - df.py_mpn)/NULLIF(df.py_mpn, 0),0) as yoy_mpn,
+        (df.cy_mpn - df.py_mpn)/df.py_mpn as yoy_mpn,
         df.cy_spm - df.py_spm AS naik_spm,
         coalesce((df.cy_spm - df.py_spm)/NULLIF(df.py_spm, 0),0) as yoy_spm,
         df.cy_netto - df.py_netto AS naik_netto,

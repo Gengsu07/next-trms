@@ -1,3 +1,4 @@
+import { AiFillFilter } from "react-icons/ai";
 import { Prisma } from ".prisma/client";
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
@@ -24,8 +25,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
   let cleanFilterConditions = Object.fromEntries(
     Object.entries(filterConditions).filter(([_, value]) => value !== undefined)
   );
-  const from = cleanFilterConditions.from;
-  const to = cleanFilterConditions.to;
+  const from = new Date(cleanFilterConditions.from);
+  const to = new Date(cleanFilterConditions.to);
 
   // const filterDate = `datebayar >= ${from} AND datebayar <= ${to}`;
   const filterSektor =
@@ -54,16 +55,20 @@ export async function GET(req: NextRequest, res: NextResponse) {
       .map((v: string) => `'${v}'`)
       .join(", ")})`;
 
-  const filterDate_cy = `"datebayar" >= '${from}' and
-  "datebayar" <= '${to}'`;
+  // const filterDate_cy = `"datebayar" >= '${from}' and
+  // "datebayar" <= '${to}'`;
 
   const fromDate = new Date(cleanFilterConditions.from);
   const toDate = new Date(cleanFilterConditions.to);
-  // let PY_from = new Date(
-  //   fromDate.getFullYear() - 1,
-  //   fromDate.getMonth(),
-  //   fromDate.getDate()
-  // );
+  const PY_from = new Date(
+    from.getFullYear() - 1,
+    from.getMonth(),
+    from.getDate()
+  );
+  const PY_to = new Date(to.getFullYear() - 1, to.getMonth(), to.getDate());
+  const from_str = fromDate.toISOString().split("T")[0];
+  const to_str = toDate.toISOString().split("T")[0];
+  const PY_to_str = toDate.toISOString().split("T")[0];
   let PY_from_str = fromDate.toISOString().split("T")[0];
 
   // const PY_to = new Date(
@@ -72,10 +77,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
   //   toDate.getDate()
   // );
 
-  const PY_to_str = toDate.toISOString().split("T")[0];
-
-  const filterDate_py = `"datebayar" >= make_date(date_part('year','${PY_from_str}'::date)::int-1,1,1) and "datebayar" <= make_date(date_part('year','${PY_to_str}'::date)::int-1,
-  date_part('month','${PY_to_str}'::date)::int,date_part('day','${PY_to_str}'::date)::int)`;
+  // const filterDate_py = `"datebayar" >= make_date(date_part('year','${PY_from_str}'::date)::int-1,1,1) and "datebayar" <= make_date(date_part('year','${PY_to_str}'::date)::int-1,
+  // date_part('month','${PY_to_str}'::date)::int,date_part('day','${PY_to_str}'::date)::int)`;
 
   const AllFilter = [
     filterSektor,
@@ -87,54 +90,65 @@ export async function GET(req: NextRequest, res: NextResponse) {
     .filter(Boolean)
     .join(" AND ");
 
-  const whereClause_cy = AllFilter
-    ? `WHERE ${filterDate_cy} AND ${AllFilter}`
-    : `WHERE ${filterDate_cy}`;
+  // const whereClause_cy = AllFilter
+  //   ? `WHERE ${filterDate_cy} AND ${AllFilter}`
+  //   : `WHERE ${filterDate_cy}`;
 
-  const whereClause_py = AllFilter
-    ? `WHERE ${filterDate_py} AND ${AllFilter}`
-    : `WHERE ${filterDate_py}`;
+  // const whereClause_py = AllFilter
+  //   ? `WHERE ${filterDate_py} AND ${AllFilter}`
+  //   : `WHERE ${filterDate_py}`;
 
-  cleanFilterConditions.from = new Date(cleanFilterConditions.from);
-  cleanFilterConditions.to = new Date(cleanFilterConditions.to);
+  // cleanFilterConditions.from = new Date(cleanFilterConditions.from);
+  // cleanFilterConditions.to = new Date(cleanFilterConditions.to);
 
+  const filterDateUptoNow = `WHERE (datebayar >= ${from} AND datebayar <= ${to}) OR (datebayar >= ${PY_from} AND datebayar <= ${PY_to})`;
+  // const whereClause = AllFilter ? `WHERE ${AllFilter}` : "";
+  const whereClause = AllFilter
+    ? `WHERE (datebayar >= ${from} AND datebayar <= ${to}) OR (datebayar >= ${PY_from} AND datebayar <= ${PY_to}) AND ${AllFilter}`
+    : `WHERE (datebayar >= ${from} AND datebayar <= ${to}) OR (datebayar >= ${PY_from} AND datebayar <= ${PY_to})`;
+  console.log(filterDateUptoNow);
+  // sum(CASE WHEN p.datebayar >= ${from} AND p.datebayar <= ${to} THEN p.nominal END) AS "cy_netto",
+  // sum(CASE WHEN p.datebayar >= ${PY_from} AND p.datebayar <= ${PY_to} THEN p.nominal END) AS "py_netto"
+  // ${Prisma.raw(whereClause)}
   const cy_trend = await prisma.$queryRaw(
     Prisma.sql`
-    WITH df AS (
       SELECT 
         p."datebayar" ,
-        sum(p."nominal") 
+       sum(p.nominal)
       FROM mpn p 
-      ${Prisma.raw(whereClause_cy)}
+      ${filterDateUptoNow}
       GROUP BY p."datebayar" 
-    )
-    SELECT 
-      df."datebayar",
-      SUM(df."sum") OVER (ORDER BY df."datebayar" ASC ) AS "CY_CUMSUM"
-    FROM df
-    GROUP BY df."datebayar",df."sum"
     `
   );
+  // WITH df AS (
+  //   )
+  //   SELECT
+  //     df."datebayar",
+  //     SUM(df."cy_netto") OVER (ORDER BY df."datebayar" ASC ) AS "CY_CUMSUM",
+  //     SUM(df."py_netto") OVER (ORDER BY df."datebayar" ASC ) AS "PY_CUMSUM"
+  //   FROM df
+  //   GROUP BY df."datebayar",df."cy_netto",df."py_netto"
+  //   ORDER by df."datebayar" ASC
   // df."datebayar",
   // SUM(CASE WHEN ${filterDate_cy} then df."sum") OVER (ORDER BY df."datebayar" ASC ) AS "CY_CUMSUM"
   // GROUP BY df."datebayar",df."sum"
-  const py_trend = await prisma.$queryRaw(
-    Prisma.sql`
-    WITH df AS (
-      SELECT
-        p."datebayar" ,
-        sum(p."nominal")
-      FROM mpn p
-      ${Prisma.raw(whereClause_py)}
-      GROUP BY p."datebayar"
-    )
-    SELECT
-      df."datebayar",
-      SUM(df.sum) OVER (ORDER BY df."datebayar" ASC ) AS "PY_CUMSUM"
-    FROM df
-    GROUP BY df."datebayar",df."sum"
-    `
-  );
+  // const py_trend = await prisma.$queryRaw(
+  //   Prisma.sql`
+  //   WITH df AS (
+  //     SELECT
+  //       p."datebayar" ,
+  //       sum(p."nominal")
+  //     FROM mpn p
+  //     ${Prisma.raw(whereClause_py)}
+  //     GROUP BY p."datebayar"
+  //   )
+  //   SELECT
+  //     df."datebayar",
+  //     SUM(df.sum) OVER (ORDER BY df."datebayar" ASC ) AS "PY_CUMSUM"
+  //   FROM df
+  //   GROUP BY df."datebayar",df."sum"
+  //   `
+  // );
   // const prevYearFrom = new Date(cleanFilterConditions.from);
   // const prevYearTo = new Date(cleanFilterConditions.to);
 
@@ -217,5 +231,5 @@ export async function GET(req: NextRequest, res: NextResponse) {
   //   },
   // });
 
-  return NextResponse.json({ cy: cy_trend, py: py_trend });
+  return NextResponse.json(cy_trend);
 }

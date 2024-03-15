@@ -23,7 +23,7 @@ const KPI = () => {
   } = useQuery<TResponseData[]>({
     queryKey: ["kpi", queryParamsString],
     queryFn: () =>
-      fetch("http://127.0.0.1:3000/api/test?" + queryParamsString, {
+      fetch("http://127.0.0.1:3000/api/kpi?" + queryParamsString, {
         cache: "no-store",
       }).then((res) => res.json()),
   });

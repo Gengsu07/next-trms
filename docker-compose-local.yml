@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  trms:
+    build:
+      context: .
+      dockerfile: Dockerfile.build
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - DATABASE_URL=postgresql://gengsu07:Gengsu!sh3r3@10.20.254.226:5432/ppmpkm?schema=trms
+      - NEXTAUTH_SECRET="5yWsAPjWYclbl1WurfGOqt9HEoWc5uxfmpPJvEw+1Mk="
+      - NEXTAUTH_URL=http://localhost:3000
+# networks:
+#   next-trms:
+#     driver: bridge
+
+# microservice:
+#   build:
+#     context: ./microservice
+#   depends_on:
+#     - trms
+#   command: ["python", "/generate_db.py"] # Replace with your script path
+#   environment:
+#     DATABASE_URL: postgres://postgres:postgres@db:5432/testDB
+# networks:
+#   next-trms:
+#     external: true
