@@ -1,4 +1,4 @@
-export const convertNominal = (nominal: number | null | undefined) => {
+export const convertNominal = (nominal: number | null) => {
   if (nominal === null) {
     return "-";
   }

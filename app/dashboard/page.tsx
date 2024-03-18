@@ -30,9 +30,9 @@ const Dashboard = async () => {
             <TrendPage className="col-span-12 md:col-span-6 max-h-96" />
             <Adm className="col-span-12 md:col-span-3 " />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full ">
-            <MapPage className="col-span-12 md:col-span-6 max-h-[550px]" />
-            <SektorPage className="col-span-12 md:col-span-6 max-h-[550px]" />
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full max-h-[550px] ">
+            <MapPage className="col-span-12 md:col-span-6 h-full" />
+            <SektorPage className="col-span-12 md:col-span-6 h-full" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full max-h-[550px] ">
             <SektorMap className="col-span-12 md:col-span-6 h-full" />

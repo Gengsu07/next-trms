@@ -14,6 +14,7 @@ import { DownloadCloud, Eye } from "lucide-react";
 import { perSektor } from "@/lib/xlsx";
 import { useState } from "react";
 import TableView from "./TableView";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const SektorPage = ({ className }: { className?: string }) => {
@@ -36,71 +37,68 @@ const SektorPage = ({ className }: { className?: string }) => {
     ?.sort((a, b) => a.CY - b.CY)
     .map((item) => item.nm_kategori);
 
+  const series: ApexAxisChartSeries = [
+    {
+      name: "Actual",
+      data: data
+        ?.sort((a, b) => b.CY - a.CY)
+        .map((item) => ({
+          x: item?.nm_kategori,
+          y: item?.CY,
+          goals: [
+            {
+              name: "Expected", // Add the 'name' property here
+              value: item?.PY,
+              strokeWidth: 5,
+              strokeHeight: 15,
+              strokeColor: "#775DD0",
+            },
+          ],
+        })),
+    } as any,
+  ];
+  const options = {
+    xaxis: {
+      labels: { show: false },
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+      },
+      datalabel: {
+        // formatter: function (val: any, opt: any) {
+        //   const goals =
+        //     opt.w.config.series[opt.seriesIndex].data[opt.dataPointIndex].goals;
+        //   if (goals && goals.length) {
+        //     return `${convertNominal(val)}`;
+        //   }
+        //   return val;
+        // },
+      },
+    },
+    colors: ["#00E396"],
+    legend: {
+      show: true,
+      showForSingleSeries: true,
+      customLegendItems: ["Actual", "Expected"],
+      markers: {
+        fillColors: ["#00E396", "#775DD0"],
+      },
+    },
+  };
   const SektorBarChartOption = {
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow",
+    options: {
+      chart: {
+        id: "basic-bar",
       },
-    },
-    toolbox: {
-      show: false,
-      feature: {
-        // dataView: { show: true, readOnly: false },
-        saveAsImage: { show: true },
+      xaxis: {
+        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999],
       },
-    },
-    color: theme === "dark" ? dark : light,
-    legend: {},
-    grid: {
-      left: "3%",
-      right: "4%",
-      bottom: "3%",
-      containLabel: true,
-    },
-    xAxis: {
-      type: "value",
-      boundaryGap: [0, 0.01],
-      show: false,
-    },
-    yAxis: {
-      type: "category",
-      axisTick: { show: false },
-      data: sektorlabel,
-      //   filter(
-      //   (item, index) => sektorlabel.indexOf(item) === index
-      // ),
     },
     series: [
       {
-        name: "tahun ini",
-        type: "bar",
-        barMinWidth: 20,
-        label: {
-          show: true,
-          fontSize: 11,
-          formatter: (params: any) => `${convertNominal(params.value)}`,
-          align: "right",
-        },
-        data: data?.map((item) => item.CY),
-      },
-      {
-        name: "tahun lalu",
-        type: "bar",
-        barMinWidth: 20,
-        label: {
-          show: true,
-          fontSize: 11,
-          formatter: (params: any) => `${convertNominal(params.value)}`,
-          align: "right",
-        },
-        // itemStyle: {
-        //   // Moved itemStyle here
-        //   color: function (params) {
-        //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
-        //   },
-        // },
-        data: data?.map((item) => item.PY),
+        name: "series-1",
+        data: [30, 40, 45, 50, 49, 60, 70, 91],
       },
     ],
   };
@@ -134,8 +132,15 @@ const SektorPage = ({ className }: { className?: string }) => {
               <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
                 Per Sektor
               </CardHeader>
-              <CardContent className="p-0 flex flex-col items-center justify-center relative">
-                <ReactEchart
+              <CardContent className="p-0 flex flex-col items-center justify-center relative w-full">
+                <Chart
+                  options={options}
+                  series={series}
+                  type="bar"
+                  height="500"
+                  width="500"
+                />
+                {/* <ReactEchart
                   option={SektorBarChartOption}
                   className="w-full h-full p-0"
                   style={{
@@ -143,7 +148,7 @@ const SektorPage = ({ className }: { className?: string }) => {
                     padding: "0px",
                     bottom: "0px",
                   }}
-                />
+                /> */}
                 <Eye
                   className="absolute top-0 right-12 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
                   size={25}
@@ -165,3 +170,72 @@ const SektorPage = ({ className }: { className?: string }) => {
   );
 };
 export default SektorPage;
+
+// {
+//   tooltip: {
+//     trigger: "axis",
+//     axisPointer: {
+//       type: "shadow",
+//     },
+//   },
+//   toolbox: {
+//     show: false,
+//     feature: {
+//       // dataView: { show: true, readOnly: false },
+//       saveAsImage: { show: true },
+//     },
+//   },
+//   color: theme === "dark" ? dark : light,
+//   legend: {},
+//   grid: {
+//     left: "3%",
+//     right: "4%",
+//     bottom: "3%",
+//     containLabel: true,
+//   },
+//   xAxis: {
+//     type: "value",
+//     boundaryGap: [0, 0.01],
+//     show: false,
+//   },
+//   yAxis: {
+//     type: "category",
+//     axisTick: { show: false },
+//     data: sektorlabel,
+//     //   filter(
+//     //   (item, index) => sektorlabel.indexOf(item) === index
+//     // ),
+//   },
+//   series: [
+//     {
+//       name: "tahun ini",
+//       type: "bar",
+//       barMinWidth: 20,
+//       label: {
+//         show: true,
+//         fontSize: 11,
+//         formatter: (params: any) => `${convertNominal(params.value)}`,
+//         align: "right",
+//       },
+//       data: data?.map((item) => item.CY),
+//     },
+//     {
+//       name: "tahun lalu",
+//       type: "bar",
+//       barMinWidth: 20,
+//       label: {
+//         show: true,
+//         fontSize: 11,
+//         formatter: (params: any) => `${convertNominal(params.value)}`,
+//         align: "right",
+//       },
+//       // itemStyle: {
+//       //   // Moved itemStyle here
+//       //   color: function (params) {
+//       //     return params.dataIndex % 2 === 0 ? "#02275d" : "#ffc91b";
+//       //   },
+//       // },
+//       data: data?.map((item) => item.PY),
+//     },
+//   ],
+// };
