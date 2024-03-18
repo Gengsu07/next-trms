@@ -34,9 +34,9 @@ const Dashboard = async () => {
             <MapPage className="col-span-12 md:col-span-6 max-h-[550px]" />
             <SektorPage className="col-span-12 md:col-span-6 max-h-[550px]" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full ">
-            <SektorMap className="col-span-12 md:col-span-6 max-h-[550px]" />
-            <Topwp className="col-span-12 md:col-span-6 max-h-[550px]" />
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full max-h-[550px] ">
+            <SektorMap className="col-span-12 md:col-span-6 h-full" />
+            <Topwp className="col-span-12 md:col-span-6 h-full" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full ">
             <PerWPTablePage className="col-span-12" />

@@ -1,4 +1,11 @@
-import { TKPP, TMap, TPerWP, TSektorRes, TTrend } from "@/app/types/types";
+import {
+  TKPP,
+  TMap,
+  TPerWP,
+  TSektorRes,
+  TTopWP,
+  TTrend,
+} from "@/app/types/types";
 import xlsx, { IJsonSheet } from "json-as-xlsx";
 
 export function downloadToExcel(content: TPerWP[]) {
@@ -196,4 +203,46 @@ export function exportTrend(content: TTrend) {
     extralenght: 5,
   };
   return xlsx(data, setting);
+}
+
+export function exportTopBotWP(content: TTopWP = { top: [], bottom: [] }) {
+  let data: IJsonSheet[] = [];
+
+  if (content) {
+    data = [
+      {
+        sheet: "Top WP",
+        columns: [
+          {
+            label: "WP",
+            value: "name",
+          },
+          {
+            label: "Kenaikan",
+            value: "value",
+          },
+        ],
+        content: content.top,
+      },
+      {
+        sheet: "Bottom WP",
+        columns: [
+          {
+            label: "WP",
+            value: "name",
+          },
+          {
+            label: "Kenaikan",
+            value: "value",
+          },
+        ],
+        content: content.bottom,
+      },
+    ];
+    let setting = {
+      fileName: "TopBottom WP",
+      extralenght: 5,
+    };
+    return xlsx(data, setting);
+  }
 }

@@ -11,11 +11,16 @@ import { SektorTopn } from "@/components/transform/topn";
 import { dark, light_colorscale } from "@/constant/colorPallette";
 import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
 import { color } from "echarts";
+import { useState } from "react";
+import { DownloadCloud, Eye } from "lucide-react";
+import { exportTopBotWP } from "@/lib/xlsx";
+import TableView from "./TableView";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const Topwp = ({ className }: { className?: string }) => {
   const { filterData, parseFilterData } = useFilterData();
   const cleanFilterData = parseFilterData(filterData) || {};
+  const [dataview, setViewData] = useState(false);
   const queryParamsString = querystring.stringify(cleanFilterData);
 
   const { data, isLoading, error } = useQuery<TTopWP>({
@@ -33,6 +38,7 @@ const Topwp = ({ className }: { className?: string }) => {
         `${params.name} :${convertNominal(params.value)}`,
     },
     toolbox: {
+      show: false,
       feature: {
         dataView: { readOnly: false },
         restore: {},
@@ -100,22 +106,62 @@ const Topwp = ({ className }: { className?: string }) => {
       {isLoading || data?.top.length === 0 ? (
         <GenericSkeleton />
       ) : (
-        <Card className="w-full">
-          <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
-            Top & Bottom 5 WP
-          </CardHeader>
-          <CardContent className="p-0 flex flex-col items-center justify-center">
-            <ReactEchart
-              option={topwp_option}
-              className="w-full h-full p-0"
-              style={{
-                height: "350px",
-                padding: "0px",
-                bottom: "0px",
-              }}
-            />
-          </CardContent>
-        </Card>
+        <>
+          {dataview ? (
+            <div className="relative flex-col sm:flex-row gap-1 h-full ">
+              <Card className="overflow-auto h-full flex-grow">
+                <CardContent>
+                  <TableView
+                    columns={["name", "value"]}
+                    data={data?.top}
+                    className="overflow-y-scroll "
+                  />
+                  <TableView
+                    columns={["name", "value"]}
+                    data={data?.bottom}
+                    className="overflow-y-scroll "
+                  />
+                </CardContent>
+              </Card>
+              <Eye
+                className="absolute top-5 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md z-50"
+                size={25}
+                onClick={() => setViewData(!dataview)}
+                fill=""
+              />
+            </div>
+          ) : (
+            <Card className="w-full">
+              <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
+                Top & Bottom 5 WP
+              </CardHeader>
+              <CardContent className="p-0 flex flex-col items-center justify-center relative">
+                <ReactEchart
+                  option={topwp_option}
+                  className="w-full h-full p-0"
+                  style={{
+                    height: "500px",
+                    padding: "0px",
+                    bottom: "0px",
+                  }}
+                />
+
+                <Eye
+                  className="absolute top-0 right-12 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
+                  size={25}
+                  onClick={() => setViewData(!dataview)}
+                  fill=""
+                />
+                <DownloadCloud
+                  className="absolute top-0 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
+                  size={25}
+                  onClick={() => exportTopBotWP(data)}
+                  fill=""
+                />
+              </CardContent>
+            </Card>
+          )}
+        </>
       )}
     </main>
   );
