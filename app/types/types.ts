@@ -35,9 +35,10 @@ export type parsedData = {
   to?: string | undefined;
 };
 export type TTrend = {
-  cy: { datebayar: Date; CY_CUMSUM: number }[];
-  py: { datebayar: Date; PY_CUMSUM: number }[];
-};
+  tanggalbayar: Date;
+  CY_CUMSUM: number;
+  PY_CUMSUM: number;
+}[];
 
 export type TMap = {
   map: string;

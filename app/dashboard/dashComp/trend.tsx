@@ -8,12 +8,16 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import querystring from "querystring";
-import { symbol } from "zod";
+import TableView from "./TableView";
+import { DownloadCloud, Eye } from "lucide-react";
+import { useState } from "react";
+import { exportTrend } from "@/lib/xlsx";
 
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const TrendPage = ({ className }: { className?: string }) => {
   const { filterData, parseFilterData } = useFilterData();
+  const [dataview, setViewData] = useState(false);
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
@@ -27,7 +31,7 @@ const TrendPage = ({ className }: { className?: string }) => {
   const areaChartOption = {
     // title: { text: "Trend Penerimaan YoY", left: "center", top: "auto" },
     toolbox: {
-      show: true,
+      show: false,
       feature: {
         dataView: { show: true, readOnly: false },
         saveAsImage: { show: true },
@@ -35,7 +39,7 @@ const TrendPage = ({ className }: { className?: string }) => {
     },
     xAxis: {
       type: "category",
-      data: data?.cy.map((item) => item.datebayar),
+      data: data?.map((item) => item.tanggalbayar),
       axisLabel: {
         show: true,
         formatter: function (value: Date) {
@@ -77,7 +81,7 @@ const TrendPage = ({ className }: { className?: string }) => {
     series: [
       {
         name: "tahun ini",
-        data: data?.cy.map((item) => item.CY_CUMSUM),
+        data: data?.map((item) => item.CY_CUMSUM),
         type: "line",
         areaStyle: { color: "rgba(255,202,25,1)" },
         itemStyle: {
@@ -89,7 +93,7 @@ const TrendPage = ({ className }: { className?: string }) => {
       },
       {
         name: "tahun lalu",
-        data: data?.py.map((item) => item.PY_CUMSUM),
+        data: data?.map((item) => item.PY_CUMSUM),
         type: "line",
         areaStyle: { color: "rgba(0,95,173,0.7)" },
         itemStyle: { color: "rgba(0,95,173,0.7)", symbol: " " },
@@ -100,26 +104,60 @@ const TrendPage = ({ className }: { className?: string }) => {
     ],
   };
   return (
-    <div className={cn("w-full h-full", className)}>
-      {isLoading || data?.cy.length === 0 ? (
+    <div className={cn("w-full", className)}>
+      {isLoading || data?.length === 0 ? (
         <GenericSkeleton />
       ) : (
-        <Card className="w-full">
-          <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
-            Trend
-          </CardHeader>
-          <CardContent className="p-0 flex flex-col items-center justify-center">
-            <ReactEchart
-              option={areaChartOption}
-              className="w-full h-full p-0"
-              style={{
-                height: "300px",
-                padding: "0px",
-                bottom: "0px",
-              }}
-            />
-          </CardContent>
-        </Card>
+        <>
+          {dataview ? (
+            <div className="relative flex-col sm:flex-row gap-1 h-full ">
+              <Card className="overflow-auto h-full flex-grow">
+                <CardContent>
+                  <TableView
+                    columns={["tanggalbayar", "CY_CUMSUM", "PY_CUMSUM"]}
+                    data={data}
+                    className="overflow-y-scroll "
+                  />
+                </CardContent>
+              </Card>
+              <Eye
+                className="absolute top-5 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md z-50"
+                size={25}
+                onClick={() => setViewData(!dataview)}
+                fill=""
+              />
+            </div>
+          ) : (
+            <Card className="w-full">
+              <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
+                Trend
+              </CardHeader>
+              <CardContent className="p-0 flex flex-col sm:flex-row items-center justify-center relative ">
+                <ReactEchart
+                  option={areaChartOption}
+                  className="w-full h-full p-0"
+                  style={{
+                    height: "300px",
+                    padding: "0px",
+                    bottom: "0px",
+                  }}
+                />
+                <Eye
+                  className="absolute top-0 right-12 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
+                  size={25}
+                  onClick={() => setViewData(!dataview)}
+                  fill=""
+                />
+                <DownloadCloud
+                  className="absolute top-0 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
+                  size={25}
+                  onClick={() => exportTrend(data || [])}
+                  fill=""
+                />
+              </CardContent>
+            </Card>
+          )}
+        </>
       )}
     </div>
   );

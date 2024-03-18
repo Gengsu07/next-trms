@@ -2,6 +2,7 @@ import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { SektorSingkat } from "@/components/transform/topn";
 import { sektor } from "@/constant/initialData";
+import { subYears } from "date-fns";
 
 interface resData {
   _sum: {
@@ -40,11 +41,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
   cleanFilterConditions.from = new Date(cleanFilterConditions.from);
   cleanFilterConditions.to = new Date(cleanFilterConditions.to);
 
-  const prevYearFrom = new Date(cleanFilterConditions.from);
-  const prevYearTo = new Date(cleanFilterConditions.to);
-
-  prevYearFrom.setFullYear(prevYearFrom.getFullYear() - 1);
-  prevYearTo.setFullYear(prevYearTo.getFullYear() - 1);
+  // const prevYearFrom = subYears(cleanFilterConditions.from, 1);
+  // const prevYearTo = subYears(cleanFilterConditions.to, 1);
 
   const cy = await prisma.mpn.groupBy({
     by: ["kd_kategori", "map"],

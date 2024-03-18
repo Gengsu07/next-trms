@@ -26,17 +26,17 @@ const Dashboard = async () => {
 
           <KPI />
           <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full">
-            <Capaian className="col-span-12 md:col-span-3" />
-            <TrendPage className="col-span-12 md:col-span-6 " />
+            <Capaian className="col-span-12 md:col-span-3 max-h-96" />
+            <TrendPage className="col-span-12 md:col-span-6 max-h-96" />
             <Adm className="col-span-12 md:col-span-3 " />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full ">
-            <MapPage className="col-span-12 md:col-span-6" />
-            <SektorPage className="col-span-12 md:col-span-6" />
+            <MapPage className="col-span-12 md:col-span-6 max-h-[550px]" />
+            <SektorPage className="col-span-12 md:col-span-6 max-h-[550px]" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full ">
-            <SektorMap className="col-span-12 md:col-span-6" />
-            <Topwp className="col-span-12 md:col-span-6" />
+            <SektorMap className="col-span-12 md:col-span-6 max-h-[550px]" />
+            <Topwp className="col-span-12 md:col-span-6 max-h-[550px]" />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-2 w-full ">
             <PerWPTablePage className="col-span-12" />

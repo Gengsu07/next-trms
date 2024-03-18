@@ -39,20 +39,21 @@ const Topwp = ({ className }: { className?: string }) => {
         saveAsImage: {},
       },
     },
-    color: light_colorscale,
+
     series: [
       {
         name: "top",
         type: "funnel",
-        left: "5%",
+        left: "10%",
         top: "5%",
-        width: "90%",
+        width: "70%",
         height: "45%",
         sort: "descending",
+        funnelAlign: "left",
         gap: 2,
         label: {
           show: true,
-          position: "inside",
+          position: "outside",
           formatter: (params: any) =>
             `${params.name}: ${convertNominal(params.value)}`,
         },
@@ -77,15 +78,16 @@ const Topwp = ({ className }: { className?: string }) => {
       {
         name: "bottom",
         type: "funnel",
-        width: "90%",
+        width: "70%",
         height: "45%",
-        left: "5%",
+        left: "10%",
         top: "50%",
-        sort: "ascending",
+        funnelAlign: "left",
+        sort: "descending",
         colorBy: data?.bottom,
         label: {
           show: true,
-          position: "inside",
+          position: "outside",
           formatter: (params: any) =>
             `${params.name}: ${convertNominal(params.value)}`,
         },
@@ -107,7 +109,7 @@ const Topwp = ({ className }: { className?: string }) => {
               option={topwp_option}
               className="w-full h-full p-0"
               style={{
-                height: "500px",
+                height: "350px",
                 padding: "0px",
                 bottom: "0px",
               }}

@@ -12,12 +12,16 @@ import { dark, light } from "@/constant/colorPallette";
 import GenericSkeleton from "@/components/skeleton/SkeletonGeneral";
 import { useTheme } from "next-themes";
 import { perMap } from "@/lib/xlsx";
-import { DownloadCloud } from "lucide-react";
+import { DownloadCloud, Eye } from "lucide-react";
+import { useState } from "react";
+import TableView from "./TableView";
 const ReactEchart = dynamic(() => import("echarts-for-react"), { ssr: false });
 
 const MapPage = ({ className }: { className?: string }) => {
   const { theme } = useTheme();
   const { filterData, parseFilterData } = useFilterData();
+  const [dataview, setViewData] = useState(false);
+
   const cleanFilterData = parseFilterData(filterData) || {};
   const queryParamsString = querystring.stringify(cleanFilterData);
 
@@ -112,27 +116,56 @@ const MapPage = ({ className }: { className?: string }) => {
       {isLoading || data?.length === 0 ? (
         <GenericSkeleton />
       ) : (
-        <Card className="w-full">
-          <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
-            Per Jenis Pajak
-          </CardHeader>
-          <CardContent className="p-0 flex flex-col items-center justify-center relative">
-            <ReactEchart
-              option={mapChartOption}
-              className="w-full h-full p-0"
-              style={{
-                height: "500px",
-                padding: "0px",
-                bottom: "0px",
-              }}
-            />
-            <DownloadCloud
-              className="absolute top-0 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
-              size={25}
-              onClick={() => perMap(data || [])}
-            />
-          </CardContent>
-        </Card>
+        <>
+          {dataview ? (
+            <div className="relative flex-col sm:flex-row gap-1 h-full ">
+              <Card className="overflow-auto h-full flex-grow">
+                <CardContent>
+                  <TableView
+                    columns={["map", "CY", "PY"]}
+                    data={data}
+                    className="overflow-y-scroll "
+                  />
+                </CardContent>
+              </Card>
+              <Eye
+                className="absolute top-5 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md z-50"
+                size={25}
+                onClick={() => setViewData(!dataview)}
+                fill=""
+              />
+            </div>
+          ) : (
+            <Card className="w-full">
+              <CardHeader className="text-center font-bold text-slate-700 dark:text-foreground mt-1 p-0 space-y-0">
+                Per Jenis Pajak
+              </CardHeader>
+              <CardContent className="p-0 flex flex-col items-center justify-center relative">
+                <ReactEchart
+                  option={mapChartOption}
+                  className="w-full h-full p-0"
+                  style={{
+                    height: "500px",
+                    padding: "0px",
+                    bottom: "0px",
+                  }}
+                />
+                <Eye
+                  className="absolute top-0 right-12 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
+                  size={25}
+                  onClick={() => setViewData(!dataview)}
+                  fill=""
+                />
+                <DownloadCloud
+                  className="absolute top-0 right-5 cursor-pointer dark:bg-foreground  bg-accent-foreground text-white dark:text-accent p-1 rounded-md"
+                  size={25}
+                  onClick={() => perMap(data || [])}
+                  fill=""
+                />
+              </CardContent>
+            </Card>
+          )}
+        </>
       )}
     </div>
   );

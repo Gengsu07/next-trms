@@ -2,6 +2,7 @@ import { prisma } from "@/prisma/client";
 import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { sektor } from "@/constant/initialData";
+import { subYears } from "date-fns";
 
 type TSektorAPI = {
   kd_kategori: string;
@@ -76,12 +77,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   const whereClause = AllFilter ? `WHERE ${AllFilter}` : "";
 
-  const PY_from = new Date(
-    from.getFullYear() - 1,
-    from.getMonth(),
-    from.getDate()
-  );
-  const PY_to = new Date(to.getFullYear() - 1, to.getMonth(), to.getDate());
+  const PY_from = subYears(from, 1);
+  const PY_to = subYears(to, 1);
 
   const sektor_data: TSektorAPI = await prisma.$queryRaw(
     Prisma.sql`WITH df AS (

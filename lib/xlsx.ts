@@ -169,3 +169,31 @@ export function SektorMAP_data(
   };
   return xlsx(data, setting);
 }
+
+export function exportTrend(content: TTrend) {
+  let data: IJsonSheet[] = [
+    {
+      sheet: "Akumulasi Penerimaan",
+      columns: [
+        {
+          label: "Tanggal Bayar",
+          value: "tanggalbayar",
+        },
+        {
+          label: "Tahun Ini",
+          value: "CY_CUMSUM",
+        },
+        {
+          label: "Tahun Lalu",
+          value: "PY_CUMSUM",
+        },
+      ],
+      content: content,
+    },
+  ];
+  let setting = {
+    fileName: "Akumulasi Penerimaan",
+    extralenght: 5,
+  };
+  return xlsx(data, setting);
+}
